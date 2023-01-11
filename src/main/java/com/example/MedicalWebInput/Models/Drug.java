@@ -18,7 +18,7 @@ public class Drug {
     private Long id;
     private String drugName = "";
     private String drugScientificName = "";
-    private int drugSize = 0;
+    private int drugSize;
     private String drugPackaging = "";
     private String drugPurpose = "";
 

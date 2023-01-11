@@ -17,8 +17,8 @@ public class PatientService {
     public List<Patient> getAllPatients(){
         return patientRepository.findAll();
     }
-    public boolean checkForPatient(Patient patient){
-        if(!patientRepository.findByEmail(patient.getEmail()).isEmpty()){
+    public boolean checkForPatient(String email){
+        if(!patientRepository.findByEmail(email).isEmpty()){
             return true;
         }
         return false;
@@ -42,5 +42,11 @@ public class PatientService {
 
         }
         return  patientDtos;
+    }
+    public boolean checkPassword(String password, String confirmPassword) {
+        if (password.equals(confirmPassword)){
+            return true;
+        }
+        return false;
     }
 }

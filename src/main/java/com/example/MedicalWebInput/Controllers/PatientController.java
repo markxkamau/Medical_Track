@@ -27,7 +27,7 @@ public class PatientController {
         return "Patient/home_page";
     }
 
-//    Must have admin rights
+    //    Must have admin rights
     @GetMapping("/all")
     public String getAllPatients(@NotNull Model model) {
         model.addAttribute("patient_data", patientService.convertToPatientDto(patientService.getAllPatients()));
@@ -46,16 +46,24 @@ public class PatientController {
 
     @PostMapping("/new_patient")
     public String addPatientInfo(@ModelAttribute CreatePatientDto patientDto, @NotNull Model model) {
-//        model.addAttribute("patient_data", patientDto);
-        PatientDto patientDto1 = new PatientDto();
-        if(patientDto.getPassword().equals(patientDto.getConfirmPassword())){
-            patientDto1.setPassword(patientDto.getPassword());
-        }
-        else {
-            model.addAttribute("patient_data", patientDto);
-            model.addAttribute("patient_alert", "Passwords do not match, Check and try again");
+        Model patientData = model.addAttribute("patient_data", patientDto);
+        if (patientService.checkForPatient(patientDto.getEmail())) {
+//            Patient email already exists
+            patientData.addAttribute("patient_error", "Email already exists");
             return "Patient/patient_registration";
         }
+        if(!patientService.checkPassword(patientDto.getPassword(),patientDto.getConfirmPassword())){
+//            Passwords not similar
+            patientData.addAttribute("patient_alert", "Passwords do not match, Check and try again");
+            return "Patient/patient_registration";
+        }
+        if (patientDto.getDrugCount() < 1){
+//            Drug count less than one
+            patientData.addAttribute("drug_error", "Minimum drug limit is 1");
+            return "Patient/patient_registration";
+        }
+
+
         return "";
     }
 //    public void addPatientData(@RequestBody Patient patient) {
