@@ -1,7 +1,11 @@
 package com.example.MedicalWebInput.Controllers;
 
-import com.example.MedicalWebInput.Data.CreatePatientDto;
-import com.example.MedicalWebInput.Data.PatientDto;
+import com.example.MedicalWebInput.Data.DrugDto.DrugDto;
+import com.example.MedicalWebInput.Data.PatientDto.CreatePatientDto;
+import com.example.MedicalWebInput.Data.PatientDto.PatientDto;
+import com.example.MedicalWebInput.Data.PatientDto.PatientLoginDto;
+import com.example.MedicalWebInput.Models.Drug;
+import com.example.MedicalWebInput.Models.Patient;
 import com.example.MedicalWebInput.Services.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -40,6 +44,12 @@ public class PatientController {
         return "Patient/patient_registration";
     }
 
+    @GetMapping("/login")
+    public String loginPatient(@NotNull Model model){
+        model.addAttribute("login_detail", new PatientLoginDto());
+        return "Patient/patient_login";
+    }
+
 //    *************************************************************************
 //    PostMappings
 //    =========================================================================
@@ -62,9 +72,24 @@ public class PatientController {
             patientData.addAttribute("drug_error", "Minimum drug limit is 1");
             return "Patient/patient_registration";
         }
+        Patient patient = patientService.convertToPatient(patientDto);
+        patientService.addNewPatient(patient);
+        model.addAttribute("patient_data", patient);
+//        model.addAttribute("drug_info", new DrugDto());
 
+        return "HomePage";
+    }
 
-        return "";
+    @PostMapping("/login")
+    public String verifyLogin(@ModelAttribute PatientLoginDto patientLoginDto, @NotNull Model model){
+        if(!patientService.verifyLogin(patientLoginDto)){
+            model.addAttribute("login_detail", patientLoginDto);
+            model.addAttribute("login_error", "Password or email not correct, check and try again");
+            return "Patient/patient_login";
+        }
+        Patient patient = patientService.getPatientByEmail(patientLoginDto.getEmail());
+        model.addAttribute("patient_data", patient);
+        return "HomePage";
     }
 //    public void addPatientData(@RequestBody Patient patient) {
 //        if (!patientService.checkForPatient(patient)) {

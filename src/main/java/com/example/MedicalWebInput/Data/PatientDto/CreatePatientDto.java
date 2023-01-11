@@ -1,31 +1,27 @@
-package com.example.MedicalWebInput.Data;
+package com.example.MedicalWebInput.Data.PatientDto;
 
-public class PatientDto {
+public class CreatePatientDto {
     private Long id;
-    private String name = "";
+    private String firstName = "";
+    private String lastName = "";
     private String email = "";
     private int drugCount;
     private String condition = "";
     private String password = "";
+    private String confirmPassword = "";
 
-    public PatientDto() {
+    public CreatePatientDto() {
     }
 
-    public PatientDto(Long id,String name, String email, int drugCount, String condition, String password) {
+    public CreatePatientDto(Long id, String firstName, String lastName, String email, int drugCount, String condition, String password, String confirmPassword) {
         this.id = id;
-        this.name = name;
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.email = email;
         this.drugCount = drugCount;
         this.condition = condition;
         this.password = password;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+        this.confirmPassword = confirmPassword;
     }
 
     public Long getId() {
@@ -36,6 +32,21 @@ public class PatientDto {
         this.id = id;
     }
 
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
 
     public String getEmail() {
         return email;
@@ -69,4 +80,11 @@ public class PatientDto {
         this.password = password;
     }
 
+    public String getConfirmPassword() {
+        return confirmPassword;
+    }
+
+    public void setConfirmPassword(String confirmPassword) {
+        this.confirmPassword = confirmPassword;
+    }
 }

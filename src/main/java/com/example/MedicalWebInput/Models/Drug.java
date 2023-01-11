@@ -21,6 +21,8 @@ public class Drug {
     private int drugSize;
     private String drugPackaging = "";
     private String drugPurpose = "";
+    @ManyToOne
+    private Patient patient;
 
     public Drug() {
     }
@@ -32,6 +34,24 @@ public class Drug {
         this.drugSize = drugSize;
         this.drugPackaging = drugPackaging;
         this.drugPurpose = drugPurpose;
+    }
+
+    public Patient getPatient() {
+        return patient;
+    }
+
+    public void setPatient(Patient patient) {
+        this.patient = patient;
+    }
+
+    public Drug(Long id, String drugName, String drugScientificName, int drugSize, String drugPackaging, String drugPurpose, Patient patient) {
+        this.id = id;
+        this.drugName = drugName;
+        this.drugScientificName = drugScientificName;
+        this.drugSize = drugSize;
+        this.drugPackaging = drugPackaging;
+        this.drugPurpose = drugPurpose;
+        this.patient = patient;
     }
 
     public Drug(String drugName, String drugPurpose) {
