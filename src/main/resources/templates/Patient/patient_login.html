@@ -14,11 +14,13 @@
         <div class="bg-white shadow w-full rounded-lg divide-y divide-gray-200">
             <form class="px-5 py-7" method="post" th:action="@{/patient/login}" th:object="${login_detail}">
                 <label class="font-semibold text-sm text-gray-600 pb-1 block">E-mail</label>
-                <input type="text" class="border rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full" th:field="*{email}" placeholder="Example:myemail@engine.com"
-                      th:value="${login_detail.email}" required/>
+                <input type="text" class="border rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full" th:field="*{email}"
+                       placeholder="Example:myemail@engine.com"
+                       required/>
                 <label class="font-semibold text-sm text-gray-600 pb-1 block">Password</label>
-                <input type="password" class="border rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full" placeholder="***************"
-                       th:field="*{password}"  required/>
+                <input type="password" class="border rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full"
+                       placeholder="***************"
+                       th:field="*{password}" required/>
                 <p class="text-xs italic text-red-500" th:text="${login_error}">Please choose a password.</p>
                 <button type="submit"
                         class="transition duration-200 bg-blue-500 hover:bg-blue-600 focus:bg-blue-700 focus:shadow-sm focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50 text-white w-full py-2.5 rounded-lg text-sm shadow-sm hover:shadow-md font-semibold text-center inline-block">

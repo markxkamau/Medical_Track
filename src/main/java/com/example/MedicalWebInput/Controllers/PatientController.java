@@ -51,8 +51,8 @@ public class PatientController {
     }
 
     @GetMapping("/forgot_password")
-    public String forgotPassword(@NotNull Model model, String email) {
-        model.addAttribute("patient_email", email);
+    public String forgotPassword(@NotNull Model model) {
+        model.addAttribute("patient_email", new PatientLoginDto());
         return "Patient/patient_reset";
     }
 
@@ -98,13 +98,14 @@ public class PatientController {
     }
 
     @PostMapping("/forgot_password")
-    public String resetPassword(String email, @NotNull Model model) {
-        if (!patientService.checkForPatient(email)) {
-            model.addAttribute("patient_email", email);
+    @ResponseBody
+    public String resetPassword(@ModelAttribute PatientLoginDto patientLoginDto, @NotNull Model model) {
+        if (!patientService.checkForPatient(patientLoginDto.getEmail())) {
+            model.addAttribute("patient_email", patientLoginDto);
             model.addAttribute("reset_error", "Email doesn't exist");
             return "Patient/patient_reset";
         }
-        String newPassword = patientService.setNewPassword(email);
+        String newPassword = patientService.setNewPassword(patientLoginDto.getEmail());
         return newPassword;
     }
 //    public void addPatientData(@RequestBody Patient patient) {
