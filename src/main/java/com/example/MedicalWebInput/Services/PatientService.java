@@ -74,16 +74,21 @@ public class PatientService {
 
     public boolean verifyLogin(PatientLoginDto patientLoginDto) {
         String passwordConfirm = getPassword(patientLoginDto.getEmail());
-
-        if(!passwordConfirm.equals(patientLoginDto.getPassword())){
+        if (passwordConfirm.isEmpty()) {
             return false;
         }
-        return  true;
+        if (!passwordConfirm.equals(patientLoginDto.getPassword())) {
+            return false;
+        }
+        return true;
     }
 
     private String getPassword(String email) {
         Optional<Patient> patient = patientRepository.findByEmail(email);
-        return patient.get().getPassword();
+        if (!patient.isEmpty()) {
+            return patient.get().getPassword();
+        }
+        return "";
     }
 
     public Patient getPatientByEmail(String email) {

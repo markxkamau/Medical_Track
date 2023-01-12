@@ -74,10 +74,10 @@ public class PatientController {
         }
         Patient patient = patientService.convertToPatient(patientDto);
         patientService.addNewPatient(patient);
-        model.addAttribute("patient_data", patient);
+        model.addAttribute("login_detail", new PatientLoginDto());
 //        model.addAttribute("drug_info", new DrugDto());
 
-        return "HomePage";
+        return "Patient/patient_login";
     }
 
     @PostMapping("/login")
