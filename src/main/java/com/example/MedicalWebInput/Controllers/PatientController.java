@@ -1,7 +1,11 @@
 package com.example.MedicalWebInput.Controllers;
 
-import com.example.MedicalWebInput.Data.CreatePatientDto;
-import com.example.MedicalWebInput.Data.PatientDto;
+import com.example.MedicalWebInput.Data.DrugDto.DrugDto;
+import com.example.MedicalWebInput.Data.PatientDto.CreatePatientDto;
+import com.example.MedicalWebInput.Data.PatientDto.PatientDto;
+import com.example.MedicalWebInput.Data.PatientDto.PatientLoginDto;
+import com.example.MedicalWebInput.Models.Drug;
+import com.example.MedicalWebInput.Models.Patient;
 import com.example.MedicalWebInput.Services.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -27,7 +31,7 @@ public class PatientController {
         return "Patient/home_page";
     }
 
-//    Must have admin rights
+    //    Must have admin rights
     @GetMapping("/all")
     public String getAllPatients(@NotNull Model model) {
         model.addAttribute("patient_data", patientService.convertToPatientDto(patientService.getAllPatients()));
@@ -40,23 +44,52 @@ public class PatientController {
         return "Patient/patient_registration";
     }
 
+    @GetMapping("/login")
+    public String loginPatient(@NotNull Model model){
+        model.addAttribute("login_detail", new PatientLoginDto());
+        return "Patient/patient_login";
+    }
+
 //    *************************************************************************
 //    PostMappings
 //    =========================================================================
 
     @PostMapping("/new_patient")
     public String addPatientInfo(@ModelAttribute CreatePatientDto patientDto, @NotNull Model model) {
-//        model.addAttribute("patient_data", patientDto);
-        PatientDto patientDto1 = new PatientDto();
-        if(patientDto.getPassword().equals(patientDto.getConfirmPassword())){
-            patientDto1.setPassword(patientDto.getPassword());
-        }
-        else {
-            model.addAttribute("patient_data", patientDto);
-            model.addAttribute("patient_alert", "Passwords do not match, Check and try again");
+        Model patientData = model.addAttribute("patient_data", patientDto);
+        if (patientService.checkForPatient(patientDto.getEmail())) {
+//            Patient email already exists
+            patientData.addAttribute("patient_error", "Email already exists");
             return "Patient/patient_registration";
         }
-        return "";
+        if(!patientService.checkPassword(patientDto.getPassword(),patientDto.getConfirmPassword())){
+//            Passwords not similar
+            patientData.addAttribute("patient_alert", "Passwords do not match, Check and try again");
+            return "Patient/patient_registration";
+        }
+        if (patientDto.getDrugCount() < 1){
+//            Drug count less than one
+            patientData.addAttribute("drug_error", "Minimum drug limit is 1");
+            return "Patient/patient_registration";
+        }
+        Patient patient = patientService.convertToPatient(patientDto);
+        patientService.addNewPatient(patient);
+        model.addAttribute("patient_data", patient);
+//        model.addAttribute("drug_info", new DrugDto());
+
+        return "HomePage";
+    }
+
+    @PostMapping("/login")
+    public String verifyLogin(@ModelAttribute PatientLoginDto patientLoginDto, @NotNull Model model){
+        if(!patientService.verifyLogin(patientLoginDto)){
+            model.addAttribute("login_detail", patientLoginDto);
+            model.addAttribute("login_error", "Password or email not correct, check and try again");
+            return "Patient/patient_login";
+        }
+        Patient patient = patientService.getPatientByEmail(patientLoginDto.getEmail());
+        model.addAttribute("patient_data", patient);
+        return "HomePage";
     }
 //    public void addPatientData(@RequestBody Patient patient) {
 //        if (!patientService.checkForPatient(patient)) {

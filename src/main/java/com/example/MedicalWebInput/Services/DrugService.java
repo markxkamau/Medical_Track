@@ -12,6 +12,10 @@ public class DrugService {
     @Autowired
     private DrugRepository drugRepository;
 
+    public  List<Drug> getListForPatient(Long patientId) {
+        return drugRepository.findByPatientId(patientId);
+    }
+
     public List<Drug> getAllDrugs() {
         return drugRepository.findAll();
     }
