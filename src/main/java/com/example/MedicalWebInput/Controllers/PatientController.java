@@ -45,9 +45,15 @@ public class PatientController {
     }
 
     @GetMapping("/login")
-    public String loginPatient(@NotNull Model model){
+    public String loginPatient(@NotNull Model model) {
         model.addAttribute("login_detail", new PatientLoginDto());
         return "Patient/patient_login";
+    }
+
+    @GetMapping("/forgot_password")
+    public String forgotPassword(@NotNull Model model, String email) {
+        model.addAttribute("patient_email", email);
+        return "Patient/patient_reset";
     }
 
 //    *************************************************************************
@@ -62,12 +68,12 @@ public class PatientController {
             patientData.addAttribute("patient_error", "Email already exists");
             return "Patient/patient_registration";
         }
-        if(!patientService.checkPassword(patientDto.getPassword(),patientDto.getConfirmPassword())){
+        if (!patientService.checkPassword(patientDto.getPassword(), patientDto.getConfirmPassword())) {
 //            Passwords not similar
             patientData.addAttribute("patient_alert", "Passwords do not match, Check and try again");
             return "Patient/patient_registration";
         }
-        if (patientDto.getDrugCount() < 1){
+        if (patientDto.getDrugCount() < 1) {
 //            Drug count less than one
             patientData.addAttribute("drug_error", "Minimum drug limit is 1");
             return "Patient/patient_registration";
@@ -75,14 +81,13 @@ public class PatientController {
         Patient patient = patientService.convertToPatient(patientDto);
         patientService.addNewPatient(patient);
         model.addAttribute("login_detail", new PatientLoginDto());
-//        model.addAttribute("drug_info", new DrugDto());
 
         return "Patient/patient_login";
     }
 
     @PostMapping("/login")
-    public String verifyLogin(@ModelAttribute PatientLoginDto patientLoginDto, @NotNull Model model){
-        if(!patientService.verifyLogin(patientLoginDto)){
+    public String verifyLogin(@ModelAttribute PatientLoginDto patientLoginDto, @NotNull Model model) {
+        if (!patientService.verifyLogin(patientLoginDto)) {
             model.addAttribute("login_detail", patientLoginDto);
             model.addAttribute("login_error", "Password or email not correct, check and try again");
             return "Patient/patient_login";
@@ -90,6 +95,17 @@ public class PatientController {
         Patient patient = patientService.getPatientByEmail(patientLoginDto.getEmail());
         model.addAttribute("patient_data", patient);
         return "HomePage";
+    }
+
+    @PostMapping("/forgot_password")
+    public String resetPassword(String email, @NotNull Model model) {
+        if (!patientService.checkForPatient(email)) {
+            model.addAttribute("patient_email", email);
+            model.addAttribute("reset_error", "Email doesn't exist");
+            return "Patient/patient_reset";
+        }
+        String newPassword = patientService.setNewPassword(email);
+        return newPassword;
     }
 //    public void addPatientData(@RequestBody Patient patient) {
 //        if (!patientService.checkForPatient(patient)) {

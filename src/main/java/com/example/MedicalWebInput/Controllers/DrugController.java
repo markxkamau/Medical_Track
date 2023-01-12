@@ -17,7 +17,7 @@ public class DrugController {
     @Autowired
     private DrugService drugService;
 
-//    *************************************************************************
+    //    *************************************************************************
 //    GetMappings
 //    =========================================================================
     //    Get All Drugs
@@ -66,7 +66,7 @@ public class DrugController {
             model.addAttribute("drug_error", "Drug stated already exists");
             return "Drug/drug_input";
         }
-        addDrugData(drug);
+        drugService.addNewDrugData(drug);
         model.addAttribute("drug_info", drugService.getAllDrugs());
         return "Drug/drug_list";
     }

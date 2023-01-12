@@ -29,7 +29,10 @@ public class DrugService {
         List<Drug> drugList = getAllDrugs();
         int x = 0;
         while (x < drugList.size()) {
-            if (drug.getDrugScientificName().equals(drugList.get(x).getDrugScientificName()) && drug.getDrugSize() == drugList.get(x).getDrugSize()) {
+            if (drug.getDrugScientificName().equals(drugList.get(x).getDrugScientificName()) &&
+                    drug.getDrugSize() == drugList.get(x).getDrugSize() &&
+                    drug.getDrugName().equals(drugList.get(x).getDrugName())
+            ) {
                 return false;
             }
             x++;

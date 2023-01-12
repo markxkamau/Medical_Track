@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 @Service
 public class PatientService {
@@ -93,5 +94,22 @@ public class PatientService {
 
     public Patient getPatientByEmail(String email) {
         return patientRepository.findByEmail(email).get();
+    }
+
+    public String setNewPassword(String email) {
+        String alphabet="a b c d e f g h i j k l m n o p q r s t u v w x y z 1 2 3 4 5 6 7 8 9 0 - = [ ] ; ' \\ ; / , < >";
+        String alpha[] = alphabet.split(" ");
+        String password[] = new String[10];
+
+        for (int x=0; x<10; x++){
+            Random random  = new Random();
+            password[x] = alpha[random.nextInt(alpha.length)];
+        }
+        Patient patient = patientRepository.findByEmail(email).get();
+        patient.setPassword(password.toString());
+
+        patientRepository.save(patient);
+
+        return password.toString();
     }
 }
