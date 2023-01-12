@@ -88,7 +88,7 @@
                 <!--                        class="bg-indigo-600 px-4 py-2 rounded-md text-white font-semibold tracking-wide cursor-pointer"-->
 
                 <a class="w-full px-4 py-2 font-bold text-white bg-blue-500 rounded-full hover:bg-blue-700 focus:outline-none focus:shadow-outline"
-                   th:href="@{/drugs/add_drug}">
+                   th:href="@{'/drugs/add_drug/'+${patient_data.id}}">
                     Add Drug
                 </a>
             </div>

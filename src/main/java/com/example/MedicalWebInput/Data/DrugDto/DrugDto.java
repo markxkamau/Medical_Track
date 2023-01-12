@@ -11,6 +11,7 @@ public class DrugDto {
     private int drugSize;
     private String drugPackaging = "";
     private String drugPurpose = "";
+    private Long patientId;
 
     public DrugDto() {
     }
@@ -22,6 +23,16 @@ public class DrugDto {
         this.drugSize = drugSize;
         this.drugPackaging = drugPackaging;
         this.drugPurpose = drugPurpose;
+    }
+
+    public DrugDto(Long id, String drugName, String drugScientificName, int drugSize, String drugPackaging, String drugPurpose, Long patientId) {
+        this.id = id;
+        this.drugName = drugName;
+        this.drugScientificName = drugScientificName;
+        this.drugSize = drugSize;
+        this.drugPackaging = drugPackaging;
+        this.drugPurpose = drugPurpose;
+        this.patientId = patientId;
     }
 
     public Long getId() {
@@ -70,5 +81,13 @@ public class DrugDto {
 
     public void setDrugPurpose(String drugPurpose) {
         this.drugPurpose = drugPurpose;
+    }
+
+    public Long getPatientId() {
+        return patientId;
+    }
+
+    public void setPatientId(Long patientId) {
+        this.patientId = patientId;
     }
 }

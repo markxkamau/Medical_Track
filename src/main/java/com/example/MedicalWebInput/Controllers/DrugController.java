@@ -1,5 +1,6 @@
 package com.example.MedicalWebInput.Controllers;
 
+import com.example.MedicalWebInput.Data.DrugDto.DrugDto;
 import com.example.MedicalWebInput.Models.Drug;
 import com.example.MedicalWebInput.Services.DrugService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,9 +33,11 @@ public class DrugController {
     }
 
     //    View to add new drug
-    @GetMapping("/add_drug")
-    public String addNewDrug(Model model) {
-        model.addAttribute("drug_info", new Drug());
+    @GetMapping("/add_drug/{id}")
+    public String addNewDrug(@PathVariable Long id, Model model) {
+        DrugDto drugDto = new DrugDto();
+        drugDto.setPatientId(id);
+        model.addAttribute("drug_info", drugDto);
         return "Drug/drug_input";
     }
 
@@ -51,13 +54,13 @@ public class DrugController {
 
     //    Create new drug by POST action
     @PostMapping
-    public void addDrugData(@RequestBody Drug drug) {
+    public void addDrugData(@RequestBody DrugDto drug) {
         drugService.addNewDrugData(drug);
     }
 
     //    *Drug Confirmation function
     @PostMapping("/add_drug")
-    public String addNewDrugData(@NotNull Model model, @ModelAttribute Drug drug) {
+    public String addNewDrugData(@NotNull Model model, @ModelAttribute DrugDto drug) {
         if (!drugService.checkDrugData(drug)) {
             model.addAttribute("drug_info", drug);
             model.addAttribute("drug_error", "Drug stated already exists");
