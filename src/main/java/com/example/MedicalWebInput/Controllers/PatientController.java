@@ -56,6 +56,14 @@ public class PatientController {
         return "Patient/patient_reset";
     }
 
+    @GetMapping("/patient_info/{patientId}")
+    public String getPatientInfo(@NotNull Model model,@PathVariable Long patientId) {
+        Model model1 = model.addAttribute("patient_data", patientService.getPatientById(patientId));
+        model1.addAttribute("drug_info", patientService.getDrugByPatientId(patientId));
+        return "HomePage";
+    }
+
+
 //    *************************************************************************
 //    PostMappings
 //    =========================================================================
@@ -94,6 +102,7 @@ public class PatientController {
         }
         Patient patient = patientService.getPatientByEmail(patientLoginDto.getEmail());
         model.addAttribute("patient_data", patient);
+        model.addAttribute("drug_info", patientService.getDrugByPatientId(patient.getId()));
         return "HomePage";
     }
 

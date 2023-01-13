@@ -1,5 +1,6 @@
 package com.example.MedicalWebInput.Services;
 
+import com.example.MedicalWebInput.Data.DrugDto.DrugDto;
 import com.example.MedicalWebInput.Data.PatientDto.CreatePatientDto;
 import com.example.MedicalWebInput.Data.PatientDto.PatientDto;
 import com.example.MedicalWebInput.Data.PatientDto.PatientLoginDto;
@@ -111,5 +112,33 @@ public class PatientService {
         patientRepository.save(patient);
 
         return password.toString();
+    }
+
+    public PatientDto getPatientById(Long id) {
+        Patient patient = patientRepository.findById(id).get();
+        PatientDto patientDto = convertToPatientDto(patient);
+        return patientDto;
+    }
+
+    private PatientDto convertToPatientDto(Patient patient) {
+        return new PatientDto(
+                patient.getId(),
+                patient.getName(),
+                patient.getEmail(),
+                patient.getDrugs().size(),
+                patient.getCondition(),
+                patient.getPassword()
+        );
+    }
+
+    public List<DrugDto> getDrugByPatientId(Long patientId) {
+        List<Drug> drugs;
+        List<DrugDto> drugDtos = new ArrayList<>();
+        drugs = drugService.getDrugsForPatient(patientId);
+        for (Drug d : drugs) {
+            DrugDto drugDto = drugService.convertToDrugDto(d);
+            drugDtos.add(drugDto);
+        }
+        return drugDtos;
     }
 }
