@@ -8,7 +8,7 @@ public class DrugDto {
     private Long id;
     private String drugName = "";
     private String drugScientificName = "";
-    private int drugSize;
+    private float drugSize;
     private String drugPackaging = "";
     private String drugPurpose = "";
     private Long patientId;
@@ -16,7 +16,7 @@ public class DrugDto {
     public DrugDto() {
     }
 
-    public DrugDto(Long id, String drugName, String drugScientificName, int drugSize, String drugPackaging, String drugPurpose) {
+    public DrugDto(Long id, String drugName, String drugScientificName, float drugSize, String drugPackaging, String drugPurpose) {
         this.id = id;
         this.drugName = drugName;
         this.drugScientificName = drugScientificName;
@@ -25,7 +25,7 @@ public class DrugDto {
         this.drugPurpose = drugPurpose;
     }
 
-    public DrugDto(Long id, String drugName, String drugScientificName, int drugSize, String drugPackaging, String drugPurpose, Long patientId) {
+    public DrugDto(Long id, String drugName, String drugScientificName, float drugSize, String drugPackaging, String drugPurpose, Long patientId) {
         this.id = id;
         this.drugName = drugName;
         this.drugScientificName = drugScientificName;
@@ -59,11 +59,11 @@ public class DrugDto {
         this.drugScientificName = drugScientificName;
     }
 
-    public int getDrugSize() {
+    public float getDrugSize() {
         return drugSize;
     }
 
-    public void setDrugSize(int drugSize) {
+    public void setDrugSize(float drugSize) {
         this.drugSize = drugSize;
     }
 

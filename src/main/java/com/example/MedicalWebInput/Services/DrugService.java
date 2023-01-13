@@ -53,4 +53,20 @@ public class DrugService {
         );
         drugRepository.save(drug);
     }
+
+    public List<Drug> getDrugsForPatient(Long patientId) {
+        return drugRepository.findByPatientId(patientId);
+    }
+
+    public DrugDto convertToDrugDto(Drug d) {
+        return new DrugDto(
+                d.getId(),
+                d.getDrugName(),
+                d.getDrugScientificName(),
+                d.getDrugSize(),
+                d.getDrugPackaging(),
+                d.getDrugPurpose(),
+                d.getPatient().getId()
+        );
+    }
 }

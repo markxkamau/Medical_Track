@@ -18,7 +18,7 @@ public class Drug {
     private Long id;
     private String drugName = "";
     private String drugScientificName = "";
-    private int drugSize;
+    private float drugSize;
     private String drugPackaging = "";
     private String drugPurpose = "";
     @ManyToOne
@@ -27,7 +27,7 @@ public class Drug {
     public Drug() {
     }
 
-    public Drug(Long id, String drugName, String drugScientificName, int drugSize, String drugPackaging, String drugPurpose) {
+    public Drug(Long id, String drugName, String drugScientificName, float drugSize, String drugPackaging, String drugPurpose) {
         this.id = id;
         this.drugName = drugName;
         this.drugScientificName = drugScientificName;
@@ -44,7 +44,7 @@ public class Drug {
         this.patient = patient;
     }
 
-    public Drug(Long id, String drugName, String drugScientificName, int drugSize, String drugPackaging, String drugPurpose, Patient patient) {
+    public Drug(Long id, String drugName, String drugScientificName, float drugSize, String drugPackaging, String drugPurpose, Patient patient) {
         this.id = id;
         this.drugName = drugName;
         this.drugScientificName = drugScientificName;
@@ -83,11 +83,11 @@ public class Drug {
         this.drugName = drugName;
     }
 
-    public int getDrugSize() {
+    public float getDrugSize() {
         return drugSize;
     }
 
-    public void setDrugSize(int drugSize) {
+    public void setDrugSize(float drugSize) {
         this.drugSize = drugSize;
     }
 
