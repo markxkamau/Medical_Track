@@ -1,5 +1,6 @@
 package com.example.MedicalWebInput.Services;
 
+import com.example.MedicalWebInput.Data.DrugDto.DrugDto;
 import com.example.MedicalWebInput.Data.PatientDto.CreatePatientDto;
 import com.example.MedicalWebInput.Data.PatientDto.PatientDto;
 import com.example.MedicalWebInput.Data.PatientDto.PatientLoginDto;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 @Service
 public class PatientService {
@@ -93,5 +95,50 @@ public class PatientService {
 
     public Patient getPatientByEmail(String email) {
         return patientRepository.findByEmail(email).get();
+    }
+
+    public String setNewPassword(String email) {
+        String alphabet = "a b c d e f g h i j k l m n o p q r s t u v w x y z 1 2 3 4 5 6 7 8 9 0 - = [ ] ; ' \\ ; / , < >";
+        String alpha[] = alphabet.split(" ");
+        String password[] = new String[10];
+        Random random = new Random();
+
+        for (int x = 0; x < password.length; x++) {
+            password[x] = alpha[random.nextInt(alpha.length)];
+        }
+        Patient patient = patientRepository.findByEmail(email).get();
+        patient.setPassword(password.toString());
+
+        patientRepository.save(patient);
+
+        return password.toString();
+    }
+
+    public PatientDto getPatientById(Long id) {
+        Patient patient = patientRepository.findById(id).get();
+        PatientDto patientDto = convertToPatientDto(patient);
+        return patientDto;
+    }
+
+    private PatientDto convertToPatientDto(Patient patient) {
+        return new PatientDto(
+                patient.getId(),
+                patient.getName(),
+                patient.getEmail(),
+                patient.getDrugs().size(),
+                patient.getCondition(),
+                patient.getPassword()
+        );
+    }
+
+    public List<DrugDto> getDrugByPatientId(Long patientId) {
+        List<Drug> drugs;
+        List<DrugDto> drugDtos = new ArrayList<>();
+        drugs = drugService.getDrugsForPatient(patientId);
+        for (Drug d : drugs) {
+            DrugDto drugDto = drugService.convertToDrugDto(d);
+            drugDtos.add(drugDto);
+        }
+        return drugDtos;
     }
 }

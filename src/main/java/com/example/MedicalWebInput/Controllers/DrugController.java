@@ -1,7 +1,9 @@
 package com.example.MedicalWebInput.Controllers;
 
+import com.example.MedicalWebInput.Data.DrugDto.DrugDto;
 import com.example.MedicalWebInput.Models.Drug;
 import com.example.MedicalWebInput.Services.DrugService;
+import com.example.MedicalWebInput.Services.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,8 +17,10 @@ import java.util.List;
 public class DrugController {
     @Autowired
     private DrugService drugService;
+    @Autowired
+    private PatientService patientService;
 
-//    *************************************************************************
+    //    *************************************************************************
 //    GetMappings
 //    =========================================================================
     //    Get All Drugs
@@ -32,9 +36,11 @@ public class DrugController {
     }
 
     //    View to add new drug
-    @GetMapping("/add_drug")
-    public String addNewDrug(Model model) {
-        model.addAttribute("drug_info", new Drug());
+    @GetMapping("/add_drug/{id}")
+    public String addNewDrug(@PathVariable Long id, Model model) {
+        DrugDto drugDto = new DrugDto();
+        drugDto.setPatientId(id);
+        model.addAttribute("drug_info", drugDto);
         return "Drug/drug_input";
     }
 
@@ -51,21 +57,24 @@ public class DrugController {
 
     //    Create new drug by POST action
     @PostMapping
-    public void addDrugData(@RequestBody Drug drug) {
+    public void addDrugData(@RequestBody DrugDto drug) {
         drugService.addNewDrugData(drug);
     }
 
     //    *Drug Confirmation function
     @PostMapping("/add_drug")
-    public String addNewDrugData(@NotNull Model model, @ModelAttribute Drug drug) {
+    public String addNewDrugData(@NotNull Model model, @ModelAttribute DrugDto drug) {
         if (!drugService.checkDrugData(drug)) {
             model.addAttribute("drug_info", drug);
             model.addAttribute("drug_error", "Drug stated already exists");
             return "Drug/drug_input";
         }
-        addDrugData(drug);
-        model.addAttribute("drug_info", drugService.getAllDrugs());
-        return "Drug/drug_list";
+        drugService.addNewDrugData(drug);
+        Model model1 = model.addAttribute("patient_data", patientService.getPatientById(drug.getPatientId()));
+        model1.addAttribute("drug_info", patientService.getDrugByPatientId(drug.getPatientId()));
+        return "HomePage";
+//        model.addAttribute("drug_info", drugService.getAllDrugs());
+//        return "Drug/drug_list";
     }
 //    ------------------------------------------------------------------------
 
