@@ -57,7 +57,7 @@ public class PatientController {
     }
 
     @GetMapping("/patient_info/{patientId}")
-    public String getPatientInfo(@NotNull Model model,@PathVariable Long patientId) {
+    public String getPatientInfo(@NotNull Model model, @PathVariable Long patientId) {
         Model model1 = model.addAttribute("patient_data", patientService.getPatientById(patientId));
         model1.addAttribute("drug_info", patientService.getDrugByPatientId(patientId));
         return "HomePage";
