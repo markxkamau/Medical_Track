@@ -57,7 +57,7 @@ public class PatientController {
     }
 
     @GetMapping("/patient_info/{patientId}")
-    public String getPatientInfo(@NotNull Model model,@PathVariable Long patientId) {
+    public String getPatientInfo(@NotNull Model model, @PathVariable Long patientId) {
         Model model1 = model.addAttribute("patient_data", patientService.getPatientById(patientId));
         model1.addAttribute("drug_info", patientService.getDrugByPatientId(patientId));
         return "HomePage";
@@ -101,6 +101,8 @@ public class PatientController {
             return "Patient/patient_login";
         }
         Patient patient = patientService.getPatientByEmail(patientLoginDto.getEmail());
+        model.addAttribute("drug_count", patientService.getDrugByPatientId(patient.getId()).size());
+        model.addAttribute("drug_input", new DrugDto());
         model.addAttribute("patient_data", patient);
         model.addAttribute("drug_info", patientService.getDrugByPatientId(patient.getId()));
         return "HomePage";
