@@ -14,10 +14,12 @@
         <div class="bg-white shadow w-full rounded-lg divide-y divide-gray-200">
             <form class="px-5 py-7" method="post" th:action="@{/patient/login}" th:object="${login_detail}">
                 <label class="font-semibold text-sm text-gray-600 pb-1 block">E-mail</label>
-                <input type="text" class="border rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full" th:field="*{email}" placeholder="Example:myemail@engine.com"
+                <input type="text" class="border rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full" th:field="*{email}"
+                       placeholder="Example:myemail@engine.com"
                        required/>
                 <label class="font-semibold text-sm text-gray-600 pb-1 block">Password</label>
-                <input type="password" class="border rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full" placeholder="***************"
+                <input type="password" class="border rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full"
+                       placeholder="***************"
                        th:field="*{password}" required/>
                 <p class="text-xs italic text-red-500" th:text="${login_error}">Please choose a password.</p>
                 <button type="submit"
@@ -40,7 +42,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                       d="M8 11V7a4 4 0 118 0m-4 8v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2z"/>
                             </svg>
-                            <span class="inline-block ml-1">Forgot Password</span>
+                            <a th:href="@{/patient/forgot_password}" class="inline-block ml-1">Forgot Password</a>
                         </button>
                     </div>
 

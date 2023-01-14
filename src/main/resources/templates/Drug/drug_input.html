@@ -58,6 +58,10 @@
                           class="w-full resize-none rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
                 ></textarea>
             </div>
+            <input type="number" name="patientId" id="patientId" placeholder="Drug Patient Id" th:field="*{patientId}"
+                   th:value="${patient_id}"
+                   class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
+                   hidden />
             <div>
                 <button class="bg-indigo-600 px-4 py-2 rounded-md text-white font-semibold tracking-wide cursor-pointer">
                     Submit
