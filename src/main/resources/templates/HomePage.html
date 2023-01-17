@@ -43,64 +43,64 @@
             </div>
             <div class="flex-1 bg-white rounded-lg shadow-xl mt-4 p-8">
                 <h4 class="text-xl text-gray-900 font-bold">Medication Prescribed</h4>
-<!--                <div class="w-1/2 flex" th:each="drug:${drug_count}">-->
-<!--                    <p th:text="'Drug '+*{drug+1}"></p><br>-->
-<!--                    <form action="#" th:action="@{/drugs/add_drug}" th:object="${drug_input}" method="POST">-->
-<!--                        <div class="mb-5">-->
-<!--                            <label for="name" class="mb-3 block text-base font-medium text-[#07074D]">-->
-<!--                                Drug Name-->
-<!--                            </label>-->
-<!--                            <input type="text" name="name" id="name" placeholder="Drug Name" th:field="*{drugName}"-->
-<!--                                   class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"-->
-<!--                            />-->
-<!--                        </div>-->
-<!--                        <div class="mb-5">-->
-<!--                            <label for="name" class="mb-3 block text-base font-medium text-[#07074D]">-->
-<!--                                Drug Scientific Name-->
-<!--                            </label>-->
-<!--                            <input type="text" name="name" placeholder="Drug Scientific Name"-->
-<!--                                   th:field="*{drugScientificName}"-->
-<!--                                   class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"-->
-<!--                            />-->
-<!--                            <p class="text-red-600" th:text="${drug_error}"></p>-->
-<!--                        </div>-->
-<!--                        <div class="mb-5">-->
-<!--                            <label class="mb-3 block text-base font-medium text-[#07074D]">-->
-<!--                                Drug Size(mg)-->
-<!--                            </label>-->
-<!--                            <input type="text" name="name" placeholder="Drug Size" th:field="*{drugSize}"-->
-<!--                                   class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"-->
-<!--                            />-->
-<!--                            <p class="text-red-600" th:text="${drug_error}"></p>-->
-<!--                        </div>-->
-<!--                        <div class="mb-5">-->
-<!--                            <label class="mb-3 block text-base font-medium text-[#07074D]">-->
-<!--                                Drug Packaging-->
-<!--                            </label>-->
-<!--                            <input type="text" name="name" placeholder="Drug Packaging e.g. Capsule"-->
-<!--                                   th:field="*{drugPackaging}"-->
-<!--                                   class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"-->
-<!--                            />-->
-<!--                        </div>-->
-<!--                        <div class="mb-5">-->
-<!--                            <label class="mb-3 block text-base font-medium text-[#07074D]">Message </label>-->
-<!--                            <textarea rows="4" name="message" placeholder="Drug Purpose and Use"-->
-<!--                                      th:field="*{drugPurpose}"-->
-<!--                                      class="w-full resize-none rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"-->
-<!--                            ></textarea>-->
-<!--                        </div>-->
-<!--                        <input type="number" name="patientId" id="patientId" placeholder="Drug Patient Id"-->
-<!--                               th:field="*{patientId}"-->
-<!--                               th:value="${patient_id}"-->
-<!--                               class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"-->
-<!--                               hidden/>-->
-<!--                        <div>-->
-<!--                            <button class="bg-indigo-600 px-4 py-2 rounded-md text-white font-semibold tracking-wide cursor-pointer">-->
-<!--                                Submit-->
-<!--                            </button>-->
-<!--                        </div>-->
-<!--                    </form>-->
-<!--                </div>-->
+                <!--                <div class="w-1/2 flex" th:each="drug:${drug_count}">-->
+                <!--                    <p th:text="'Drug '+*{drug+1}"></p><br>-->
+                <!--                    <form action="#" th:action="@{/drugs/add_drug}" th:object="${drug_input}" method="POST">-->
+                <!--                        <div class="mb-5">-->
+                <!--                            <label for="name" class="mb-3 block text-base font-medium text-[#07074D]">-->
+                <!--                                Drug Name-->
+                <!--                            </label>-->
+                <!--                            <input type="text" name="name" id="name" placeholder="Drug Name" th:field="*{drugName}"-->
+                <!--                                   class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"-->
+                <!--                            />-->
+                <!--                        </div>-->
+                <!--                        <div class="mb-5">-->
+                <!--                            <label for="name" class="mb-3 block text-base font-medium text-[#07074D]">-->
+                <!--                                Drug Scientific Name-->
+                <!--                            </label>-->
+                <!--                            <input type="text" name="name" placeholder="Drug Scientific Name"-->
+                <!--                                   th:field="*{drugScientificName}"-->
+                <!--                                   class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"-->
+                <!--                            />-->
+                <!--                            <p class="text-red-600" th:text="${drug_error}"></p>-->
+                <!--                        </div>-->
+                <!--                        <div class="mb-5">-->
+                <!--                            <label class="mb-3 block text-base font-medium text-[#07074D]">-->
+                <!--                                Drug Size(mg)-->
+                <!--                            </label>-->
+                <!--                            <input type="text" name="name" placeholder="Drug Size" th:field="*{drugSize}"-->
+                <!--                                   class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"-->
+                <!--                            />-->
+                <!--                            <p class="text-red-600" th:text="${drug_error}"></p>-->
+                <!--                        </div>-->
+                <!--                        <div class="mb-5">-->
+                <!--                            <label class="mb-3 block text-base font-medium text-[#07074D]">-->
+                <!--                                Drug Packaging-->
+                <!--                            </label>-->
+                <!--                            <input type="text" name="name" placeholder="Drug Packaging e.g. Capsule"-->
+                <!--                                   th:field="*{drugPackaging}"-->
+                <!--                                   class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"-->
+                <!--                            />-->
+                <!--                        </div>-->
+                <!--                        <div class="mb-5">-->
+                <!--                            <label class="mb-3 block text-base font-medium text-[#07074D]">Message </label>-->
+                <!--                            <textarea rows="4" name="message" placeholder="Drug Purpose and Use"-->
+                <!--                                      th:field="*{drugPurpose}"-->
+                <!--                                      class="w-full resize-none rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"-->
+                <!--                            ></textarea>-->
+                <!--                        </div>-->
+                <!--                        <input type="number" name="patientId" id="patientId" placeholder="Drug Patient Id"-->
+                <!--                               th:field="*{patientId}"-->
+                <!--                               th:value="${patient_id}"-->
+                <!--                               class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"-->
+                <!--                               hidden/>-->
+                <!--                        <div>-->
+                <!--                            <button class="bg-indigo-600 px-4 py-2 rounded-md text-white font-semibold tracking-wide cursor-pointer">-->
+                <!--                                Submit-->
+                <!--                            </button>-->
+                <!--                        </div>-->
+                <!--                    </form>-->
+                <!--                </div>-->
 
                 <div class="overflow-x-auto w-full my-10">
                     <table class="w-full bg-blue-500 leading-normal" th:object="${drug_info}">
@@ -121,6 +121,9 @@
                             <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                 Drug Purpose
                             </th>
+                            <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+
+                            </th>
                         </tr>
                         </thead>
                         <tbody th:each="drug:${drug_info}">
@@ -140,6 +143,12 @@
                             </td>
                             <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                 <p th:text="${drug.drugPurpose}" class="text-gray-900 whitespace-no-wrap">Admin</p>
+                            </td>
+                            <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                                <a class="w-full px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700 focus:outline-none focus:shadow-outline"
+                                   th:href="@{'/drugs/new_schedule/'+${patient_data.id}+'/'+${drug.id}}">
+                                    Schedule
+                                </a>
                             </td>
 
                         </tr>
