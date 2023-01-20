@@ -28,6 +28,10 @@ public class ScheduleController {
     //    View to add new Schedule
     @GetMapping("/new_schedule/{patientId}/{drugId}")
     public String addNewSchedule(@PathVariable Long patientId, @PathVariable Long drugId, @NotNull Model model) {
+        if (patientId == null || drugId == null) {
+            // return an error message or redirect the user to a page
+            return "Homepage";
+        }
         ScheduleDto scheduleDto = new ScheduleDto();
         scheduleDto.setDrugId(drugId);
         scheduleDto.setPatientId(patientId);
@@ -49,8 +53,15 @@ public class ScheduleController {
     //    Schedule Confirmation function
     @PostMapping("/new_schedule")
     public String addNewScheduleData(@NotNull Model model, @ModelAttribute ScheduleDto scheduleDto) {
+        if (scheduleDto.getPatientId() == null || scheduleDto.getDrugId() == null || scheduleDto.getIntakes() == null || scheduleDto.getTime() == null) {
+            model.addAttribute("schedule_info", scheduleDto);
+            model.addAttribute("patientDrug_info", scheduleService.getPatientAndDrugInfo(scheduleDto.getPatientId(), scheduleDto.getDrugId()));
+            model.addAttribute("schedule_error", "Schedule already exists, Check Drug, Patient and Time");
+            return "Schedule/schedule_input";
+        }
         if (!scheduleService.checkScheduleData(scheduleDto)) {
             model.addAttribute("schedule_info", scheduleDto);
+            model.addAttribute("patientDrug_info", scheduleService.getPatientAndDrugInfo(scheduleDto.getPatientId(), scheduleDto.getDrugId()));
             model.addAttribute("schedule_error", "Schedule already exists, Check Drug, Patient and Time");
             return "Schedule/schedule_input";
         }

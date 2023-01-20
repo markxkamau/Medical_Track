@@ -16,7 +16,7 @@ public class Schedule {
             generator = "schedule_sequence"
     )
     private Long id;
-    private Long intakes;
+    private Long intakes = 1L;
     private String[] time = {};
     @OneToOne
     private Patient patient = new Patient();

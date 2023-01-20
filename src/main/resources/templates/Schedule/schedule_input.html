@@ -27,17 +27,13 @@
                 <label class="mb-3 block text-base font-medium text-[#07074D]">
                     Number Of Intakes
                 </label>
-                <input type="integer" placeholder="How many times in a day" th:field="*{intakes}"
+                <input type="integer" th:field="*{intakes}" placeholder="How many times in a day" id="intakes"
                        class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"/>
             </div>
 
-            <div class="mb-5">
-                <label th:text="'Moment ' + ${intakes}"
-                       class="mb-3 block text-base font-medium text-[#07074D]">Moment</label>
-                <input type="text" th:field="*{time}" placeholder="e.g: Morning, Afternoon, Evening"
-                       id="drug_${intakes}"
-                       class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"/>
-            </div>
+            <div id="input-container"></div>
+
+
             <div class="mb-5">
                 <input type="integer" th:field="*{patientId}" th:value="*{patientId}" hidden
                        class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"/>
@@ -47,12 +43,38 @@
                        class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"/>
             </div>
             <div>
-                <button type="submit" class="bg-indigo-600 px-4 py-2 rounded-md text-white font-semibold tracking-wide cursor-pointer">
+                <button type="submit"
+                        class="bg-indigo-600 px-4 py-2 rounded-md text-white font-semibold tracking-wide cursor-pointer">
                     Submit
                 </button>
             </div>
         </form>
     </div>
 </div>
+<script>
+    var inputContainer = document.getElementById("input-container");
+    var inputField = document.getElementById("intakes");
+    inputField.addEventListener("input", function(){
+        var numOfInputs = inputField.value;
+        inputContainer.innerHTML = "";
+        for(var i = 1; i <= numOfInputs; i++) {
+            var label = document.createElement("label");
+            label.innerHTML = "Moment " + i;
+            label.classList.add("mb-3", "block", "text-base", "font-medium", "text-[#07074D]");
+            inputContainer.appendChild(label);
+            var input = document.createElement("input");
+            input.type = "text";
+    input.setAttribute("th:field", "*{time[" + i + "]}");
+
+            input.placeholder = "e.g: Morning, Afternoon, Evening";
+            input.classList.add("w-full", "rounded-md", "border", "border-[#e0e0e0]", "bg-white", "py-3", "px-6", "text-base", "font-medium", "text-[#6B7280]", "outline-none", "focus:border-[#6A64F1]", "focus:shadow-md");
+            inputContainer.appendChild(input);
+        }
+    });
+
+</script>
+
 </body>
+
+
 </html>
