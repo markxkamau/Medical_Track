@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Schedule</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css"
+          referrerpolicy="no-referrer"/>
+</head>
+<body>
+<div class="w-full text-gray-700 bg-white dark-mode:text-gray-200 dark-mode:bg-gray-800">
+    <div x-data="{ open: false }"
+         class="flex flex-col max-w-screen-xl px-4 mx-auto md:items-center md:justify-between md:flex-row md:px-6 lg:px-8">
+        <div class="w-full p-4 flex flex-row items-center justify-between">
+            <p th:text="${patientDrug_info.patientName}"
+               class="text-lg font-semibold tracking-widest text-gray-900 uppercase rounded-lg dark-mode:text-white focus:outline-none focus:shadow-outline">
+                Flowtrail UI</p>
+            <p th:text="${patientDrug_info.drugName}" style="float:right;"
+               class="text-lg font-semibold tracking-widest text-gray-900 uppercase rounded-lg dark-mode:text-white focus:outline-none focus:shadow-outline">
+                Flowtrail UI</p>
+        </div>
+    </div>
+</div>
+<div class="flex items-center justify-center p-12">
+    <div class="mx-auto w-full max-w-[550px]">
+        <form method="POST" th:action="@{/schedule/new_schedule}" th:object="${schedule_info}">
+            <div class="mb-5">
+                <label class="mb-3 block text-base font-medium text-[#07074D]">
+                    Number Of Intakes
+                </label>
+                <input type="integer" placeholder="How many times in a day" th:field="*{intakes}"
+                       class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"/>
+            </div>
+
+            <div class="mb-5">
+                <label th:text="'Moment ' + ${intakes}"
+                       class="mb-3 block text-base font-medium text-[#07074D]">Moment</label>
+                <input type="text" th:field="*{time}" placeholder="e.g: Morning, Afternoon, Evening"
+                       id="drug_${intakes}"
+                       class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"/>
+            </div>
+            <div class="mb-5">
+                <input type="integer" th:field="*{patientId}" th:value="*{patientId}" hidden
+                       class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"/>
+            </div>
+            <div class="mb-5">
+                <input type="integer" th:field="*{drugId}" th:value="*{drugId}" hidden
+                       class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"/>
+            </div>
+            <div>
+                <button type="submit" class="bg-indigo-600 px-4 py-2 rounded-md text-white font-semibold tracking-wide cursor-pointer">
+                    Submit
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>
