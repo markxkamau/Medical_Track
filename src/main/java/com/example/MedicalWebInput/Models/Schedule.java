@@ -38,6 +38,10 @@ public class Schedule {
         this.id = id;
     }
 
+    public Long getId() {
+        return id;
+    }
+
     public Long getIntakes() {
         return intakes;
     }

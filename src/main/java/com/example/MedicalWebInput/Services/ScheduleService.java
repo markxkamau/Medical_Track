@@ -1,6 +1,6 @@
 package com.example.MedicalWebInput.Services;
 
-import com.example.MedicalWebInput.Controllers.ScheduleController;
+import com.example.MedicalWebInput.Data.ScheduleDto.PatientDrugInfoDto;
 import com.example.MedicalWebInput.Data.ScheduleDto.ScheduleDto;
 import com.example.MedicalWebInput.Models.Drug;
 import com.example.MedicalWebInput.Models.Patient;
@@ -29,9 +29,8 @@ public class ScheduleService {
         for (Schedule e : schedules) {
             ScheduleDto scheduleDto = new ScheduleDto(
                     e.getId(),
-                    e.getDayCount(),
+                    e.getIntakes(),
                     e.getTime(),
-                    e.getConfirm(),
                     e.getPatient().getId(),
                     e.getDrug().getId()
             );
@@ -44,9 +43,8 @@ public class ScheduleService {
     public void addNewScheduleData(ScheduleDto scheduleDto) {
         Schedule schedule = new Schedule(
                 scheduleDto.getId(),
-                scheduleDto.getDayCount(),
+                scheduleDto.getIntakes(),
                 scheduleDto.getTime(),
-                scheduleDto.getConfirm(),
                 patientRepository.findById(scheduleDto.getPatientId()).get(),
                 drugRepository.findById(scheduleDto.getDrugId()).get()
         );
@@ -75,5 +73,14 @@ public class ScheduleService {
 
     public List<Drug> getDrugByPatientId(Long patientId) {
         return drugRepository.findByPatientId(patientId);
+    }
+
+
+    public PatientDrugInfoDto getPatientAndDrugInfo(Long patientId, Long drugId) {
+        PatientDrugInfoDto patientDrugInfoDto = new PatientDrugInfoDto(
+                patientRepository.findById(patientId).get().getName(),
+                drugRepository.findById(drugId).get().getDrugName()
+        );
+        return patientDrugInfoDto;
     }
 }

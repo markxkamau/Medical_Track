@@ -1,8 +1,5 @@
 package com.example.MedicalWebInput.Data.DrugDto;
 
-import com.example.MedicalWebInput.Models.Patient;
-
-import javax.persistence.ManyToOne;
 
 public class DrugDto {
     private Long id;
