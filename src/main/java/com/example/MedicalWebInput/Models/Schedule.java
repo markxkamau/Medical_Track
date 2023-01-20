@@ -1,7 +1,7 @@
 package com.example.MedicalWebInput.Models;
 
 import javax.persistence.*;
-import java.util.Date;
+
 @Entity
 @Table
 public class Schedule {
@@ -16,9 +16,8 @@ public class Schedule {
             generator = "schedule_sequence"
     )
     private Long id;
-    private int dayCount = 0;
-    private Date time = new Date();
-    private boolean[] confirm = {};
+    private Long intakes = 1L;
+    private String[] time = {};
     @OneToOne
     private Patient patient = new Patient();
     @OneToOne
@@ -27,45 +26,36 @@ public class Schedule {
     public Schedule() {
     }
 
-    public Schedule(long id, int dayCount, Date time, boolean[] confirm, Patient patient, Drug drug) {
+    public Schedule(Long id, Long intakes, String[] time, Patient patient, Drug drug) {
         this.id = id;
-        this.dayCount = dayCount;
+        this.intakes = intakes;
         this.time = time;
-        this.confirm = confirm;
         this.patient = patient;
         this.drug = drug;
     }
 
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public int getDayCount() {
-        return dayCount;
+    public Long getId() {
+        return id;
     }
 
-    public void setDayCount(int dayCount) {
-        this.dayCount = dayCount;
+    public Long getIntakes() {
+        return intakes;
     }
 
-    public Date getTime() {
+    public void setIntakes(Long intakes) {
+        this.intakes = intakes;
+    }
+
+    public String[] getTime() {
         return time;
     }
 
-    public void setTime(Date time) {
+    public void setTime(String[] time) {
         this.time = time;
-    }
-
-    public boolean[] getConfirm() {
-        return confirm;
-    }
-
-    public void setConfirm(boolean[] confirm) {
-        this.confirm = confirm;
     }
 
     public Patient getPatient() {
