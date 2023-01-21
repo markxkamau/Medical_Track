@@ -53,13 +53,17 @@ public class ScheduleService {
 
     public boolean checkScheduleData(ScheduleDto scheduleDto) {
         List<Schedule> schedules = scheduleRepository.findAll();
+        if (schedules.size() == 0){
+            return true;
+        }
+        else {
         for (Schedule x : schedules) {
             if (scheduleDto.getPatientId().equals(x.getPatient().getId()) &&
                     scheduleDto.getDrugId().equals(x.getDrug().getId()) &&
                     scheduleDto.getTime().equals(x.getTime())) {
                 return false;
             }
-        }
+        }}
         return true;
     }
 

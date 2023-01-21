@@ -1,6 +1,5 @@
 package com.example.MedicalWebInput.Data.ScheduleDto;
 
-import java.util.Date;
 
 public class ScheduleDto {
     private Long id;
