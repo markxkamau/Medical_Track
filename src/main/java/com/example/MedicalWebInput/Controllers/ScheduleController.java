@@ -53,10 +53,10 @@ public class ScheduleController {
     //    Schedule Confirmation function
     @PostMapping("/new_schedule")
     public String addNewScheduleData(@NotNull Model model, @ModelAttribute ScheduleDto scheduleDto) {
-        if (scheduleDto.getPatientId() == null || scheduleDto.getDrugId() == null || scheduleDto.getIntakes() == null || scheduleDto.getTime() == null) {
+        if (scheduleDto.getPatientId() == null || scheduleDto.getDrugId() == null || scheduleDto.getIntakes() == null || scheduleDto.getTime() == null ) {
             model.addAttribute("schedule_info", scheduleDto);
             model.addAttribute("patientDrug_info", scheduleService.getPatientAndDrugInfo(scheduleDto.getPatientId(), scheduleDto.getDrugId()));
-            model.addAttribute("schedule_error", "Schedule already exists, Check Drug, Patient and Time");
+            model.addAttribute("schedule_error", "One field has not yet been filled in");
             return "Schedule/schedule_input";
         }
         if (!scheduleService.checkScheduleData(scheduleDto)) {

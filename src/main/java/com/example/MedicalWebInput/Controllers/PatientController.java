@@ -2,11 +2,10 @@ package com.example.MedicalWebInput.Controllers;
 
 import com.example.MedicalWebInput.Data.DrugDto.DrugDto;
 import com.example.MedicalWebInput.Data.PatientDto.CreatePatientDto;
-import com.example.MedicalWebInput.Data.PatientDto.PatientDto;
 import com.example.MedicalWebInput.Data.PatientDto.PatientLoginDto;
-import com.example.MedicalWebInput.Models.Drug;
 import com.example.MedicalWebInput.Models.Patient;
 import com.example.MedicalWebInput.Services.PatientService;
+import com.example.MedicalWebInput.Services.ScheduleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,6 +19,8 @@ public class PatientController {
 
     @Autowired
     private PatientService patientService;
+    @Autowired
+    private ScheduleService scheduleService;
 
 //    *************************************************************************
 //    GetMappings
@@ -60,6 +61,8 @@ public class PatientController {
     public String getPatientInfo(@NotNull Model model, @PathVariable Long patientId) {
         Model model1 = model.addAttribute("patient_data", patientService.getPatientById(patientId));
         model1.addAttribute("drug_info", patientService.getDrugByPatientId(patientId));
+        model.addAttribute("schedule_info", scheduleService.getScheduleByPatientId(patientId));
+
         return "HomePage";
     }
 
@@ -105,6 +108,8 @@ public class PatientController {
         model.addAttribute("drug_input", new DrugDto());
         model.addAttribute("patient_data", patient);
         model.addAttribute("drug_info", patientService.getDrugByPatientId(patient.getId()));
+        model.addAttribute("schedule_info", scheduleService.getScheduleByPatientId(patient.getId()));
+
         return "HomePage";
     }
 
@@ -119,9 +124,5 @@ public class PatientController {
         String newPassword = patientService.setNewPassword(patientLoginDto.getEmail());
         return newPassword;
     }
-//    public void addPatientData(@RequestBody Patient patient) {
-//        if (!patientService.checkForPatient(patient)) {
-//            patientService.addNewPatient(patient);
-//        }
-//    }
+
 }
