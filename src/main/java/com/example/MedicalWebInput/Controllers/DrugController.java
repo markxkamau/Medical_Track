@@ -4,6 +4,7 @@ import com.example.MedicalWebInput.Data.DrugDto.DrugDto;
 import com.example.MedicalWebInput.Models.Drug;
 import com.example.MedicalWebInput.Services.DrugService;
 import com.example.MedicalWebInput.Services.PatientService;
+import com.example.MedicalWebInput.Services.ScheduleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,6 +20,8 @@ public class DrugController {
     private DrugService drugService;
     @Autowired
     private PatientService patientService;
+    @Autowired
+    private ScheduleService scheduleService;
 
     //    *************************************************************************
 //    GetMappings
@@ -72,9 +75,8 @@ public class DrugController {
         drugService.addNewDrugData(drug);
         Model model1 = model.addAttribute("patient_data", patientService.getPatientById(drug.getPatientId()));
         model1.addAttribute("drug_info", patientService.getDrugByPatientId(drug.getPatientId()));
+        model.addAttribute("schedule_info", scheduleService.getScheduleByPatientId(drug.getPatientId()));
         return "HomePage";
-//        model.addAttribute("drug_info", drugService.getAllDrugs());
-//        return "Drug/drug_list";
     }
 //    ------------------------------------------------------------------------
 
