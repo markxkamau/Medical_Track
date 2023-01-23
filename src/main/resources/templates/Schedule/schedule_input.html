@@ -33,7 +33,7 @@
             </div>
 
             <div id="input-container"></div>
-            <p th:text="${schedule_error}"></p>
+            <p class="text-xs italic text-red-500" th:text="${schedule_error}"></p>
 
             <div class="mb-5">
                 <input type="integer" name="patientId" id="patientId" th:field="*{patientId}"
