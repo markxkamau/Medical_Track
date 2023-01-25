@@ -22,7 +22,7 @@
                 <label for="name" class="mb-3 block text-base font-medium text-[#07074D]">
                     Drug Name
                 </label>
-                <input type="text" name="name" id="name" placeholder="Drug Name" th:field="*{drugName}"
+                <input type="text" name="name" id="name" placeholder="Drug Name" th:field="*{drugName}" required
                        class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
                 />
             </div>
@@ -30,7 +30,7 @@
                 <label for="name" class="mb-3 block text-base font-medium text-[#07074D]">
                     Drug Scientific Name
                 </label>
-                <input type="text" name="name" placeholder="Drug Scientific Name" th:field="*{drugScientificName}"
+                <input type="text" name="name" placeholder="Drug Scientific Name" th:field="*{drugScientificName}" required
                        class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
                 />
                 <p class="text-red-600" th:text="${drug_error}"></p>
@@ -39,7 +39,7 @@
                 <label class="mb-3 block text-base font-medium text-[#07074D]">
                     Drug Size(mg)
                 </label>
-                <input type="text" name="name" placeholder="Drug Size" th:field="*{drugSize}"
+                <input type="text" name="name" placeholder="Drug Size" th:field="*{drugSize}" required
                        class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
                 />
                 <p class="text-red-600" th:text="${drug_error}"></p>
@@ -48,13 +48,13 @@
                 <label class="mb-3 block text-base font-medium text-[#07074D]">
                     Drug Packaging
                 </label>
-                <input type="text" name="name" placeholder="Drug Packaging e.g. Capsule" th:field="*{drugPackaging}"
+                <input type="text" name="name" placeholder="Drug Packaging e.g. Capsule" th:field="*{drugPackaging}" required
                        class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
                 />
             </div>
             <div class="mb-5">
                 <label class="mb-3 block text-base font-medium text-[#07074D]">Message </label>
-                <textarea rows="4" name="message" placeholder="Drug Purpose and Use" th:field="*{drugPurpose}"
+                <textarea rows="4" name="message" placeholder="Drug Purpose and Use" th:field="*{drugPurpose}" required
                           class="w-full resize-none rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
                 ></textarea>
             </div>
