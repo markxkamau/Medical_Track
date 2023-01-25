@@ -104,8 +104,6 @@ public class PatientController {
             return "Patient/patient_login";
         }
         Patient patient = patientService.getPatientByEmail(patientLoginDto.getEmail());
-        model.addAttribute("drug_count", patientService.getDrugByPatientId(patient.getId()).size());
-        model.addAttribute("drug_input", new DrugDto());
         model.addAttribute("patient_data", patient);
         model.addAttribute("drug_info", patientService.getDrugByPatientId(patient.getId()));
         model.addAttribute("schedule_info", scheduleService.getScheduleByPatientId(patient.getId()));
