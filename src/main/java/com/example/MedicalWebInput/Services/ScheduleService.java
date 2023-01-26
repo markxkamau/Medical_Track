@@ -117,9 +117,9 @@ public class ScheduleService {
             long distinctCount = localTIme.stream().distinct().count();
 
             if (distinctCount >= localTIme.size()) {
-                return false;
-            } else {
                 return true;
+            } else {
+                return false;
             }
 
         }
