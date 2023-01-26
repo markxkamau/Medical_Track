@@ -1,9 +1,14 @@
 package com.example.MedicalWebInput.Models;
 
+import lombok.Data;
+
 import javax.persistence.*;
+import java.time.LocalTime;
+import java.util.List;
 
 @Entity
 @Table
+@Data
 public class Schedule {
     @Id
     @SequenceGenerator(
@@ -17,7 +22,7 @@ public class Schedule {
     )
     private Long id;
     private Long intakes = 1L;
-    private String[] time = {};
+    private String[] time;
     @OneToOne
     private Patient patient = new Patient();
     @OneToOne

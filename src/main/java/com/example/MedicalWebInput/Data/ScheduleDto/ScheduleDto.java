@@ -1,10 +1,9 @@
 package com.example.MedicalWebInput.Data.ScheduleDto;
 
-
 public class ScheduleDto {
     private Long id;
     private Long intakes;
-    private String[] time = {};
+    private String[] time;
     private Long patientId;
     private Long drugId;
 

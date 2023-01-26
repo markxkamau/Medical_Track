@@ -11,6 +11,9 @@ import com.example.MedicalWebInput.Repository.ScheduleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -40,6 +43,16 @@ public class ScheduleService {
         return scheduleDtos;
     }
 
+    private String[] convertTimeToString(List<LocalTime> time) {
+        List<String> empty = new ArrayList<>();
+        for (LocalTime item : time) {
+            empty.add(item.toString());
+        }
+        String[] strings = empty.toArray(new String[empty.size()]);
+        return strings;
+    }
+
+
     public void addNewScheduleData(ScheduleDto scheduleDto) {
         Schedule schedule = new Schedule(
                 scheduleDto.getId(),
@@ -49,6 +62,15 @@ public class ScheduleService {
                 drugRepository.findById(scheduleDto.getDrugId()).get()
         );
         scheduleRepository.save(schedule);
+    }
+
+    private List<LocalTime> convertStringToTime(String[] time) {
+        List<LocalTime> localTimeList = new ArrayList<>();
+        for (String item : time) {
+            LocalTime localTime = LocalTime.parse(item);
+            localTimeList.add(localTime);
+        }
+        return localTimeList;
     }
 
     public boolean checkScheduleData(ScheduleDto scheduleDto) {
@@ -87,5 +109,21 @@ public class ScheduleService {
                 drugRepository.findById(drugId).get().getDrugName()
         );
         return patientDrugInfoDto;
+    }
+
+    public boolean checkTime(String[] time) {
+        if (time.length > 1) {
+            List<LocalTime> localTIme = convertStringToTime(time);
+            long distinctCount = localTIme.stream().distinct().count();
+
+            if (distinctCount >= localTIme.size()) {
+                return true;
+            } else {
+                return false;
+            }
+
+        }
+
+        return true;
     }
 }

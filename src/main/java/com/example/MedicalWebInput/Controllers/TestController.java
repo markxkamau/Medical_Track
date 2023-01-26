@@ -1,6 +1,6 @@
 package com.example.MedicalWebInput.Controllers;
 
-import com.example.MedicalWebInput.Data.Test.CreateTestDto;
+import com.example.MedicalWebInput.Data.TestDto.CreateTestDto;
 import com.example.MedicalWebInput.Services.ScheduleService;
 import com.example.MedicalWebInput.Services.TestService;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,6 +1,6 @@
 package com.example.MedicalWebInput.Services;
 
-import com.example.MedicalWebInput.Data.Test.CreateTestDto;
+import com.example.MedicalWebInput.Data.TestDto.CreateTestDto;
 import com.example.MedicalWebInput.Models.Test;
 import com.example.MedicalWebInput.Repository.PatientRepository;
 import com.example.MedicalWebInput.Repository.TestRepository;
