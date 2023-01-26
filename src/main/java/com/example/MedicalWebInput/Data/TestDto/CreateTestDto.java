@@ -1,4 +1,4 @@
-package com.example.MedicalWebInput.Data.Test;
+package com.example.MedicalWebInput.Data.TestDto;
 
 import java.util.Date;
 

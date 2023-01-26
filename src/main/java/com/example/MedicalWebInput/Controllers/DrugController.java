@@ -73,10 +73,7 @@ public class DrugController {
             return "Drug/drug_input";
         }
         drugService.addNewDrugData(drug);
-        Model model1 = model.addAttribute("patient_data", patientService.getPatientById(drug.getPatientId()));
-        model1.addAttribute("drug_info", patientService.getDrugByPatientId(drug.getPatientId()));
-        model.addAttribute("schedule_info", scheduleService.getScheduleByPatientId(drug.getPatientId()));
-        return "HomePage";
+        return "redirect:/patient/patient_info/"+drug.getPatientId();
     }
 //    ------------------------------------------------------------------------
 

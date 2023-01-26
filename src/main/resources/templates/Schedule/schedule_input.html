@@ -33,6 +33,7 @@
             </div>
 
             <div id="input-container"></div>
+            <p th:text="${time_error}" class="text-xs italic text-red-500"></p>
             <p class="text-xs italic text-red-500" th:text="${schedule_error}"></p>
 
             <div class="mb-5">
@@ -67,7 +68,7 @@
             inputContainer.appendChild(label);
             var input = document.createElement("input");
             input.required = true;
-            input.type = "text";
+            input.type = "time";
             input.setAttribute("id", "time");
             input.setAttribute("name", "time");
             input.setAttribute("th:field", "*{time[" + i + "]}");
@@ -76,6 +77,7 @@
             inputContainer.appendChild(input);
         }
     });
+
 
 
 
