@@ -1,6 +1,5 @@
 package com.example.MedicalWebInput.Controllers;
 
-import com.example.MedicalWebInput.Data.DrugDto.DrugDto;
 import com.example.MedicalWebInput.Data.PatientDto.CreatePatientDto;
 import com.example.MedicalWebInput.Data.PatientDto.PatientLoginDto;
 import com.example.MedicalWebInput.Models.Patient;
@@ -59,10 +58,9 @@ public class PatientController {
 
     @GetMapping("/patient_info/{patientId}")
     public String getPatientInfo(@NotNull Model model, @PathVariable Long patientId) {
-        Model model1 = model.addAttribute("patient_data", patientService.getPatientById(patientId));
-        model1.addAttribute("drug_info", patientService.getDrugByPatientId(patientId));
+        model.addAttribute("patient_data", patientService.getPatientById(patientId));
+        model.addAttribute("drug_info", patientService.getDrugByPatientId(patientId));
         model.addAttribute("schedule_info", scheduleService.getScheduleByPatientId(patientId));
-
         return "HomePage";
     }
 

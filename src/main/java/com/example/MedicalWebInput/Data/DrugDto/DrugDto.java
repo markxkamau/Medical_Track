@@ -9,6 +9,8 @@ public class DrugDto {
     private String drugPackaging = "";
     private String drugPurpose = "";
     private Long patientId;
+    private boolean scheduleButton = true;
+
 
     public DrugDto() {
     }
@@ -30,6 +32,17 @@ public class DrugDto {
         this.drugPackaging = drugPackaging;
         this.drugPurpose = drugPurpose;
         this.patientId = patientId;
+    }
+
+    public DrugDto(Long id, String drugName, String drugScientificName, float drugSize, String drugPackaging, String drugPurpose, Long patientId, boolean scheduleButton) {
+        this.id = id;
+        this.drugName = drugName;
+        this.drugScientificName = drugScientificName;
+        this.drugSize = drugSize;
+        this.drugPackaging = drugPackaging;
+        this.drugPurpose = drugPurpose;
+        this.patientId = patientId;
+        this.scheduleButton = scheduleButton;
     }
 
     public Long getId() {
@@ -86,5 +99,13 @@ public class DrugDto {
 
     public void setPatientId(Long patientId) {
         this.patientId = patientId;
+    }
+
+    public boolean isScheduleButton() {
+        return scheduleButton;
+    }
+
+    public void setScheduleButton(boolean scheduleButton) {
+        this.scheduleButton = scheduleButton;
     }
 }
