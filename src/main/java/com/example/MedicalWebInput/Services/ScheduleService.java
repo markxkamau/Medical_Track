@@ -126,4 +126,10 @@ public class ScheduleService {
 
         return true;
     }
+
+    public void setVisibilityNone(Long drugId) {
+        Drug drug = drugRepository.findById(drugId).get();
+        drug.setScheduleButton(false);
+        drugRepository.save(drug);
+    }
 }

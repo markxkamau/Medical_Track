@@ -21,6 +21,7 @@ public class Drug {
     private float drugSize;
     private String drugPackaging = "";
     private String drugPurpose = "";
+    private boolean scheduleButton = true;
     @ManyToOne
     private Patient patient;
 
@@ -34,6 +35,17 @@ public class Drug {
         this.drugSize = drugSize;
         this.drugPackaging = drugPackaging;
         this.drugPurpose = drugPurpose;
+    }
+
+    public Drug(Long id, String drugName, String drugScientificName, float drugSize, String drugPackaging, String drugPurpose, boolean scheduleButton, Patient patient) {
+        this.id = id;
+        this.drugName = drugName;
+        this.drugScientificName = drugScientificName;
+        this.drugSize = drugSize;
+        this.drugPackaging = drugPackaging;
+        this.drugPurpose = drugPurpose;
+        this.scheduleButton = scheduleButton;
+        this.patient = patient;
     }
 
     public Patient getPatient() {
@@ -105,5 +117,13 @@ public class Drug {
 
     public void setDrugPurpose(String drugPurpose) {
         this.drugPurpose = drugPurpose;
+    }
+
+    public boolean getScheduleButton() {
+        return scheduleButton;
+    }
+
+    public void setScheduleButton(boolean scheduleButton) {
+        this.scheduleButton = scheduleButton;
     }
 }

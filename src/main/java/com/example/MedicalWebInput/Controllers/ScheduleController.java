@@ -73,6 +73,7 @@ public class ScheduleController {
             return "Schedule/schedule_input";
         }
         scheduleService.addNewScheduleData(scheduleDto);
+        scheduleService.setVisibilityNone(scheduleDto.getDrugId());
         return "redirect:/patient/patient_info/"+scheduleDto.getPatientId();
 
     }
