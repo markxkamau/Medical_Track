@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Stock Input</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css"
+          referrerpolicy="no-referrer"/>
+</head>
+<body>
+<div class="w-full text-gray-700 bg-white dark-mode:text-gray-200 dark-mode:bg-gray-800">
+    <div x-data="{ open: false }"
+         class="flex flex-col max-w-screen-xl px-4 mx-auto md:items-center md:justify-between md:flex-row md:px-6 lg:px-8">
+        <div class="w-full p-4 flex flex-row items-center justify-between">
+            <p th:text="${patientDrug_info.name}"
+               class="text-lg font-semibold tracking-widest text-gray-900 uppercase rounded-lg dark-mode:text-white focus:outline-none focus:shadow-outline">
+                Flowtrail UI</p>
+        </div>
+    </div>
+</div>
+<div class="flex items-center justify-center p-12">
+    <div class="mx-auto w-full max-w-[550px]">
+        <form method="post" th:action="@{/schedule/new_stock}" th:object="${stock_info}">
+
+            <div class="mb-5">
+                <label class="mb-3 block text-base font-medium text-[#07074D]">
+                    Number Of Drugs at hand
+                </label>
+                <input type="integer" name="patientId" id="drugCount" th:field="*{drugCount}" required
+                       placeholder="How much of the drug do you have?"
+                       class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"/>
+                <p th:text="${stock_count_error}"></p>
+            </div>
+            <div class="mb-5">
+                <label class="mb-3 block text-base font-medium text-[#07074D]">
+                    Start Date
+                </label>
+                <input type="date" name="startDate" th:field="*{startDate}" required
+                       placeholder="When will you start taking the drugs?"
+                       class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"/>
+            </div>
+            <div class="mb-5">
+                <label class="mb-3 block text-base font-medium text-[#07074D]">
+                    Refill Date
+                </label>
+                <input type="date" name="refillDate" th:field="*{refillDate}" required
+                       placeholder="When do you plan for your next refill?"
+                       class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"/>
+                <p th:text="${stock_data_error}"></p>
+            </div>
+            <div class="mb-5">
+                <input type="integer" name="drugId" id="scheduleId" th:field="*{scheduleId}"
+                       th:value="${stock_info.scheduleId}" hidden
+                       class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"/>
+            </div>
+            <div>
+                <button type="submit"
+                        class="bg-indigo-600 px-4 py-2 rounded-md text-white font-semibold tracking-wide cursor-pointer">
+                    Submit
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+</body>
+
+
+</html>
