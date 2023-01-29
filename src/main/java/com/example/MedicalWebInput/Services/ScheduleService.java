@@ -1,19 +1,24 @@
 package com.example.MedicalWebInput.Services;
 
+import com.example.MedicalWebInput.Data.ScheduleDto.DrugTimetableDto;
 import com.example.MedicalWebInput.Data.ScheduleDto.PatientDrugInfoDto;
 import com.example.MedicalWebInput.Data.ScheduleDto.ScheduleDto;
 import com.example.MedicalWebInput.Models.Drug;
+import com.example.MedicalWebInput.Models.DrugStock;
 import com.example.MedicalWebInput.Models.Patient;
 import com.example.MedicalWebInput.Models.Schedule;
 import com.example.MedicalWebInput.Repository.DrugRepository;
+import com.example.MedicalWebInput.Repository.DrugStockRepository;
 import com.example.MedicalWebInput.Repository.PatientRepository;
 import com.example.MedicalWebInput.Repository.ScheduleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -24,6 +29,8 @@ public class ScheduleService {
     private PatientRepository patientRepository;
     @Autowired
     private DrugRepository drugRepository;
+    @Autowired
+    private DrugStockRepository drugStockRepository;
 
 
     public List<ScheduleDto> getAllSchedules() {
@@ -131,5 +138,58 @@ public class ScheduleService {
         Drug drug = drugRepository.findById(drugId).get();
         drug.setScheduleButton(false);
         drugRepository.save(drug);
+    }
+
+    public Patient getDrugInfo(Long scheduleId) {
+        Schedule schedule = scheduleRepository.findById(scheduleId).get();
+        return patientRepository.findById(schedule.getPatient().getId()).get();
+    }
+
+
+
+    public boolean checKDate(String startDate) {
+        Date date = convertStringToDate(startDate);
+        Date currentDate = new Date();
+        long diff = date.getTime() - currentDate.getTime();
+        if (diff < 0) {
+            return false;
+        }
+        return true;
+    }
+
+    private Date convertStringToDate(String startDate) {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = null;
+        try {
+            date = format.parse(startDate);
+        } catch (ParseException e) {
+            System.out.println(e.getMessage());
+        }
+        return date;
+    }
+
+    public void addNewDrugStock(DrugTimetableDto drugTimetableDto) {
+        Drug drug = scheduleRepository.findById(drugTimetableDto.getScheduleId()).get().getDrug();
+        DrugStock drugStock = new DrugStock(
+                drugTimetableDto.getId(),
+                drugTimetableDto.getDrugCount(),
+                convertStringToDate(drugTimetableDto.getRefillDate()),
+                drug
+        );
+        drugStockRepository.save(drugStock);
+    }
+
+    public void updateStartDate(DrugTimetableDto drugTimetableDto) {
+        Schedule schedule = scheduleRepository.findById(drugTimetableDto.getScheduleId()).get();
+        schedule.setStartDate(convertStringToDate(drugTimetableDto.getStartDate()));
+        scheduleRepository.save(schedule);
+    }
+
+    public boolean checkIfNull(Long patientId) {
+        List<Schedule> schedules = scheduleRepository.findByPatientId(patientId);
+        if (schedules.size() < 1){
+            return false;
+        }
+        return true;
     }
 }

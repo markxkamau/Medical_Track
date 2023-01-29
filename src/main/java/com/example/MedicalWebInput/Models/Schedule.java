@@ -4,6 +4,7 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.time.LocalTime;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -23,6 +24,7 @@ public class Schedule {
     private Long id;
     private Long intakes = 1L;
     private String[] time;
+    private Date startDate = new Date();
     @OneToOne
     private Patient patient = new Patient();
     @OneToOne
@@ -35,6 +37,15 @@ public class Schedule {
         this.id = id;
         this.intakes = intakes;
         this.time = time;
+        this.patient = patient;
+        this.drug = drug;
+    }
+
+    public Schedule(Long id, Long intakes, String[] time, Date startDate, Patient patient, Drug drug) {
+        this.id = id;
+        this.intakes = intakes;
+        this.time = time;
+        this.startDate = startDate;
         this.patient = patient;
         this.drug = drug;
     }
@@ -77,5 +88,13 @@ public class Schedule {
 
     public void setDrug(Drug drug) {
         this.drug = drug;
+    }
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
     }
 }

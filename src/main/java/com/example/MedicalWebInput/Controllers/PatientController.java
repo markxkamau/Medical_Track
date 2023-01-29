@@ -61,6 +61,7 @@ public class PatientController {
         model.addAttribute("patient_data", patientService.getPatientById(patientId));
         model.addAttribute("drug_info", patientService.getDrugByPatientId(patientId));
         model.addAttribute("schedule_info", scheduleService.getScheduleByPatientId(patientId));
+        model.addAttribute("schedule_present",scheduleService.checkIfNull(patientId));
         return "HomePage";
     }
 

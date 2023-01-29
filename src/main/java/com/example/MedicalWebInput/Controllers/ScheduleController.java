@@ -1,5 +1,6 @@
 package com.example.MedicalWebInput.Controllers;
 
+import com.example.MedicalWebInput.Data.ScheduleDto.DrugTimetableDto;
 import com.example.MedicalWebInput.Data.ScheduleDto.ScheduleDto;
 import com.example.MedicalWebInput.Services.ScheduleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +31,7 @@ public class ScheduleController {
     public String addNewSchedule(@PathVariable Long patientId, @PathVariable Long drugId, @NotNull Model model) {
         if (patientId == null || drugId == null) {
             // return an error message or redirect the user to a page
-            return "redirect:/patient/patient_info/"+patientId;
+            return "redirect:/patient/patient_info/" + patientId;
 
         }
         ScheduleDto scheduleDto = new ScheduleDto();
@@ -39,6 +40,16 @@ public class ScheduleController {
         model.addAttribute("schedule_info", scheduleDto);
         model.addAttribute("patientDrug_info", scheduleService.getPatientAndDrugInfo(patientId, drugId));
         return "Schedule/schedule_input";
+    }
+
+    @GetMapping("/new_stock/{scheduleId}")
+    public String addNewDrugStock(@PathVariable Long scheduleId, @NotNull Model model) {
+        DrugTimetableDto drugTimetableDto = new DrugTimetableDto();
+        drugTimetableDto.setScheduleId(scheduleId);
+        model.addAttribute("stock_info", drugTimetableDto);
+        model.addAttribute("patientDrug_info", scheduleService.getDrugInfo(scheduleId));
+
+        return "Schedule/stock_input";
     }
 
 //    *************************************************************************
@@ -74,9 +85,30 @@ public class ScheduleController {
         }
         scheduleService.addNewScheduleData(scheduleDto);
         scheduleService.setVisibilityNone(scheduleDto.getDrugId());
-        return "redirect:/patient/patient_info/"+scheduleDto.getPatientId();
+        return "redirect:/patient/patient_info/" + scheduleDto.getPatientId();
 
     }
+
+    @PostMapping("/new_stock")
+    public String addDrugStock(@NotNull Model model, @ModelAttribute DrugTimetableDto drugTimetableDto) {
+        if (drugTimetableDto.getDrugCount() < 1) {
+            model.addAttribute("stock_info", drugTimetableDto);
+            model.addAttribute("patientDrug_info", scheduleService.getDrugInfo(drugTimetableDto.getScheduleId()));
+            model.addAttribute("stock_count_error", "Drug count is too low");
+            return "Schedule/stock_input";
+        }
+        if (!scheduleService.checKDate(drugTimetableDto.getStartDate())){
+            model.addAttribute("stock_info", drugTimetableDto);
+            model.addAttribute("patientDrug_info", scheduleService.getDrugInfo(drugTimetableDto.getScheduleId()));
+            model.addAttribute("stock_data_error", "Incorrect date set");
+            return "Schedule/stock_input";
+        }
+
+        scheduleService.addNewDrugStock(drugTimetableDto);
+        scheduleService.updateStartDate(drugTimetableDto);
+        return "redirect:/patient/patient_info/" + scheduleService.getDrugInfo(drugTimetableDto.getScheduleId()).getId();
+    }
+
 //    ------------------------------------------------------------------------
 
 }
