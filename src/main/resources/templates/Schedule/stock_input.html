@@ -20,12 +20,11 @@
 <div class="flex items-center justify-center p-12">
     <div class="mx-auto w-full max-w-[550px]">
         <form method="post" th:action="@{/schedule/new_stock}" th:object="${stock_info}">
-
             <div class="mb-5">
                 <label class="mb-3 block text-base font-medium text-[#07074D]">
                     Number Of Drugs at hand
                 </label>
-                <input type="integer" name="patientId" id="drugCount" th:field="*{drugCount}" required
+                <input type="integer" name="drugCount" id="drugCount" th:field="*{drugCount}" required
                        placeholder="How much of the drug do you have?"
                        class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"/>
                 <p th:text="${stock_count_error}"></p>
@@ -38,7 +37,7 @@
                        placeholder="When will you start taking the drugs?"
                        class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"/>
             </div>
-            <div class="mb-5">
+            <div class="mb-5">refillDate
                 <label class="mb-3 block text-base font-medium text-[#07074D]">
                     Refill Date
                 </label>
@@ -48,7 +47,7 @@
                 <p th:text="${stock_data_error}"></p>
             </div>
             <div class="mb-5">
-                <input type="integer" name="drugId" id="scheduleId" th:field="*{scheduleId}"
+                <input type="integer" name="scheduleId" id="scheduleId" th:field="*{scheduleId}"
                        th:value="${stock_info.scheduleId}" hidden
                        class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"/>
             </div>
