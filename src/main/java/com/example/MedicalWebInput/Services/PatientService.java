@@ -107,11 +107,11 @@ public class PatientService {
             password[x] = alpha[random.nextInt(alpha.length)];
         }
         Patient patient = patientRepository.findByEmail(email).get();
-        patient.setPassword(password.toString());
+        patient.setPassword(String.join("", password));
 
         patientRepository.save(patient);
 
-        return password.toString();
+        return String.join("", password);
     }
 
     public PatientDto getPatientById(Long id) {
