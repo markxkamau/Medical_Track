@@ -3,6 +3,7 @@ package com.example.MedicalWebInput.Data.TestDto;
 import java.util.Date;
 
 public class CreateTestDto {
+    private Long id;
     private int bloodPressure = 0;
     private int weight = 0;
     private int oxygen = 0;
@@ -29,6 +30,24 @@ public class CreateTestDto {
         this.oxygen = oxygen;
         this.bloodSugar = bloodSugar;
         this.patientId = patientId;
+    }
+
+    public CreateTestDto(Long id, int bloodPressure, int weight, int oxygen, int bloodSugar, Long patientId, Date testDate) {
+        this.id = id;
+        this.bloodPressure = bloodPressure;
+        this.weight = weight;
+        this.oxygen = oxygen;
+        this.bloodSugar = bloodSugar;
+        this.patientId = patientId;
+        this.testDate = testDate;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public int getBloodPressure() {

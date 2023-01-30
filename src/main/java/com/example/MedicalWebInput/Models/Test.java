@@ -1,6 +1,7 @@
 package com.example.MedicalWebInput.Models;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table
@@ -20,6 +21,7 @@ public class Test {
     private int weight = 0;
     private int oxygen = 0;
     private int bloodSugar = 0;
+    private Date testDate = new Date();
     @OneToOne
     private Patient patient = new Patient();
 
@@ -35,11 +37,21 @@ public class Test {
         this.patient = patient;
     }
 
-    public long getId() {
+    public Test(Long id, int bloodPressure, int weight, int oxygen, int bloodSugar, Date testDate, Patient patient) {
+        this.id = id;
+        this.bloodPressure = bloodPressure;
+        this.weight = weight;
+        this.oxygen = oxygen;
+        this.bloodSugar = bloodSugar;
+        this.testDate = testDate;
+        this.patient = patient;
+    }
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -81,5 +93,13 @@ public class Test {
 
     public void setPatient(Patient patient) {
         this.patient = patient;
+    }
+
+    public Date getTestDate() {
+        return testDate;
+    }
+
+    public void setTestDate(Date testDate) {
+        this.testDate = testDate;
     }
 }

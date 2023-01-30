@@ -6,7 +6,9 @@ import com.example.MedicalWebInput.Data.PatientDto.PatientDto;
 import com.example.MedicalWebInput.Data.PatientDto.PatientLoginDto;
 import com.example.MedicalWebInput.Models.Drug;
 import com.example.MedicalWebInput.Models.Patient;
+import com.example.MedicalWebInput.Models.Test;
 import com.example.MedicalWebInput.Repository.PatientRepository;
+import com.example.MedicalWebInput.Repository.TestRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +23,8 @@ public class PatientService {
     private PatientRepository patientRepository;
     @Autowired
     private DrugService drugService;
+    @Autowired
+    private TestRepository testRepository;
 
     public List<Patient> getAllPatients() {
         return patientRepository.findAll();
@@ -140,5 +144,9 @@ public class PatientService {
             drugDtos.add(drugDto);
         }
         return drugDtos;
+    }
+
+    public List<Test> getAllPatientTests(Long patientId) {
+        return testRepository.findTestByPatientId(patientId);
     }
 }

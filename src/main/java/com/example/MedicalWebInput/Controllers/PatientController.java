@@ -3,6 +3,7 @@ package com.example.MedicalWebInput.Controllers;
 import com.example.MedicalWebInput.Data.PatientDto.CreatePatientDto;
 import com.example.MedicalWebInput.Data.PatientDto.PatientLoginDto;
 import com.example.MedicalWebInput.Models.Patient;
+import com.example.MedicalWebInput.Repository.DrugRepository;
 import com.example.MedicalWebInput.Services.PatientService;
 import com.example.MedicalWebInput.Services.ScheduleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,8 @@ public class PatientController {
     private PatientService patientService;
     @Autowired
     private ScheduleService scheduleService;
+    @Autowired
+    private DrugRepository drugRepository;
 
 //    *************************************************************************
 //    GetMappings
@@ -62,6 +65,7 @@ public class PatientController {
         model.addAttribute("drug_info", patientService.getDrugByPatientId(patientId));
         model.addAttribute("schedule_info", scheduleService.getScheduleByPatientId(patientId));
         model.addAttribute("schedule_present",scheduleService.checkIfNull(patientId));
+        model.addAttribute("test_data",patientService.getAllPatientTests(patientId));
         return "HomePage";
     }
 
@@ -108,7 +112,6 @@ public class PatientController {
     }
 
     @PostMapping("/forgot_password")
-    @ResponseBody
     public String resetPassword(@ModelAttribute PatientLoginDto patientLoginDto, @NotNull Model model) {
         if (!patientService.checkForPatient(patientLoginDto.getEmail())) {
             model.addAttribute("patient_email", patientLoginDto);
