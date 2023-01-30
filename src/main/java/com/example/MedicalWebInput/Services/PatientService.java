@@ -165,4 +165,8 @@ public class PatientService {
                 drug.getPatient().getId()
         );
     }
+
+    public void deleteDrugById(Long drugId) {
+        drugRepository.deleteById(drugId);
+    }
 }

@@ -48,9 +48,16 @@ public class PatientController {
     }
 
     @GetMapping("/edit_drug/{drugId}")
-    public String editDrugInfo(@PathVariable Long drugId,@NotNull Model model){
-        model.addAttribute("drug_info",patientService.getDrugInfo(drugId));
+    public String editDrugInfo(@PathVariable Long drugId, @NotNull Model model) {
+        model.addAttribute("drug_info", patientService.getDrugInfo(drugId));
         return "Drug/drug_input";
+    }
+
+    @GetMapping("/delete_drug/{drugId}")
+    public String deleteDrugById(@PathVariable Long drugId) {
+        Long patientId = patientService.getDrugInfo(drugId).getPatientId();
+        patientService.deleteDrugById(drugId);
+        return "redirect:/patient/patient_info/" + patientId;
     }
 
     @GetMapping("/login")
@@ -70,8 +77,8 @@ public class PatientController {
         model.addAttribute("patient_data", patientService.getPatientById(patientId));
         model.addAttribute("drug_info", patientService.getDrugByPatientId(patientId));
         model.addAttribute("schedule_info", scheduleService.getScheduleByPatientId(patientId));
-        model.addAttribute("schedule_present",scheduleService.checkIfNull(patientId));
-        model.addAttribute("test_data",patientService.getAllPatientTests(patientId));
+        model.addAttribute("schedule_present", scheduleService.checkIfNull(patientId));
+        model.addAttribute("test_data", patientService.getAllPatientTests(patientId));
         return "HomePage";
     }
 
@@ -113,7 +120,7 @@ public class PatientController {
             return "Patient/patient_login";
         }
         Patient patient = patientService.getPatientByEmail(patientLoginDto.getEmail());
-        return "redirect:/patient/patient_info/"+patient.getId();
+        return "redirect:/patient/patient_info/" + patient.getId();
 
     }
 
@@ -127,5 +134,6 @@ public class PatientController {
         String newPassword = patientService.setNewPassword(patientLoginDto.getEmail());
         return newPassword;
     }
+
 
 }
