@@ -70,4 +70,15 @@ public class DrugService {
                 d.getScheduleButton()
         );
     }
+
+    public void updateDrugData(DrugDto drugDto) {
+        Drug drug = drugRepository.findById(drugDto.getId()).get();
+        drug.setDrugName(drugDto.getDrugName());
+        drug.setDrugPackaging(drugDto.getDrugPackaging());
+        drug.setDrugPurpose(drugDto.getDrugPurpose());
+        drug.setDrugSize(drugDto.getDrugSize());
+        drug.setDrugScientificName(drugDto.getDrugScientificName());
+        drug.setPatient(patientRepository.findById(drugDto.getPatientId()).get());
+        drugRepository.save(drug);
+    }
 }

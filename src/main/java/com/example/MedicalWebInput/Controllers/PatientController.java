@@ -47,6 +47,12 @@ public class PatientController {
         return "Patient/patient_registration";
     }
 
+    @GetMapping("/edit_drug/{drugId}")
+    public String editDrugInfo(@PathVariable Long drugId,@NotNull Model model){
+        model.addAttribute("drug_info",patientService.getDrugInfo(drugId));
+        return "Drug/drug_input";
+    }
+
     @GetMapping("/login")
     public String loginPatient(@NotNull Model model) {
         model.addAttribute("login_detail", new PatientLoginDto());

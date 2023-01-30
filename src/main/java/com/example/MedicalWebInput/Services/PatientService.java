@@ -7,6 +7,7 @@ import com.example.MedicalWebInput.Data.PatientDto.PatientLoginDto;
 import com.example.MedicalWebInput.Models.Drug;
 import com.example.MedicalWebInput.Models.Patient;
 import com.example.MedicalWebInput.Models.Test;
+import com.example.MedicalWebInput.Repository.DrugRepository;
 import com.example.MedicalWebInput.Repository.PatientRepository;
 import com.example.MedicalWebInput.Repository.TestRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,8 @@ public class PatientService {
     private DrugService drugService;
     @Autowired
     private TestRepository testRepository;
+    @Autowired
+    private DrugRepository drugRepository;
 
     public List<Patient> getAllPatients() {
         return patientRepository.findAll();
@@ -148,5 +151,18 @@ public class PatientService {
 
     public List<Test> getAllPatientTests(Long patientId) {
         return testRepository.findTestByPatientId(patientId);
+    }
+
+    public DrugDto getDrugInfo(Long drugId) {
+        Drug drug = drugRepository.findById(drugId).get();
+        return new DrugDto(
+                drug.getId(),
+                drug.getDrugName(),
+                drug.getDrugScientificName(),
+                drug.getDrugSize(),
+                drug.getDrugPackaging(),
+                drug.getDrugPurpose(),
+                drug.getPatient().getId()
+        );
     }
 }

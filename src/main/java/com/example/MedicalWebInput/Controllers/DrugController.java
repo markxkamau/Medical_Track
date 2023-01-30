@@ -66,11 +66,10 @@ public class DrugController {
 
     //    *Drug Confirmation function
     @PostMapping("/add_drug")
-    public String addNewDrugData(@NotNull Model model, @ModelAttribute DrugDto drug) {
+    public String addNewDrugData(@ModelAttribute DrugDto drug) {
         if (!drugService.checkDrugData(drug)) {
-            model.addAttribute("drug_info", drug);
-            model.addAttribute("drug_error", "Drug stated already exists");
-            return "Drug/drug_input";
+            drugService.updateDrugData(drug);
+            return "redirect:/patient/patient_info/"+drug.getPatientId();
         }
         drugService.addNewDrugData(drug);
         return "redirect:/patient/patient_info/"+drug.getPatientId();

@@ -116,7 +116,7 @@
                                     <li><p th:text="${time}" class="text-gray-900 whitespace-no-wrap"> 43</p></li>
                                 </ul>
                             </td>
-                            <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                            <td style="justify-content:space-between;" class="flex px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                 <a th:if="${drug.scheduleButton}"
                                    class="w-full px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700 focus:outline-none focus:shadow-outline"
                                    th:href="@{'/schedule/new_schedule/'+${patient_data.id}+'/'+${drug.id}}">
