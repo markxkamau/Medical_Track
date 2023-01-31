@@ -67,7 +67,8 @@ public class DrugService {
                 d.getDrugPackaging(),
                 d.getDrugPurpose(),
                 d.getPatient().getId(),
-                d.getScheduleButton()
+                d.getScheduleButton(),
+                d.getStockButton()
         );
     }
 

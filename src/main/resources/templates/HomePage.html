@@ -55,7 +55,7 @@
             <div class="flex-1 bg-white rounded-lg shadow-xl mt-4 p-8">
                 <h4 class="text-xl text-gray-900 font-bold">Medication Prescribed</h4>
                 <div class="overflow-x-auto w-full my-10">
-                    <table class="w-full bg-blue-500 leading-normal" th:object="${drug_info}">
+                    <table class="w-full leading-normal" th:object="${drug_info}">
                         <thead>
                         <tr>
                             <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
@@ -116,14 +116,15 @@
                                     <li><p th:text="${time}" class="text-gray-900 whitespace-no-wrap"> 43</p></li>
                                 </ul>
                             </td>
-                            <td style="justify-content:space-between;" class="flex px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                            <td style="display:flex; justify-content:space-between; align-items:center; text-align:center;"
+                                class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                 <a th:if="${drug.scheduleButton}"
-                                   class="w-full px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700 focus:outline-none focus:shadow-outline"
+                                   class="px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700 focus:outline-none focus:shadow-outline"
                                    th:href="@{'/schedule/new_schedule/'+${patient_data.id}+'/'+${drug.id}}">
                                     Schedule
                                 </a>
-                                <a th:if="${!drug.scheduleButton}"
-                                   class="w-full px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700 focus:outline-none focus:shadow-outline"
+                                <a th:if="${!drug.scheduleButton} and ${drug.stockButton}"
+                                   class="px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700 focus:outline-none focus:shadow-outline"
                                    th:href="@{'/schedule/new_stock/'+${drug.id}}">
                                     Stock
                                 </a>
@@ -151,6 +152,19 @@
                     Add Drug
                 </a>
             </div>
+            <!--            Stock details-->
+<!--            <div class="flex-1 bg-white rounded-lg shadow-xl mt-4 p-8">-->
+<!--                <h4 class="text-xl text-gray-900 font-bold">Medication Stock</h4>-->
+<!--                <div class="overflow-x-auto w-full my-10">-->
+<!--                    <table class="w-full  leading-normal" th:object="${drug_info}">-->
+<!--                        <thead>-->
+<!--                        <tr>-->
+<!--                            <th></th>-->
+<!--                        </tr>-->
+<!--                        </thead>-->
+<!--                    </table>-->
+<!--                </div>-->
+<!--            </div>-->
             <!--            Test details of all tests undertaken-->
             <div class="flex-1 bg-white rounded-lg shadow-xl mt-4 p-8">
 

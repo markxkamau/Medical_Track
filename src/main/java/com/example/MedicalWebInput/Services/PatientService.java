@@ -4,12 +4,8 @@ import com.example.MedicalWebInput.Data.DrugDto.DrugDto;
 import com.example.MedicalWebInput.Data.PatientDto.CreatePatientDto;
 import com.example.MedicalWebInput.Data.PatientDto.PatientDto;
 import com.example.MedicalWebInput.Data.PatientDto.PatientLoginDto;
-import com.example.MedicalWebInput.Models.Drug;
-import com.example.MedicalWebInput.Models.Patient;
-import com.example.MedicalWebInput.Models.Test;
-import com.example.MedicalWebInput.Repository.DrugRepository;
-import com.example.MedicalWebInput.Repository.PatientRepository;
-import com.example.MedicalWebInput.Repository.TestRepository;
+import com.example.MedicalWebInput.Models.*;
+import com.example.MedicalWebInput.Repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +24,10 @@ public class PatientService {
     private TestRepository testRepository;
     @Autowired
     private DrugRepository drugRepository;
+    @Autowired
+    private DrugStockRepository drugStockRepository;
+    @Autowired
+    private ScheduleRepository scheduleRepository;
 
     public List<Patient> getAllPatients() {
         return patientRepository.findAll();
@@ -167,6 +167,17 @@ public class PatientService {
     }
 
     public void deleteDrugById(Long drugId) {
+        DrugStock drugStock = drugStockRepository.findByDrugId(drugId);
+        if (drugStock != null) {
+            drugStockRepository.deleteById(drugStock.getId());
+
+        }
+        Long patientId = drugRepository.findById(drugId).get().getPatient().getId();
+        if (patientId != null) {
+            Schedule schedule = scheduleRepository.findByPatientIdAndDrugId(patientId, drugId);
+            scheduleRepository.deleteById(schedule.getId());
+        }
+
         drugRepository.deleteById(drugId);
     }
 }

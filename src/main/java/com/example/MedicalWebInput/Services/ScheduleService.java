@@ -146,7 +146,6 @@ public class ScheduleService {
     }
 
 
-
     public boolean checKDate(String startDate) {
         Date date = convertStringToDate(startDate);
         Date currentDate = new Date();
@@ -187,9 +186,25 @@ public class ScheduleService {
 
     public boolean checkIfNull(Long patientId) {
         List<Schedule> schedules = scheduleRepository.findByPatientId(patientId);
-        if (schedules.size() < 1){
+        if (schedules.size() < 1) {
             return false;
         }
         return true;
+    }
+
+    public void setStockVisibility(Long id) {
+        DrugStock drugStock = drugStockRepository.findById(id).get();
+        Long drugId = drugStock.getDrug().getId();
+        Drug drug = drugRepository.findById(drugId).get();
+        drug.setStockButton(false);
+        drugRepository.save(drug);
+
+    }
+
+    public Long getScheduleByDrugId(Long drugId) {
+        Drug drug = drugRepository.findById(drugId).get();
+        Long patientId = drug.getPatient().getId();
+        Schedule schedule = scheduleRepository.findByPatientIdAndDrugId(patientId,drugId);
+        return schedule.getId();
     }
 }

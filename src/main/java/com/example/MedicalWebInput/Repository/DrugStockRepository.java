@@ -5,4 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface DrugStockRepository extends JpaRepository<DrugStock, Long> {
 
+    DrugStock findByDrugId(Long drugId);
 }

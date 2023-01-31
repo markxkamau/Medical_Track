@@ -42,8 +42,9 @@ public class ScheduleController {
         return "Schedule/schedule_input";
     }
 
-    @GetMapping("/new_stock/{scheduleId}")
-    public String addNewDrugStock(@PathVariable Long scheduleId, @NotNull Model model) {
+    @GetMapping("/new_stock/{drugId}")
+    public String addNewDrugStock(@PathVariable Long drugId, @NotNull Model model) {
+        Long scheduleId = scheduleService.getScheduleByDrugId(drugId);
         DrugTimetableDto drugTimetableDto = new DrugTimetableDto();
         drugTimetableDto.setScheduleId(scheduleId);
         model.addAttribute("stock_info", drugTimetableDto);
@@ -106,6 +107,7 @@ public class ScheduleController {
 
         scheduleService.addNewDrugStock(drugTimetableDto);
         scheduleService.updateStartDate(drugTimetableDto);
+        scheduleService.setStockVisibility(drugTimetableDto.getId());
         return "redirect:/patient/patient_info/" + scheduleService.getDrugInfo(drugTimetableDto.getScheduleId()).getId();
     }
 
