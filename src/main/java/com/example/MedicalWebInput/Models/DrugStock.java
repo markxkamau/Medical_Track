@@ -20,7 +20,7 @@ public class DrugStock {
     private int drugCount = 0;
     private Date refillDate = new Date();
     @OneToOne
-    private Drug drug = new Drug();
+    private Drug drug;
 
     public DrugStock() {
     }

@@ -140,9 +140,8 @@ public class ScheduleService {
         drugRepository.save(drug);
     }
 
-    public Patient getDrugInfo(Long scheduleId) {
-        Schedule schedule = scheduleRepository.findById(scheduleId).get();
-        return patientRepository.findById(schedule.getPatient().getId()).get();
+    public Schedule getDrugInfo(Long scheduleId) {
+        return scheduleRepository.findById(scheduleId).get();
     }
 
 
@@ -180,6 +179,7 @@ public class ScheduleService {
 
     public void updateStartDate(DrugTimetableDto drugTimetableDto) {
         Schedule schedule = scheduleRepository.findById(drugTimetableDto.getScheduleId()).get();
+
         schedule.setStartDate(convertStringToDate(drugTimetableDto.getStartDate()));
         scheduleRepository.save(schedule);
     }
@@ -198,13 +198,18 @@ public class ScheduleService {
         Drug drug = drugRepository.findById(drugId).get();
         drug.setStockButton(false);
         drugRepository.save(drug);
-
     }
 
     public Long getScheduleByDrugId(Long drugId) {
         Drug drug = drugRepository.findById(drugId).get();
         Long patientId = drug.getPatient().getId();
-        Schedule schedule = scheduleRepository.findByPatientIdAndDrugId(patientId,drugId);
+        Schedule schedule = scheduleRepository.findByPatientIdAndDrugId(patientId, drugId);
         return schedule.getId();
+    }
+
+    public Long getDrugStockId(Long scheduleId) {
+        Long drugId = scheduleRepository.findById(scheduleId).get().getDrug().getId();
+        DrugStock drugStock = drugStockRepository.findByDrugId(drugId);
+        return drugStock.getId();
     }
 }

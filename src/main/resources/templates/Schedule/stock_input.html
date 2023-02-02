@@ -11,14 +11,27 @@
     <div x-data="{ open: false }"
          class="flex flex-col max-w-screen-xl px-4 mx-auto md:items-center md:justify-between md:flex-row md:px-6 lg:px-8">
         <div class="w-full p-4 flex flex-row items-center justify-between">
-            <p th:text="${patientDrug_info.name}"
+            <p th:text="${patientDrug_info.patient.name}"
                class="text-lg font-semibold tracking-widest text-gray-900 uppercase rounded-lg dark-mode:text-white focus:outline-none focus:shadow-outline">
                 Flowtrail UI</p>
+        </div>
+        <div style="float:right; display:flex; justify-content:space-between;">
+            <div class="w-full p-4 flex flex-row items-center justify-between">
+                <p th:text="${patientDrug_info.drug.drugName}"
+                   class="text-lg font-semibold tracking-widest text-gray-900 uppercase rounded-lg dark-mode:text-white focus:outline-none focus:shadow-outline">
+                    Flowtrail UI</p>
+            </div>
+            <div class="w-full p-4 flex flex-row items-center justify-between">
+                <p th:text="${patientDrug_info.drug.drugSize}+' mg'"
+                   class="text-lg font-semibold tracking-widest text-gray-900 uppercase rounded-lg dark-mode:text-white focus:outline-none focus:shadow-outline">
+                    Flowtrail UI</p>
+            </div>
         </div>
     </div>
 </div>
 <div class="flex items-center justify-center p-12">
     <div class="mx-auto w-full max-w-[550px]">
+        <p th:text="${update_start_date}"></p>
         <form method="post" th:action="@{/schedule/new_stock}" th:object="${stock_info}">
             <div class="mb-5">
                 <label class="mb-3 block text-base font-medium text-[#07074D]">

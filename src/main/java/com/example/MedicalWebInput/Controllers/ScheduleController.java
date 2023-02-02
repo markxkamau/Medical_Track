@@ -98,7 +98,7 @@ public class ScheduleController {
             model.addAttribute("stock_count_error", "Drug count is too low");
             return "Schedule/stock_input";
         }
-        if (!scheduleService.checKDate(drugTimetableDto.getStartDate())){
+        if (!scheduleService.checKDate(drugTimetableDto.getStartDate())) {
             model.addAttribute("stock_info", drugTimetableDto);
             model.addAttribute("patientDrug_info", scheduleService.getDrugInfo(drugTimetableDto.getScheduleId()));
             model.addAttribute("stock_data_error", "Incorrect date set");
@@ -107,8 +107,8 @@ public class ScheduleController {
 
         scheduleService.addNewDrugStock(drugTimetableDto);
         scheduleService.updateStartDate(drugTimetableDto);
-        scheduleService.setStockVisibility(drugTimetableDto.getId());
-        return "redirect:/patient/patient_info/" + scheduleService.getDrugInfo(drugTimetableDto.getScheduleId()).getId();
+        scheduleService.setStockVisibility(scheduleService.getDrugStockId(drugTimetableDto.getScheduleId()));
+        return "redirect:/patient/patient_info/" + scheduleService.getDrugInfo(drugTimetableDto.getScheduleId()).getPatient().getId();
     }
 
 //    ------------------------------------------------------------------------
