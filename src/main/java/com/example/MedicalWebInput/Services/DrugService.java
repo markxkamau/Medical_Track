@@ -3,6 +3,7 @@ package com.example.MedicalWebInput.Services;
 import com.example.MedicalWebInput.Data.DrugDto.DrugDto;
 import com.example.MedicalWebInput.Models.Drug;
 import com.example.MedicalWebInput.Models.Patient;
+import com.example.MedicalWebInput.Models.Schedule;
 import com.example.MedicalWebInput.Repository.DrugRepository;
 import com.example.MedicalWebInput.Repository.PatientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -80,6 +81,16 @@ public class DrugService {
         drug.setDrugSize(drugDto.getDrugSize());
         drug.setDrugScientificName(drugDto.getDrugScientificName());
         drug.setPatient(patientRepository.findById(drugDto.getPatientId()).get());
+        drugRepository.save(drug);
+    }
+
+    public void updateDrugData(Schedule schedule) {
+        Drug drug = drugRepository.findById(schedule.getDrug().getId()).get();
+        drug.setDrugName(schedule.getDrug().getDrugName());
+        drug.setDrugPackaging(schedule.getDrug().getDrugPackaging());
+        drug.setDrugPurpose(schedule.getDrug().getDrugPurpose());
+        drug.setDrugSize(schedule.getDrug().getDrugSize());
+        drug.setDrugScientificName(schedule.getDrug().getDrugScientificName());
         drugRepository.save(drug);
     }
 }

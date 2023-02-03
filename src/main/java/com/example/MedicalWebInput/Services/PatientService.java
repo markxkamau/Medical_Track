@@ -180,4 +180,10 @@ public class PatientService {
 
         drugRepository.deleteById(drugId);
     }
+
+    public Schedule getDrugAndScheduleInfo(Long drugId) {
+        DrugDto drugDto = getDrugInfo(drugId);
+        Long patientId = drugDto.getPatientId();
+        return scheduleRepository.findByPatientIdAndDrugId(patientId, drugId);
+    }
 }

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Drug Edit</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css"
+          referrerpolicy="no-referrer"/>
+</head>
+<body>
+<nav class="bg-white dark:bg-black dark:text-white flex flex-col md:flex-row items-center md:justify-between px-6 py-4 border-b border-b-gray-60 shadow-sm max-w-screen-2xl mx-auto">
+    <!-- Logo -->
+    <div>
+        <h2 class="text-3xl font-bold">
+            <a>Drug Input</a>
+        </h2>
+    </div>
+</nav>
+<div class="flex items-center justify-center p-12">
+    <div class="mx-auto w-full max-w-[550px]">
+        <form action="#" th:action="@{/drugs/update}" th:object="${schedule_info}" method="POST">
+            <input type="text" name="name" id="id" placeholder="Drug Id" th:value="${schedule_info.drug.id}"
+                   th:field="*{drug.id}" hidden
+                   class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
+            />
+            <div class="mb-5">
+                <label for="name" class="mb-3 block text-base font-medium text-[#07074D]">
+                    Drug Name
+                </label>
+                <input type="text" name="name" id="name" placeholder="Drug Name" th:value="${schedule_info.drug.drugName}"
+                       th:field="*{drug.drugName}" required
+                       class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
+                />
+            </div>
+            <div class="mb-5">
+                <label for="name" class="mb-3 block text-base font-medium text-[#07074D]">
+                    Drug Scientific Name
+                </label>
+                <input type="text" id="scientificName" name="name" placeholder="Drug Scientific Name"
+                       th:value="${schedule_info.drug.drugScientificName}" th:field="*{drug.drugScientificName}"
+                       required
+                       class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
+                />
+                <p class="text-red-600" th:text="${drug_error}"></p>
+            </div>
+            <div class="mb-5">
+                <label class="mb-3 block text-base font-medium text-[#07074D]">
+                    Drug Size(mg)
+                </label>
+                <input type="text" name="name" id="drugSize" placeholder="Drug Size"
+                       th:value="${schedule_info.drug.drugSize}"
+                       th:field="*{drug.drugSize}" required
+                       class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
+                />
+                <p class="text-red-600" th:text="${drug_error}"></p>
+            </div>
+            <div class="mb-5">
+                <label class="mb-3 block text-base font-medium text-[#07074D]">
+                    Drug Packaging
+                </label>
+                <input type="text" name="name" id="drugPackaging" placeholder="Drug Packaging e.g. Capsule"
+                       th:value="${schedule_info.drug.drugPackaging}" th:field="*{drug.drugPackaging}" required
+                       class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
+                />
+            </div>
+            <div class="mb-5">
+                <label class="mb-3 block text-base font-medium text-[#07074D]">Message </label>
+                <textarea rows="4" name="message" id="drugPurpose" placeholder="Drug Purpose and Use"
+                          th:value="${schedule_info.drug.drugPurpose}"
+                          th:field="*{drug.drugPurpose}" required
+                          class="w-full resize-none rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
+                ></textarea>
+            </div>
+            <input type="number" name="patientId" id="DrugPatientId" placeholder="Drug Patient Id" th:field="*{drug.patient.id}"
+                   th:value="${schedule_info.drug.patient.id}"
+                   class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
+                   hidden/>
+            <div class="mb-5">
+                <label class="mb-3 block text-base font-medium text-[#07074D]">
+                    Number Of Intakes
+                </label>
+                <input type="integer" name="intakes" id="intakes" th:field="*{intakes}" th:value="${schedule_info.intakes}"
+                       placeholder="How many times in a day"
+                       class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"/>
+            </div>
+
+            <div id="input-container"></div>
+            <p th:text="${time_error}" class="text-xs italic text-red-500"></p>
+            <p class="text-xs italic text-red-500" th:text="${schedule_error}"></p>
+
+            <div class="mb-5">
+                <input type="integer" name="patientId" id="patientId" th:field="*{patient.id}"
+                       th:value="${schedule_info.patient.id}"
+                       class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"/>
+            </div>
+            <div class="mb-5">
+                <input type="integer" name="drugId" id="drugId" th:field="*{drug.id}" th:value="${schedule_info.drug.id}"
+                       hidden
+                       class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"/>
+            </div>
+            <div>
+                <div style="display:flex; justify-content:space-between; width:50%;">
+                    <button class="bg-indigo-600 px-4 py-2 rounded-md text-white font-semibold tracking-wide cursor-pointer">
+                        Submit
+                    </button>
+                    <a th:href="@{'/patient/patient_info/'+${schedule_info.patient.id}}"
+                       class="bg-black px-4 py-2 rounded-md text-white font-semibold tracking-wide cursor-pointer">
+                        Back
+                    </a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+    var inputContainer = document.getElementById("input-container");
+    var inputField = document.getElementById("intakes");
+    inputField.addEventListener("input", function(){
+        var numOfInputs = inputField.value;
+        inputContainer.innerHTML = "";
+        for(var i = 1; i <= numOfInputs; i++) {
+            var label = document.createElement("label");
+            label.innerHTML = "Moment " + i;
+            label.classList.add("mb-3", "block", "text-base", "font-medium", "text-[#07074D]");
+            inputContainer.appendChild(label);
+            var input = document.createElement("input");
+            input.required = true;
+            input.type = "time";
+            input.setAttribute("id", "time");
+            input.setAttribute("name", "time");
+            input.setAttribute("th:field", "*{time[" + i + "]}");
+            input.setAttribute("th:value", "${schedule_info.time[" + i + "]}");
+            input.placeholder = "e.g: Morning, Afternoon, Evening";
+            input.classList.add("w-full", "rounded-md", "border", "border-[#e0e0e0]", "bg-white", "py-3", "px-6", "text-base", "font-medium", "text-[#6B7280]", "outline-none", "focus:border-[#6A64F1]", "focus:shadow-md");
+            inputContainer.appendChild(input);
+        }
+    });
+
+
+
+
+</script>
+</body>
+</html>

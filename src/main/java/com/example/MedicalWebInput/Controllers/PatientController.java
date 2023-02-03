@@ -49,6 +49,10 @@ public class PatientController {
 
     @GetMapping("/edit_drug/{drugId}")
     public String editDrugInfo(@PathVariable Long drugId, @NotNull Model model) {
+        if(patientService.getDrugAndScheduleInfo(drugId)!=null){
+            model.addAttribute("schedule_info", patientService.getDrugAndScheduleInfo(drugId));
+            return "Drug/drug_edit";
+        }
         model.addAttribute("drug_info", patientService.getDrugInfo(drugId));
         return "Drug/drug_input";
     }
