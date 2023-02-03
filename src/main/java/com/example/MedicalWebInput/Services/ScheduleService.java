@@ -214,8 +214,9 @@ public class ScheduleService {
     }
 
     public boolean updateScheduleData(Schedule schedule) {
+        Drug drug = drugRepository.findById(schedule.getDrug().getId()).get();
         Schedule schedule1 = scheduleRepository.
-                findByPatientIdAndDrugId(schedule.getPatient().getId(), schedule.getDrug().getId());
+                findByPatientIdAndDrugId(drug.getPatient().getId(), drug.getId());
         if (schedule1 != null) {
             schedule1.setIntakes(schedule.getIntakes());
             schedule1.setTime(schedule.getTime());
@@ -223,5 +224,10 @@ public class ScheduleService {
             return true;
         }
         return false;
+    }
+
+    public Long getPatientId(Schedule schedule) {
+        Drug drug = drugRepository.findById(schedule.getDrug().getId()).get();
+        return drug.getPatient().getId();
     }
 }
