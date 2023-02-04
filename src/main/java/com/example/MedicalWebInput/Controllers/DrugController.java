@@ -1,7 +1,6 @@
 package com.example.MedicalWebInput.Controllers;
 
 import com.example.MedicalWebInput.Data.DrugDto.DrugDto;
-import com.example.MedicalWebInput.Data.ScheduleDto.ScheduleDto;
 import com.example.MedicalWebInput.Models.Drug;
 import com.example.MedicalWebInput.Models.Schedule;
 import com.example.MedicalWebInput.Services.DrugService;
@@ -80,9 +79,7 @@ public class DrugController {
     @PostMapping("/update")
     public String updateDrugData(@ModelAttribute Schedule schedule) {
         drugService.updateDrugData(schedule);
-        if (!scheduleService.updateScheduleData(schedule)) {
-            return "Patient/patient_login";
-        }
+       scheduleService.updateScheduleData(schedule);
         return "redirect:/patient/patient_info/" + scheduleService.getPatientId(schedule);
     }
 //    ------------------------------------------------------------------------

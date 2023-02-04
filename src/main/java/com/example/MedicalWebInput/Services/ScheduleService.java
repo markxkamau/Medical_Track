@@ -213,17 +213,15 @@ public class ScheduleService {
         return drugStock.getId();
     }
 
-    public boolean updateScheduleData(Schedule schedule) {
+    public void updateScheduleData(Schedule schedule) {
         Drug drug = drugRepository.findById(schedule.getDrug().getId()).get();
         Schedule schedule1 = scheduleRepository.
                 findByPatientIdAndDrugId(drug.getPatient().getId(), drug.getId());
-        if (schedule1 != null) {
-            schedule1.setIntakes(schedule.getIntakes());
-            schedule1.setTime(schedule.getTime());
-            scheduleRepository.save(schedule1);
-            return true;
-        }
-        return false;
+
+        schedule1.setIntakes(schedule.getIntakes());
+        schedule1.setTime(schedule.getTime());
+        scheduleRepository.save(schedule1);
+
     }
 
     public Long getPatientId(Schedule schedule) {
