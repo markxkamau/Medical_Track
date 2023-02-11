@@ -173,8 +173,8 @@ public class PatientService {
 
         }
         Long patientId = drugRepository.findById(drugId).get().getPatient().getId();
-        if (patientId != null) {
-            Schedule schedule = scheduleRepository.findByPatientIdAndDrugId(patientId, drugId);
+        Schedule schedule = scheduleRepository.findByPatientIdAndDrugId(patientId, drugId);
+        if (schedule != null) {
             scheduleRepository.deleteById(schedule.getId());
         }
 

@@ -54,6 +54,6 @@ public class TestController {
             return "Test/test_input";
         }
         testService.addNewTest(createTest);
-        return "redirect:/patient/patient_info/" + createTest.getPatientId();
+        return "redirect:/patient/patient_info";
     }
 }

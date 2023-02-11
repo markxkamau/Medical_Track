@@ -70,17 +70,17 @@ public class DrugController {
     public String addNewDrugData(@ModelAttribute DrugDto drug) {
         if (!drugService.checkDrugData(drug)) {
             drugService.updateDrugData(drug);
-            return "redirect:/patient/patient_info/" + drug.getPatientId();
+            return "redirect:/patient/patient_info";
         }
         drugService.addNewDrugData(drug);
-        return "redirect:/patient/patient_info/" + drug.getPatientId();
+        return "redirect:/patient/patient_info";
     }
 
     @PostMapping("/update")
     public String updateDrugData(@ModelAttribute Schedule schedule) {
         drugService.updateDrugData(schedule);
        scheduleService.updateScheduleData(schedule);
-        return "redirect:/patient/patient_info/" + scheduleService.getPatientId(schedule);
+        return "redirect:/patient/patient_info";
     }
 //    ------------------------------------------------------------------------
 

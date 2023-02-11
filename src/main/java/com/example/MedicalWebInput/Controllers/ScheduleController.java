@@ -31,7 +31,7 @@ public class ScheduleController {
     public String addNewSchedule(@PathVariable Long patientId, @PathVariable Long drugId, @NotNull Model model) {
         if (patientId == null || drugId == null) {
             // return an error message or redirect the user to a page
-            return "redirect:/patient/patient_info/" + patientId;
+            return "redirect:/patient/patient_info";
 
         }
         ScheduleDto scheduleDto = new ScheduleDto();
@@ -86,7 +86,7 @@ public class ScheduleController {
         }
         scheduleService.addNewScheduleData(scheduleDto);
         scheduleService.setVisibilityNone(scheduleDto.getDrugId());
-        return "redirect:/patient/patient_info/" + scheduleDto.getPatientId();
+        return "redirect:/patient/patient_info";
 
     }
 
@@ -108,7 +108,7 @@ public class ScheduleController {
         scheduleService.addNewDrugStock(drugTimetableDto);
         scheduleService.updateStartDate(drugTimetableDto);
         scheduleService.setStockVisibility(scheduleService.getDrugStockId(drugTimetableDto.getScheduleId()));
-        return "redirect:/patient/patient_info/" + scheduleService.getDrugInfo(drugTimetableDto.getScheduleId()).getPatient().getId();
+        return "redirect:/patient/patient_info";
     }
 
 //    ------------------------------------------------------------------------
