@@ -159,11 +159,10 @@ public class PatientController {
     }
 
     @PostMapping("/forgot_password")
-    public String resetPassword(@ModelAttribute PatientLoginDto patientLoginDto, @NotNull Model model) {
+    public String resetPassword(@ModelAttribute PatientLoginDto patientLoginDto, @NotNull RedirectAttributes redirectAttributes) {
         if (!patientService.checkForPatient(patientLoginDto.getEmail())) {
-            model.addAttribute("patient_email", patientLoginDto);
-            model.addAttribute("reset_error", "Email doesn't exist");
-            return "Patient/patient_reset";
+            redirectAttributes.addFlashAttribute("reset_error", "Email doesn't exist");
+            return "redirect:/patient/forgot_password";
         }
         String newPassword = patientService.setNewPassword(patientLoginDto.getEmail());
         return newPassword;
