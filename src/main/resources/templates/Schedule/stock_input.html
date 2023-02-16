@@ -37,24 +37,28 @@
                 <label class="mb-3 block text-base font-medium text-[#07074D]">
                     Number Of Drugs at hand
                 </label>
-                <input type="integer" name="drugCount" id="drugCount" th:field="*{drugCount}" required
+                <input type="integer" name="drugCount" id="drugCount" th:field="*{drugCount}"
+                       th:value="${stock_info.drugCount}" required
                        placeholder="How much of the drug do you have?"
                        class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"/>
                 <p th:text="${stock_count_error}"></p>
             </div>
             <div class="mb-5">
-                <label class="mb-3 block text-base font-medium text-[#07074D]">
+                <label class="mb-3 block text-base font-medium text-[#07074D]" th:if="${patientDrug_info.drug.stockButton}">
                     Start Date
                 </label>
-                <input type="date" name="startDate" id="startDate" th:field="*{startDate}" required
+                <input type="date" name="startDate" id="startDate" th:field="*{startDate}"
+                       th:value="${stock_info.startDate}"  th:required="${!patientDrug_info.drug.stockButton}"
                        placeholder="When will you start taking the drugs?"
-                       class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"/>
+                       class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
+                       th:readonly="${!patientDrug_info.drug.stockButton}"/>
             </div>
             <div class="mb-5">
                 <label class="mb-3 block text-base font-medium text-[#07074D]">
                     Refill Date
                 </label>
-                <input type="date" name="refillDate" id="refillDate" th:field="*{refillDate}" required
+                <input type="date" name="refillDate" id="refillDate" th:field="*{refillDate}"
+                       th:value="${stock_info.refillDate}" required
                        placeholder="When do you plan for your next refill?"
                        class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"/>
                 <p th:text="${stock_data_error}"></p>

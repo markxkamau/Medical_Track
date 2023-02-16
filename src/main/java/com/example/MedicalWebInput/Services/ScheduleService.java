@@ -255,4 +255,43 @@ public class ScheduleService {
         }
         return drugStocks;
     }
+
+    public DrugStock getDrugStockById(Long stockId) {
+        return drugStockRepository.findById(stockId).get();
+    }
+
+    public DrugTimetableDto convertStockToDto(DrugStock drugStock) {
+        Drug drug = drugRepository.findById(drugStock.getDrug().getId()).get();
+        Long patientId = drug.getPatient().getId();
+        Schedule schedule =  scheduleRepository.findByPatientIdAndDrugId(patientId, drug.getId());
+        return new DrugTimetableDto(
+                drugStock.getId(),
+                drugStock.getDrugCount(),
+                schedule.getStartDate().toString(),
+                drugStock.getRefillDate().toString(),
+                schedule.getId()
+        );
+    }
+
+    public boolean checkIfStockExists(DrugTimetableDto drugTimetableDto) {
+        Schedule schedule = scheduleRepository.findById(drugTimetableDto.getScheduleId()).get();
+        Long drugId = schedule.getDrug().getId();
+        if (drugStockRepository.findByDrugId(drugId) == null){
+            return false;
+        }
+        return true;
+    }
+
+    public void updateStockData(DrugTimetableDto drugTimetableDto) {
+        Schedule schedule = scheduleRepository.findById(drugTimetableDto.getScheduleId()).get();
+        DrugStock drugStock = drugStockRepository.findByDrugId(schedule.getDrug().getId());
+        drugStock.setRefillDate(convertStringToDate(drugTimetableDto.getRefillDate()));
+        drugStock.setDrugCount(drugTimetableDto.getDrugCount());
+        drugStockRepository.save(drugStock);
+    }
+
+    public String getDrugId(DrugTimetableDto drugTimetableDto) {
+        Schedule schedule = scheduleRepository.findById(drugTimetableDto.getScheduleId()).get();
+        return schedule.getDrug().getId().toString();
+    }
 }
