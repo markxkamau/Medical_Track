@@ -140,11 +140,9 @@ public class ScheduleService {
         drugRepository.save(drug);
     }
 
-    public Patient getDrugInfo(Long scheduleId) {
-        Schedule schedule = scheduleRepository.findById(scheduleId).get();
-        return patientRepository.findById(schedule.getPatient().getId()).get();
+    public Schedule getDrugInfo(Long scheduleId) {
+        return scheduleRepository.findById(scheduleId).get();
     }
-
 
 
     public boolean checKDate(String startDate) {
@@ -181,15 +179,119 @@ public class ScheduleService {
 
     public void updateStartDate(DrugTimetableDto drugTimetableDto) {
         Schedule schedule = scheduleRepository.findById(drugTimetableDto.getScheduleId()).get();
+
         schedule.setStartDate(convertStringToDate(drugTimetableDto.getStartDate()));
         scheduleRepository.save(schedule);
     }
 
     public boolean checkIfNull(Long patientId) {
         List<Schedule> schedules = scheduleRepository.findByPatientId(patientId);
-        if (schedules.size() < 1){
+        if (schedules.size() < 1) {
             return false;
         }
         return true;
+    }
+
+    public void setStockVisibility(Long id) {
+        DrugStock drugStock = drugStockRepository.findById(id).get();
+        Long drugId = drugStock.getDrug().getId();
+        Drug drug = drugRepository.findById(drugId).get();
+        drug.setStockButton(false);
+        drugRepository.save(drug);
+    }
+
+    public Long getScheduleByDrugId(Long drugId) {
+        Drug drug = drugRepository.findById(drugId).get();
+        Long patientId = drug.getPatient().getId();
+        Schedule schedule = scheduleRepository.findByPatientIdAndDrugId(patientId, drugId);
+        return schedule.getId();
+    }
+
+    public Long getDrugStockId(Long scheduleId) {
+        Long drugId = scheduleRepository.findById(scheduleId).get().getDrug().getId();
+        DrugStock drugStock = drugStockRepository.findByDrugId(drugId);
+        return drugStock.getId();
+    }
+
+    public void updateScheduleData(Schedule schedule) {
+        Drug drug = drugRepository.findById(schedule.getDrug().getId()).get();
+        Schedule schedule1 = scheduleRepository.
+                findByPatientIdAndDrugId(drug.getPatient().getId(), drug.getId());
+
+        schedule1.setIntakes(schedule.getIntakes());
+        schedule1.setTime(schedule.getTime());
+        scheduleRepository.save(schedule1);
+
+    }
+
+    public Long getPatientId(Schedule schedule) {
+        Drug drug = drugRepository.findById(schedule.getDrug().getId()).get();
+        return drug.getPatient().getId();
+    }
+
+    public boolean checkStock(Long id) {
+        int count = 0;
+        List<Drug> drug = drugRepository.findByPatientId(id);
+        for (Drug item : drug
+        ) {
+            DrugStock drugStock = drugStockRepository.findByDrugId(item.getId());
+            if (drugStock != null) {
+                count++;
+            }
+        }
+        if (count == 0) {
+            return false;
+        }
+        return true;
+    }
+
+    public List<DrugStock> getStockInfo(Long id) {
+        List<Drug> drugs = drugRepository.findByPatientId(id);
+        List<DrugStock> drugStocks = new ArrayList<>();
+        for (Drug item : drugs) {
+            if (drugStockRepository.findByDrugId(item.getId()) != null) {
+                drugStocks.add(drugStockRepository.findByDrugId(item.getId()));
+            }
+        }
+        return drugStocks;
+    }
+
+    public DrugStock getDrugStockById(Long stockId) {
+        return drugStockRepository.findById(stockId).get();
+    }
+
+    public DrugTimetableDto convertStockToDto(DrugStock drugStock) {
+        Drug drug = drugRepository.findById(drugStock.getDrug().getId()).get();
+        Long patientId = drug.getPatient().getId();
+        Schedule schedule =  scheduleRepository.findByPatientIdAndDrugId(patientId, drug.getId());
+        return new DrugTimetableDto(
+                drugStock.getId(),
+                drugStock.getDrugCount(),
+                schedule.getStartDate().toString(),
+                drugStock.getRefillDate().toString(),
+                schedule.getId()
+        );
+    }
+
+    public boolean checkIfStockExists(DrugTimetableDto drugTimetableDto) {
+        Schedule schedule = scheduleRepository.findById(drugTimetableDto.getScheduleId()).get();
+        Long drugId = schedule.getDrug().getId();
+        if (drugStockRepository.findByDrugId(drugId) == null){
+            return false;
+        }
+        return true;
+    }
+
+    public void updateStockData(DrugTimetableDto drugTimetableDto) {
+        Schedule schedule = scheduleRepository.findById(drugTimetableDto.getScheduleId()).get();
+        DrugStock drugStock = drugStockRepository.findByDrugId(schedule.getDrug().getId());
+        drugStock.setRefillDate(convertStringToDate(drugTimetableDto.getRefillDate()));
+        drugStock.setDrugCount(drugTimetableDto.getDrugCount());
+        drugStockRepository.save(drugStock);
+    }
+
+    public String getDrugId(DrugTimetableDto drugTimetableDto) {
+        Schedule schedule = scheduleRepository.findById(drugTimetableDto.getScheduleId()).get();
+        return schedule.getDrug().getId().toString();
     }
 }

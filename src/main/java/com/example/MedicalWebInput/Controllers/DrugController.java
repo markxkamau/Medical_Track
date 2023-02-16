@@ -2,6 +2,7 @@ package com.example.MedicalWebInput.Controllers;
 
 import com.example.MedicalWebInput.Data.DrugDto.DrugDto;
 import com.example.MedicalWebInput.Models.Drug;
+import com.example.MedicalWebInput.Models.Schedule;
 import com.example.MedicalWebInput.Services.DrugService;
 import com.example.MedicalWebInput.Services.PatientService;
 import com.example.MedicalWebInput.Services.ScheduleService;
@@ -66,14 +67,20 @@ public class DrugController {
 
     //    *Drug Confirmation function
     @PostMapping("/add_drug")
-    public String addNewDrugData(@NotNull Model model, @ModelAttribute DrugDto drug) {
+    public String addNewDrugData(@ModelAttribute DrugDto drug) {
         if (!drugService.checkDrugData(drug)) {
-            model.addAttribute("drug_info", drug);
-            model.addAttribute("drug_error", "Drug stated already exists");
-            return "Drug/drug_input";
+            drugService.updateDrugData(drug);
+            return "redirect:/patient/patient_info";
         }
         drugService.addNewDrugData(drug);
-        return "redirect:/patient/patient_info/"+drug.getPatientId();
+        return "redirect:/patient/patient_info";
+    }
+
+    @PostMapping("/update")
+    public String updateDrugData(@ModelAttribute Schedule schedule) {
+        drugService.updateDrugData(schedule);
+       scheduleService.updateScheduleData(schedule);
+        return "redirect:/patient/patient_info";
     }
 //    ------------------------------------------------------------------------
 

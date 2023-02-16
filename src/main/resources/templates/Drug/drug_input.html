@@ -18,11 +18,16 @@
 <div class="flex items-center justify-center p-12">
     <div class="mx-auto w-full max-w-[550px]">
         <form action="#" th:action="@{/drugs/add_drug}" th:object="${drug_info}" method="POST">
+            <input type="text" name="name" id="id" placeholder="Drug Id" th:value="${drug_info.id}"
+                   th:field="*{id}" hidden
+                   class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
+            />
             <div class="mb-5">
                 <label for="name" class="mb-3 block text-base font-medium text-[#07074D]">
                     Drug Name
                 </label>
-                <input type="text" name="name" id="name" placeholder="Drug Name" th:field="*{drugName}" required
+                <input type="text" name="name" id="name" placeholder="Drug Name" th:value="${drug_info.drugName}"
+                       th:field="*{drugName}" required
                        class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
                 />
             </div>
@@ -30,7 +35,8 @@
                 <label for="name" class="mb-3 block text-base font-medium text-[#07074D]">
                     Drug Scientific Name
                 </label>
-                <input type="text" name="name" placeholder="Drug Scientific Name" th:field="*{drugScientificName}" required
+                <input type="text" id="scientificName" name="name" placeholder="Drug Scientific Name"
+                       th:value="${drug_info.drugScientificName}" th:field="*{drugScientificName}" required
                        class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
                 />
                 <p class="text-red-600" th:text="${drug_error}"></p>
@@ -39,7 +45,8 @@
                 <label class="mb-3 block text-base font-medium text-[#07074D]">
                     Drug Size(mg)
                 </label>
-                <input type="text" name="name" placeholder="Drug Size" th:field="*{drugSize}" required
+                <input type="text" name="name" id="drugSize" placeholder="Drug Size" th:value="${drug_info.drugSize}"
+                       th:field="*{drugSize}" required
                        class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
                 />
                 <p class="text-red-600" th:text="${drug_error}"></p>
@@ -48,24 +55,30 @@
                 <label class="mb-3 block text-base font-medium text-[#07074D]">
                     Drug Packaging
                 </label>
-                <input type="text" name="name" placeholder="Drug Packaging e.g. Capsule" th:field="*{drugPackaging}" required
+                <input type="text" name="name" id="drugPackaging" placeholder="Drug Packaging e.g. Capsule"
+                       th:value="${drug_info.drugPackaging}" th:field="*{drugPackaging}" required
                        class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
                 />
             </div>
             <div class="mb-5">
                 <label class="mb-3 block text-base font-medium text-[#07074D]">Message </label>
-                <textarea rows="4" name="message" placeholder="Drug Purpose and Use" th:field="*{drugPurpose}" required
+                <textarea rows="4" name="message" id="drugPurpose" placeholder="Drug Purpose and Use" th:value="${drug_info.drugPurpose}"
+                          th:field="*{drugPurpose}" required
                           class="w-full resize-none rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
                 ></textarea>
             </div>
             <input type="number" name="patientId" id="patientId" placeholder="Drug Patient Id" th:field="*{patientId}"
-                   th:value="${patient_id}"
+                   th:value="${drug_info.patientId}"
                    class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
-                   hidden />
-            <div>
+                   hidden/>
+            <div style="display:flex; justify-content:space-between; width:50%;">
                 <button class="bg-indigo-600 px-4 py-2 rounded-md text-white font-semibold tracking-wide cursor-pointer">
                     Submit
                 </button>
+                <a th:href="@{/patient/patient_info}"
+                   class="bg-black px-4 py-2 rounded-md text-white font-semibold tracking-wide cursor-pointer">
+                    Back
+                </a>
             </div>
         </form>
     </div>

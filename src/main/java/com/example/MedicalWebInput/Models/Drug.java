@@ -22,6 +22,7 @@ public class Drug {
     private String drugPackaging = "";
     private String drugPurpose = "";
     private boolean scheduleButton = true;
+    private boolean stockButton = true;
     @ManyToOne
     private Patient patient;
 
@@ -125,5 +126,13 @@ public class Drug {
 
     public void setScheduleButton(boolean scheduleButton) {
         this.scheduleButton = scheduleButton;
+    }
+
+    public boolean getStockButton() {
+        return stockButton;
+    }
+
+    public void setStockButton(boolean stockButton) {
+        this.stockButton = stockButton;
     }
 }

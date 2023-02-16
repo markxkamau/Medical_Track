@@ -1,15 +1,22 @@
 package com.example.MedicalWebInput.Controllers;
 
 import com.example.MedicalWebInput.Data.PatientDto.CreatePatientDto;
+import com.example.MedicalWebInput.Data.PatientDto.PatientDto;
 import com.example.MedicalWebInput.Data.PatientDto.PatientLoginDto;
 import com.example.MedicalWebInput.Models.Patient;
+import com.example.MedicalWebInput.Repository.DrugRepository;
 import com.example.MedicalWebInput.Services.PatientService;
 import com.example.MedicalWebInput.Services.ScheduleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.validation.constraints.NotNull;
 
 @Controller
@@ -20,6 +27,8 @@ public class PatientController {
     private PatientService patientService;
     @Autowired
     private ScheduleService scheduleService;
+    @Autowired
+    private DrugRepository drugRepository;
 
 //    *************************************************************************
 //    GetMappings
@@ -44,11 +53,42 @@ public class PatientController {
         return "Patient/patient_registration";
     }
 
+    @GetMapping("/edit_drug/{drugId}")
+    public String editDrugInfo(@PathVariable Long drugId, @NotNull Model model) {
+        if (patientService.getDrugAndScheduleInfo(drugId) != null) {
+            model.addAttribute("schedule_info", patientService.getDrugAndScheduleInfo(drugId));
+            return "Drug/drug_edit";
+        }
+        model.addAttribute("drug_info", patientService.getDrugInfo(drugId));
+        return "Drug/drug_input";
+    }
+
+    @GetMapping("/delete_drug/{drugId}")
+    public String deleteDrugById(@PathVariable Long drugId) {
+        Long patientId = patientService.getDrugInfo(drugId).getPatientId();
+        patientService.deleteDrugById(drugId);
+        return "redirect:/patient/patient_info";
+    }
+
     @GetMapping("/login")
     public String loginPatient(@NotNull Model model) {
         model.addAttribute("login_detail", new PatientLoginDto());
         return "Patient/patient_login";
     }
+    @GetMapping("/logout")
+    public String logoutPatient(@NotNull HttpServletResponse response, HttpSession session) {
+        session.invalidate();
+        response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+        response.setHeader("Pragma", "no-cache");
+        response.setDateHeader("Expires", 0);
+
+        Cookie sessionCookie = new Cookie("JSESSIONID", "");
+        sessionCookie.setMaxAge(0);
+        sessionCookie.setHttpOnly(true);
+        response.addCookie(sessionCookie);
+        return "redirect:/patient/login";
+    }
+
 
     @GetMapping("/forgot_password")
     public String forgotPassword(@NotNull Model model) {
@@ -56,12 +96,23 @@ public class PatientController {
         return "Patient/patient_reset";
     }
 
-    @GetMapping("/patient_info/{patientId}")
-    public String getPatientInfo(@NotNull Model model, @PathVariable Long patientId) {
-        model.addAttribute("patient_data", patientService.getPatientById(patientId));
-        model.addAttribute("drug_info", patientService.getDrugByPatientId(patientId));
-        model.addAttribute("schedule_info", scheduleService.getScheduleByPatientId(patientId));
-        model.addAttribute("schedule_present",scheduleService.checkIfNull(patientId));
+    @GetMapping("/patient_info")
+    public String getPatientInfo(@NotNull Model model, HttpServletRequest httpServletRequest) {
+        HttpSession session = httpServletRequest.getSession();
+        if (session == null || session.getAttribute("patient_info") == null ) {
+            // If the user is not logged in, redirect them to the login page
+            return "redirect:/patient/login";
+        }
+        PatientDto patient = (PatientDto) session.getAttribute("patient_info");
+        model.addAttribute("patient_data", patientService.getPatientById(patient.getId()));
+        model.addAttribute("drug_info", patientService.getDrugByPatientId(patient.getId()));
+        model.addAttribute("drug_present", patientService.checkDrug(patient.getId()));
+        model.addAttribute("schedule_info",scheduleService.getScheduleByPatientId(patient.getId()));
+        model.addAttribute("schedule_present", scheduleService.checkIfNull(patient.getId()));
+        model.addAttribute("stock_info",scheduleService.getStockInfo(patient.getId()));
+        model.addAttribute("stock_present",scheduleService.checkStock(patient.getId()));
+        model.addAttribute("test_data",patientService.getAllPatientTests(patient.getId()));
+
         return "HomePage";
     }
 
@@ -96,27 +147,29 @@ public class PatientController {
     }
 
     @PostMapping("/login")
-    public String verifyLogin(@ModelAttribute PatientLoginDto patientLoginDto, @NotNull Model model) {
+    public String verifyLogin(@ModelAttribute PatientLoginDto patientLoginDto, @NotNull RedirectAttributes redirectAttributes, HttpServletRequest request) {
         if (!patientService.verifyLogin(patientLoginDto)) {
-            model.addAttribute("login_detail", patientLoginDto);
-            model.addAttribute("login_error", "Password or email not correct, check and try again");
-            return "Patient/patient_login";
+            redirectAttributes.addFlashAttribute("login_error", "Password or email not correct, check and try again");
+            return "redirect:/patient/login";
         }
         Patient patient = patientService.getPatientByEmail(patientLoginDto.getEmail());
-        return "redirect:/patient/patient_info/"+patient.getId();
+        HttpSession session = request.getSession();
+        session.setAttribute("patient_info", patientService.getPatientById(patient.getId()));
+        session.setMaxInactiveInterval(900);
+
+        return "redirect:/patient/patient_info";
 
     }
 
     @PostMapping("/forgot_password")
-    @ResponseBody
-    public String resetPassword(@ModelAttribute PatientLoginDto patientLoginDto, @NotNull Model model) {
+    public String resetPassword(@ModelAttribute PatientLoginDto patientLoginDto, @NotNull RedirectAttributes redirectAttributes) {
         if (!patientService.checkForPatient(patientLoginDto.getEmail())) {
-            model.addAttribute("patient_email", patientLoginDto);
-            model.addAttribute("reset_error", "Email doesn't exist");
-            return "Patient/patient_reset";
+            redirectAttributes.addFlashAttribute("reset_error", "Email doesn't exist");
+            return "redirect:/patient/forgot_password";
         }
         String newPassword = patientService.setNewPassword(patientLoginDto.getEmail());
         return newPassword;
     }
+
 
 }

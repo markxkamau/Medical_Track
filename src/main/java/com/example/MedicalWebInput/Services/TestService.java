@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -44,11 +45,12 @@ public class TestService {
 
     public void addNewTest(CreateTestDto createTest) {
         Test test = new Test(
-               new Long(1),
-               createTest.getBloodPressure(),
-               createTest.getWeight(),
-               createTest.getOxygen(),
+                createTest.getId(),
+                createTest.getBloodPressure(),
+                createTest.getWeight(),
+                createTest.getOxygen(),
                 createTest.getBloodSugar(),
+                new Date(),
                 patientRepository.findById(createTest.getPatientId()).get()
         );
         testRepository.save(test);

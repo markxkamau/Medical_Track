@@ -46,11 +46,15 @@
                        hidden
                        class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"/>
             </div>
-            <div>
+            <div style="display:flex; justify-content:space-between; width:50%;">
                 <button type="submit"
                         class="bg-indigo-600 px-4 py-2 rounded-md text-white font-semibold tracking-wide cursor-pointer">
                     Submit
                 </button>
+                <a th:href="@{/patient/patient_info}"
+                   class="bg-black px-4 py-2 rounded-md text-white font-semibold tracking-wide cursor-pointer">
+                    Back
+                </a>
             </div>
         </form>
     </div>
@@ -77,6 +81,8 @@
             inputContainer.appendChild(input);
         }
     });
+
+
 
 
 

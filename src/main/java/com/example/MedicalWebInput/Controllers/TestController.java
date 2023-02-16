@@ -27,9 +27,11 @@ public class TestController {
         return ResponseEntity.ok(testService.getAllTests());
     }
 
-    @GetMapping("new_test")
-    public String addNewTest(@NotNull Model model) {
-        model.addAttribute("test_info", new CreateTestDto());
+    @GetMapping("new_test/{id}")
+    public String addNewTest(@NotNull Model model, @PathVariable Long id) {
+        CreateTestDto testDto = new CreateTestDto();
+        testDto.setPatientId(id);
+        model.addAttribute("test_info", testDto);
         return "Test/test_input";
     }
 
@@ -40,11 +42,11 @@ public class TestController {
     public String addNewTestInfo(@NotNull Model model, @ModelAttribute CreateTestDto createTest) {
         model.addAttribute("test_info", createTest);
         if (!testService.chcekBloodPressure(createTest.getBloodPressure())) {
-            model.addAttribute("pressure_error","Blood Pressure input out of normal range");
+            model.addAttribute("pressure_error", "Blood Pressure input out of normal range");
             return "Test/test_input";
         }
         if (!testService.checkOxygen(createTest.getOxygen())) {
-            model.addAttribute("oxygen_error","O2 Levels out of range");
+            model.addAttribute("oxygen_error", "O2 Levels out of range");
             return "Test/test_input";
         }
         if (!testService.checkBloodSugar(createTest.getBloodSugar())) {
@@ -52,9 +54,6 @@ public class TestController {
             return "Test/test_input";
         }
         testService.addNewTest(createTest);
-        model.addAttribute("patient_data", scheduleService.getPatientById(createTest.getPatientId()));
-        model.addAttribute("drug_info", scheduleService.getDrugByPatientId(createTest.getPatientId()));
-        model.addAttribute("schedule_info", scheduleService.getScheduleByPatientId(createTest.getPatientId()));
-        return "HomePage";
+        return "redirect:/patient/patient_info";
     }
 }
