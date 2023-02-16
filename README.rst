@@ -17,7 +17,7 @@ Introduction
  * `Postman <https://www.postman.com/downloads/>`_
  * `pgadmin4 <https://www.pgadmin.org/download/>`_
  * `postgresql 13 <https://www.enterprisedb.com/downloads/postgres-postgresql-downloads>`_
- 
+
 Please install these tools before continuing with the guide.
 
 Fetching the Project
