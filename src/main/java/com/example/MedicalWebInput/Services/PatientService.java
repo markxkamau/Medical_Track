@@ -186,4 +186,12 @@ public class PatientService {
         Long patientId = drugDto.getPatientId();
         return scheduleRepository.findByPatientIdAndDrugId(patientId, drugId);
     }
+
+    public boolean checkDrug(Long id) {
+        List<Drug> drug = drugRepository.findByPatientId(id);
+        if (drug.isEmpty()){
+            return false;
+        }
+        return true;
+    }
 }

@@ -228,4 +228,31 @@ public class ScheduleService {
         Drug drug = drugRepository.findById(schedule.getDrug().getId()).get();
         return drug.getPatient().getId();
     }
+
+    public boolean checkStock(Long id) {
+        int count = 0;
+        List<Drug> drug = drugRepository.findByPatientId(id);
+        for (Drug item : drug
+        ) {
+            DrugStock drugStock = drugStockRepository.findByDrugId(item.getId());
+            if (drugStock != null) {
+                count++;
+            }
+        }
+        if (count == 0) {
+            return false;
+        }
+        return true;
+    }
+
+    public List<DrugStock> getStockInfo(Long id) {
+        List<Drug> drugs = drugRepository.findByPatientId(id);
+        List<DrugStock> drugStocks = new ArrayList<>();
+        for (Drug item : drugs) {
+            if (drugStockRepository.findByDrugId(item.getId()) != null) {
+                drugStocks.add(drugStockRepository.findByDrugId(item.getId()));
+            }
+        }
+        return drugStocks;
+    }
 }

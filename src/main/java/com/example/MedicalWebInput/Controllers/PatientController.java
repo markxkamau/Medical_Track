@@ -106,8 +106,11 @@ public class PatientController {
         PatientDto patient = (PatientDto) session.getAttribute("patient_info");
         model.addAttribute("patient_data", patientService.getPatientById(patient.getId()));
         model.addAttribute("drug_info", patientService.getDrugByPatientId(patient.getId()));
+        model.addAttribute("drug_present", patientService.checkDrug(patient.getId()));
         model.addAttribute("schedule_info",scheduleService.getScheduleByPatientId(patient.getId()));
         model.addAttribute("schedule_present", scheduleService.checkIfNull(patient.getId()));
+        model.addAttribute("stock_info",scheduleService.getStockInfo(patient.getId()));
+        model.addAttribute("stock_present",scheduleService.checkStock(patient.getId()));
         model.addAttribute("test_data",patientService.getAllPatientTests(patient.getId()));
 
         return "HomePage";
