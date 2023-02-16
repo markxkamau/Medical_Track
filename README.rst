@@ -17,3 +17,41 @@ Introduction
  * `Postman <https://www.postman.com/downloads/>`_
  * `pgadmin4 <https://www.pgadmin.org/download/>`_
  * `postgresql 13 <https://www.enterprisedb.com/downloads/postgres-postgresql-downloads>`_
+
+OpenJDK 11:
+
+    Visit the OpenJDK 11 download page (https://jdk.java.net/11/).
+    Choose the appropriate installation package for your operating system and download it.
+    Follow the instructions in the installation wizard to complete the installation process.
+
+Spring Initializr:
+
+    Visit the Spring Initializr website (https://start.spring.io/).
+    Choose the necessary project settings, including the project type, language, and dependencies.
+
+    Click "Generate" to generate a new project.
+    Extract the generated project archive and import it into your preferred IDE.
+
+IntelliJ IDEA:
+
+    Visit the IntelliJ IDEA download page (https://www.jetbrains.com/idea/download/#section=linux).
+    Choose the appropriate installation package for your operating system and download it.
+    Follow the instructions in the installation wizard to complete the installation process.
+
+Postman:
+
+    Visit the Postman download page (https://www.postman.com/downloads/).
+    Choose the appropriate installation package for your operating system and download it.
+    Follow the instructions in the installation wizard to complete the installation process.
+
+pgadmin4:
+
+    Visit the pgadmin4 download page (https://www.pgadmin.org/download/).
+    Choose the appropriate installation package for your operating system and download it.
+    Follow the instructions in the installation wizard to complete the installation process.
+
+PostgreSQL 13:
+
+    Visit the PostgreSQL 13 download page (https://www.enterprisedb.com/downloads/postgres-postgresql-downloads).
+    Choose the appropriate installation package for your operating system and download it.
+    Follow the instructions in the installation wizard to complete the installation process.
