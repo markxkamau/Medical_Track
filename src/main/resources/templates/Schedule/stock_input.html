@@ -33,6 +33,9 @@
     <div class="mx-auto w-full max-w-[550px]">
         <p th:text="${update_start_date}"></p>
         <form method="post" th:action="@{/schedule/new_stock}" th:object="${stock_info}">
+            <input type="text" name="id" id="id" th:field="*{id}"
+                   th:value="${stock_info.id}" hidden/>
+
             <div class="mb-5">
                 <label class="mb-3 block text-base font-medium text-[#07074D]">
                     Number Of Drugs at hand
@@ -43,15 +46,15 @@
                        class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"/>
                 <p th:text="${stock_count_error}"></p>
             </div>
-            <div class="mb-5">
-                <label class="mb-3 block text-base font-medium text-[#07074D]" th:if="${patientDrug_info.drug.stockButton}">
+            <div class="mb-5" th:if="${patientDrug_info.drug.stockButton}">
+                <label class="mb-3 block text-base font-medium text-[#07074D]">
                     Start Date
                 </label>
                 <input type="date" name="startDate" id="startDate" th:field="*{startDate}"
-                       th:value="${stock_info.startDate}"  th:required="${!patientDrug_info.drug.stockButton}"
+                       th:value="${stock_info.startDate}"
                        placeholder="When will you start taking the drugs?"
                        class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
-                       th:readonly="${!patientDrug_info.drug.stockButton}"/>
+                />
             </div>
             <div class="mb-5">
                 <label class="mb-3 block text-base font-medium text-[#07074D]">
@@ -63,7 +66,7 @@
                        class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"/>
                 <p th:text="${stock_data_error}"></p>
             </div>
-            <div class="mb-5">
+            <div class="mb-5" th:if="${patientDrug_info.drug.stockButton}">
                 <input type="integer" name="scheduleId" id="scheduleId" th:field="*{scheduleId}"
                        th:value="${stock_info.scheduleId}" hidden
                        class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"/>

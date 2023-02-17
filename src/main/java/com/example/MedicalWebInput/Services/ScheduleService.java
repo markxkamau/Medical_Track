@@ -3,6 +3,7 @@ package com.example.MedicalWebInput.Services;
 import com.example.MedicalWebInput.Data.ScheduleDto.DrugTimetableDto;
 import com.example.MedicalWebInput.Data.ScheduleDto.PatientDrugInfoDto;
 import com.example.MedicalWebInput.Data.ScheduleDto.ScheduleDto;
+import com.example.MedicalWebInput.Data.ScheduleDto.StockDto;
 import com.example.MedicalWebInput.Models.Drug;
 import com.example.MedicalWebInput.Models.DrugStock;
 import com.example.MedicalWebInput.Models.Patient;
@@ -267,9 +268,17 @@ public class ScheduleService {
         return new DrugTimetableDto(
                 drugStock.getId(),
                 drugStock.getDrugCount(),
-                schedule.getStartDate().toString(),
+                new Date().toString(),
                 drugStock.getRefillDate().toString(),
                 schedule.getId()
+        );
+    }
+
+    public StockDto convertStocksToDto(DrugStock drugStock){
+        return new StockDto(
+                drugStock.getId(),
+                drugStock.getDrugCount(),
+                drugStock.getRefillDate().toString()
         );
     }
 
@@ -293,5 +302,11 @@ public class ScheduleService {
     public String getDrugId(DrugTimetableDto drugTimetableDto) {
         Schedule schedule = scheduleRepository.findById(drugTimetableDto.getScheduleId()).get();
         return schedule.getDrug().getId().toString();
+    }
+
+    public void deleteDrugStock(DrugStock drugStock) {
+        Drug drug = drugRepository.findById(drugStock.getDrug().getId()).get();
+        drug.setStockButton(true);
+        drugStockRepository.deleteById(drugStock.getId());
     }
 }

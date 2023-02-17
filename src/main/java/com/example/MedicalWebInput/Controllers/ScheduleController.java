@@ -2,6 +2,7 @@ package com.example.MedicalWebInput.Controllers;
 
 import com.example.MedicalWebInput.Data.ScheduleDto.DrugTimetableDto;
 import com.example.MedicalWebInput.Data.ScheduleDto.ScheduleDto;
+import com.example.MedicalWebInput.Data.ScheduleDto.StockDto;
 import com.example.MedicalWebInput.Models.DrugStock;
 import com.example.MedicalWebInput.Services.ScheduleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,16 +58,28 @@ public class ScheduleController {
 
     @GetMapping("/edit_stock/{stockId}")
     public String editStock(@PathVariable Long stockId, @NotNull Model model, RedirectAttributes redirectAttributes) {
+        // Confirm the stock id exists
         DrugStock drugStock = scheduleService.getDrugStockById(stockId);
         if (drugStock != null) {
+//            when the existing stock is found
+            Long drugId = drugStock.getDrug().getId();
+            Long serviceId = scheduleService.getScheduleByDrugId(drugId);
             DrugTimetableDto drugTimetableDto = scheduleService.convertStockToDto(drugStock);
             model.addAttribute("stock_info", drugTimetableDto);
-            model.addAttribute("patientDrug_info", scheduleService.getDrugInfo(drugTimetableDto.getScheduleId()));
+            model.addAttribute("patientDrug_info", scheduleService.getDrugInfo(serviceId));
             return "Schedule/stock_input";
         }
         redirectAttributes.addFlashAttribute("edit_error", "Error encountered during the edit");
         return "redirect:/patient/patient_info";
     }
+
+    @GetMapping("/delete_stock/{stockId}")
+    public String deleteStock(@PathVariable Long stockId, @NotNull Model model, RedirectAttributes redirectAttributes) {
+        DrugStock drugStock = scheduleService.getDrugStockById(stockId);
+        scheduleService.deleteDrugStock(drugStock);
+        return "redirect:/patient/patient_info";
+    }
+
 
 //    *************************************************************************
 //    PostMappings
@@ -80,24 +93,18 @@ public class ScheduleController {
 
     //    Schedule Confirmation function
     @PostMapping("/new_schedule")
-    public String addNewScheduleData(@NotNull Model model, @ModelAttribute ScheduleDto scheduleDto) {
+    public String addNewScheduleData(@NotNull RedirectAttributes redirectAttributes, @ModelAttribute ScheduleDto scheduleDto) {
         if (scheduleDto.getPatientId() == null || scheduleDto.getDrugId() == null || scheduleDto.getIntakes() == null || scheduleDto.getTime() == null) {
-            model.addAttribute("schedule_info", scheduleDto);
-            model.addAttribute("patientDrug_info", scheduleService.getPatientAndDrugInfo(scheduleDto.getPatientId(), scheduleDto.getDrugId()));
-            model.addAttribute("schedule_error", "One field has not yet been filled in");
-            return "Schedule/schedule_input";
+            redirectAttributes.addFlashAttribute("schedule_error", "One field has not yet been filled in");
+            return "redirect:/schedule/new_schedule/" + scheduleDto.getPatientId() + "/" + scheduleDto.getDrugId();
         }
         if (!scheduleService.checkScheduleData(scheduleDto)) {
-            model.addAttribute("schedule_info", scheduleDto);
-            model.addAttribute("patientDrug_info", scheduleService.getPatientAndDrugInfo(scheduleDto.getPatientId(), scheduleDto.getDrugId()));
-            model.addAttribute("schedule_error", "Schedule already exists, Check Drug, Patient and Time");
-            return "Schedule/schedule_input";
+            redirectAttributes.addFlashAttribute("schedule_error", "Schedule already exists, Check Drug, Patient and Time");
+            return "redirect:/schedule/new_schedule/" + scheduleDto.getPatientId() + "/" + scheduleDto.getDrugId();
         }
         if (!scheduleService.checkTime(scheduleDto.getTime())) {
-            model.addAttribute("schedule_info", scheduleDto);
-            model.addAttribute("patientDrug_info", scheduleService.getPatientAndDrugInfo(scheduleDto.getPatientId(), scheduleDto.getDrugId()));
-            model.addAttribute("time_error", "Time input is similar, please try again");
-            return "Schedule/schedule_input";
+            redirectAttributes.addFlashAttribute("time_error", "Time input is similar, please try again");
+            return "redirect:/schedule/new_schedule/" + scheduleDto.getPatientId() + "/" + scheduleDto.getDrugId();
         }
         scheduleService.addNewScheduleData(scheduleDto);
         scheduleService.setVisibilityNone(scheduleDto.getDrugId());
@@ -110,15 +117,15 @@ public class ScheduleController {
 //        Ensure drug count is greater than 0
         if (drugTimetableDto.getDrugCount() < 1) {
             redirectAttributes.addFlashAttribute("stock_count_error", "Drug count is too low");
-            return "redirect:/schedule/new_stock/"+scheduleService.getDrugId(drugTimetableDto);
-        }
-//        Ensure date input is not in the past
-        if (!scheduleService.checKDate(drugTimetableDto.getStartDate())) {
-            redirectAttributes.addFlashAttribute("stock_data_error", "Incorrect date set");
-            return "redirect:/schedule/new_stock/"+scheduleService.getDrugId(drugTimetableDto);
+            return "redirect:/schedule/new_stock/" + scheduleService.getDrugId(drugTimetableDto);
         }
 //        New stock input
         if (!scheduleService.checkIfStockExists(drugTimetableDto)) {
+            //        Ensure date input is not in the past
+            if (!scheduleService.checKDate(drugTimetableDto.getStartDate())) {
+                redirectAttributes.addFlashAttribute("stock_data_error", "Incorrect date set");
+                return "redirect:/schedule/new_stock/" + scheduleService.getDrugId(drugTimetableDto);
+            }
             scheduleService.addNewDrugStock(drugTimetableDto);
             scheduleService.updateStartDate(drugTimetableDto);
             scheduleService.setStockVisibility(scheduleService.getDrugStockId(drugTimetableDto.getScheduleId()));
