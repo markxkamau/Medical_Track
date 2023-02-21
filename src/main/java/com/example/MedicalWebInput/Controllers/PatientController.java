@@ -6,6 +6,7 @@ import com.example.MedicalWebInput.Data.PatientDto.PatientLoginDto;
 import com.example.MedicalWebInput.Models.Patient;
 import com.example.MedicalWebInput.Repository.DrugRepository;
 import com.example.MedicalWebInput.Services.PatientService;
+import com.example.MedicalWebInput.Services.ReminderService;
 import com.example.MedicalWebInput.Services.ScheduleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -29,6 +30,8 @@ public class PatientController {
     private ScheduleService scheduleService;
     @Autowired
     private DrugRepository drugRepository;
+    @Autowired
+    private ReminderService reminderService;
 
 //    *************************************************************************
 //    GetMappings
@@ -75,6 +78,7 @@ public class PatientController {
         model.addAttribute("login_detail", new PatientLoginDto());
         return "Patient/patient_login";
     }
+
     @GetMapping("/logout")
     public String logoutPatient(@NotNull HttpServletResponse response, HttpSession session) {
         session.invalidate();
@@ -107,11 +111,14 @@ public class PatientController {
         model.addAttribute("patient_data", patientService.getPatientById(patient.getId()));
         model.addAttribute("drug_info", patientService.getDrugByPatientId(patient.getId()));
         model.addAttribute("drug_present", patientService.checkDrug(patient.getId()));
-        model.addAttribute("schedule_info",scheduleService.getScheduleByPatientId(patient.getId()));
+        model.addAttribute("schedule_info", scheduleService.getScheduleByPatientId(patient.getId()));
         model.addAttribute("schedule_present", scheduleService.checkIfNull(patient.getId()));
-        model.addAttribute("stock_info",scheduleService.getStockInfo(patient.getId()));
-        model.addAttribute("stock_present",scheduleService.checkStock(patient.getId()));
-        model.addAttribute("test_data",patientService.getAllPatientTests(patient.getId()));
+        model.addAttribute("stock_info", scheduleService.getStockInfo(patient.getId()));
+        model.addAttribute("stock_present", scheduleService.checkStock(patient.getId()));
+        model.addAttribute("test_data", patientService.getAllPatientTests(patient.getId()));
+
+        reminderService.setPatientId(patient.getId());
+        reminderService.sendDoseReminders();
 
         return "HomePage";
     }

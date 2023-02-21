@@ -2,7 +2,6 @@ package com.example.MedicalWebInput.Controllers;
 
 import com.example.MedicalWebInput.Data.ScheduleDto.DrugTimetableDto;
 import com.example.MedicalWebInput.Data.ScheduleDto.ScheduleDto;
-import com.example.MedicalWebInput.Data.ScheduleDto.StockDto;
 import com.example.MedicalWebInput.Models.DrugStock;
 import com.example.MedicalWebInput.Services.ReminderService;
 import com.example.MedicalWebInput.Services.ScheduleService;
@@ -111,8 +110,6 @@ public class ScheduleController {
         }
         scheduleService.addNewScheduleData(scheduleDto);
         scheduleService.setVisibilityNone(scheduleDto.getDrugId());
-        reminderService.setPatientId(scheduleDto.getPatientId());
-        reminderService.sendDoseReminders();
         return "redirect:/patient/patient_info";
 
     }

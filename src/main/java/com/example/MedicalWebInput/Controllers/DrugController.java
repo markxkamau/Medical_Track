@@ -5,6 +5,7 @@ import com.example.MedicalWebInput.Models.Drug;
 import com.example.MedicalWebInput.Models.Schedule;
 import com.example.MedicalWebInput.Services.DrugService;
 import com.example.MedicalWebInput.Services.PatientService;
+import com.example.MedicalWebInput.Services.ReminderService;
 import com.example.MedicalWebInput.Services.ScheduleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,6 +24,8 @@ public class DrugController {
     private PatientService patientService;
     @Autowired
     private ScheduleService scheduleService;
+    @Autowired
+    private ReminderService reminderService;
 
     //    *************************************************************************
 //    GetMappings
@@ -79,7 +82,7 @@ public class DrugController {
     @PostMapping("/update")
     public String updateDrugData(@ModelAttribute Schedule schedule) {
         drugService.updateDrugData(schedule);
-       scheduleService.updateScheduleData(schedule);
+        scheduleService.updateScheduleData(schedule);
         return "redirect:/patient/patient_info";
     }
 //    ------------------------------------------------------------------------
