@@ -3,6 +3,7 @@ package com.example.MedicalWebInput.Services;
 import com.example.MedicalWebInput.Models.Drug;
 import com.example.MedicalWebInput.Models.Schedule;
 import com.example.MedicalWebInput.Repository.DrugRepository;
+import com.example.MedicalWebInput.Repository.PatientRepository;
 import com.example.MedicalWebInput.Repository.ScheduleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -18,7 +19,11 @@ public class ReminderService {
     private ScheduleRepository scheduleRepository;
     @Autowired
     private DrugRepository drugRepository;
+    @Autowired
+    private EmailService emailService;
     private Long patientId;
+    @Autowired
+    private PatientRepository patientRepository;
 
     public List<LocalTime> getScheduledTime(Long patientId) {
         List<Schedule> schedules = scheduleRepository.findByPatientId(patientId);
@@ -50,7 +55,8 @@ public class ReminderService {
                 String setTime = s.format(formatter);
                 if (now.equals(setTime)) {
                     //Should any of the time be reached
-                    System.out.println(identifyDrugsTaken(now));
+                    emailService.sendSimpleMessage(patientRepository.findById(patientId).get().getEmail(),"Drug Time",identifyDrugsTaken(now).toString());
+//                    System.out.println(identifyDrugsTaken(now));
                 }
 
             }

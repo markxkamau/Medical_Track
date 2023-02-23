@@ -118,7 +118,9 @@ public class PatientController {
         model.addAttribute("test_data", patientService.getAllPatientTests(patient.getId()));
 
         reminderService.setPatientId(patient.getId());
-        reminderService.sendDoseReminders();
+        if(!patientService.getDrugByPatientId(patient.getId()).isEmpty()){
+            reminderService.sendDoseReminders();
+        }
 
         return "HomePage";
     }
