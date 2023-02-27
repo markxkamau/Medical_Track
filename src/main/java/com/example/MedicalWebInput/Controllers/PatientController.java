@@ -5,9 +5,11 @@ import com.example.MedicalWebInput.Data.PatientDto.PatientDto;
 import com.example.MedicalWebInput.Data.PatientDto.PatientLoginDto;
 import com.example.MedicalWebInput.Models.Patient;
 import com.example.MedicalWebInput.Repository.DrugRepository;
+import com.example.MedicalWebInput.Services.EmailService;
 import com.example.MedicalWebInput.Services.PatientService;
 import com.example.MedicalWebInput.Services.ReminderService;
 import com.example.MedicalWebInput.Services.ScheduleService;
+import com.google.firebase.messaging.FirebaseMessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -32,6 +34,8 @@ public class PatientController {
     private DrugRepository drugRepository;
     @Autowired
     private ReminderService reminderService;
+    @Autowired
+    private EmailService emailService;
 
 //    *************************************************************************
 //    GetMappings
@@ -101,9 +105,9 @@ public class PatientController {
     }
 
     @GetMapping("/patient_info")
-    public String getPatientInfo(@NotNull Model model, HttpServletRequest httpServletRequest) {
+    public String getPatientInfo(@NotNull Model model, HttpServletRequest httpServletRequest) throws FirebaseMessagingException {
         HttpSession session = httpServletRequest.getSession();
-        if (session == null || session.getAttribute("patient_info") == null ) {
+        if (session == null || session.getAttribute("patient_info") == null) {
             // If the user is not logged in, redirect them to the login page
             return "redirect:/patient/login";
         }
@@ -118,7 +122,7 @@ public class PatientController {
         model.addAttribute("test_data", patientService.getAllPatientTests(patient.getId()));
 
         reminderService.setPatientId(patient.getId());
-        if(!patientService.getDrugByPatientId(patient.getId()).isEmpty()){
+        if (!patientService.getDrugByPatientId(patient.getId()).isEmpty()) {
             reminderService.sendDoseReminders();
         }
 
@@ -176,8 +180,11 @@ public class PatientController {
             redirectAttributes.addFlashAttribute("reset_error", "Email doesn't exist");
             return "redirect:/patient/forgot_password";
         }
-        String newPassword = patientService.setNewPassword(patientLoginDto.getEmail());
-        return newPassword;
+        String password = patientService.setNewPassword();
+        emailService.sendSimpleMessage(patientLoginDto.getEmail(), "Password Reset", "New Password: " + password);
+        patientService.changePassword(patientLoginDto.getEmail(), password);
+        redirectAttributes.addFlashAttribute("change_success", true);
+        return "redirect:/patient/login";
     }
 
 

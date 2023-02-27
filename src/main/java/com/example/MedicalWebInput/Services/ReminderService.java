@@ -5,6 +5,7 @@ import com.example.MedicalWebInput.Models.Schedule;
 import com.example.MedicalWebInput.Repository.DrugRepository;
 import com.example.MedicalWebInput.Repository.PatientRepository;
 import com.example.MedicalWebInput.Repository.ScheduleRepository;
+import com.google.firebase.messaging.FirebaseMessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,8 @@ public class ReminderService {
     private DrugRepository drugRepository;
     @Autowired
     private EmailService emailService;
+    @Autowired
+    private NotificationService notificationService;
     private Long patientId;
     @Autowired
     private PatientRepository patientRepository;
@@ -33,7 +36,7 @@ public class ReminderService {
 
             for (String item : times) {
                 LocalTime localTime = LocalTime.parse(item);
-                if (!Arrays.asList(alarm).contains(item)) {
+                if (!Arrays.asList(alarm).contains(localTime)) {
                     alarm.add(localTime);
                 }
             }
@@ -43,7 +46,7 @@ public class ReminderService {
     }
 
     @Scheduled(cron = "0 * * * * *") // runs every minute
-    public void sendDoseReminders() {
+    public void sendDoseReminders() throws FirebaseMessagingException {
         List<Drug> drugs = new ArrayList<>();
         if (patientId != null) {
             List<LocalTime> scheduledTime = getScheduledTime(patientId);
@@ -55,8 +58,9 @@ public class ReminderService {
                 String setTime = s.format(formatter);
                 if (now.equals(setTime)) {
                     //Should any of the time be reached
-                    emailService.sendSimpleMessage(patientRepository.findById(patientId).get().getEmail(),"Drug Time",identifyDrugsTaken(now).toString());
+                    emailService.sendSimpleMessage(patientRepository.findById(patientId).get().getEmail(), "Drug Time", identifyDrugsTaken(now).toString());
 //                    System.out.println(identifyDrugsTaken(now));
+                    notificationService.sendNotification("token1","Notification","Time to take drugs");
                 }
 
             }
@@ -71,23 +75,29 @@ public class ReminderService {
 
     //    Know which drugs have set off the alarm, allowing us to keep record
     public Map<String, String> identifyDrugsTaken(String now) {
-        Map<String , String> drugInfo= new HashMap<>();
+        Map<String, String> drugInfo = new HashMap<>();
         List<Schedule> schedules = scheduleRepository.findByPatientId(patientId);
         for (Schedule item : schedules) {
             String[] times = item.getTime();
             for (String time : times) {
                 if (time.equals(now)) {
-                    drugInfo.put(item.getDrug().getDrugName(),now);
+                    drugInfo.put(item.getDrug().getDrugName(), now);
                 }
             }
 
         }
+//        Set<Drug> drugs = drugInfo.keySet();
+//        for (Drug drug : drugs) {
+//            String info = drugInfo.get(drug);
+//            System.out.println("Information about " + drug.getDrugName() + ": " + info);
+//        }
         return drugInfo;
     }
 
     //    Update the drug record by calling the record service
     public void updateDrugRecord() {
     }
+
 
     public void setPatientId(Long patientId) {
         this.patientId = patientId;

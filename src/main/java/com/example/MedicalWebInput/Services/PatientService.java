@@ -104,7 +104,7 @@ public class PatientService {
         return patientRepository.findByEmail(email).get();
     }
 
-    public String setNewPassword(String email) {
+    public String setNewPassword() {
         String alphabet = "a b c d e f g h i j k l m n o p q r s t u v w x y z 1 2 3 4 5 6 7 8 9 0 - = [ ] ; ' \\ ; / , < >";
         String alpha[] = alphabet.split(" ");
         String password[] = new String[10];
@@ -113,12 +113,14 @@ public class PatientService {
         for (int x = 0; x < password.length; x++) {
             password[x] = alpha[random.nextInt(alpha.length)];
         }
+        return String.join("", password);
+    }
+
+    public void changePassword(String email, String password) {
         Patient patient = patientRepository.findByEmail(email).get();
         patient.setPassword(String.join("", password));
 
         patientRepository.save(patient);
-
-        return String.join("", password);
     }
 
     public PatientDto getPatientById(Long id) {
@@ -189,7 +191,7 @@ public class PatientService {
 
     public boolean checkDrug(Long id) {
         List<Drug> drug = drugRepository.findByPatientId(id);
-        if (drug.isEmpty()){
+        if (drug.isEmpty()) {
             return false;
         }
         return true;
