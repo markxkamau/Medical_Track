@@ -1,14 +1,13 @@
 package com.example.MedicalWebInput.Controllers;
 
+import com.example.MedicalWebInput.Data.PatientDto.AddPhotoDto;
 import com.example.MedicalWebInput.Data.PatientDto.CreatePatientDto;
 import com.example.MedicalWebInput.Data.PatientDto.PatientDto;
 import com.example.MedicalWebInput.Data.PatientDto.PatientLoginDto;
 import com.example.MedicalWebInput.Models.Patient;
+import com.example.MedicalWebInput.Models.Photo;
 import com.example.MedicalWebInput.Repository.DrugRepository;
-import com.example.MedicalWebInput.Services.EmailService;
-import com.example.MedicalWebInput.Services.PatientService;
-import com.example.MedicalWebInput.Services.ReminderService;
-import com.example.MedicalWebInput.Services.ScheduleService;
+import com.example.MedicalWebInput.Services.*;
 import com.google.firebase.messaging.FirebaseMessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,11 +15,17 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.imageio.ImageIO;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.constraints.NotNull;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.Base64;
 
 @Controller
 @RequestMapping("/patient")
@@ -36,6 +41,8 @@ public class PatientController {
     private ReminderService reminderService;
     @Autowired
     private EmailService emailService;
+    @Autowired
+    private PhotoService photoService;
 
 //    *************************************************************************
 //    GetMappings
@@ -52,6 +59,14 @@ public class PatientController {
     public String getAllPatients(@NotNull Model model) {
         model.addAttribute("patient_data", patientService.convertToPatientDto(patientService.getAllPatients()));
         return "Patient/patient_listing";
+    }
+
+    @GetMapping("/profile_photo/{patientId}")
+    public String addProfilePhoto(@NotNull Model model, @PathVariable Long patientId) {
+        AddPhotoDto addPhotoDto = new AddPhotoDto();
+        addPhotoDto.setPatientId(patientId);
+        model.addAttribute("photo_data", addPhotoDto);
+        return "Patient/profile_photo";
     }
 
     @GetMapping("/new_patient")
@@ -105,7 +120,7 @@ public class PatientController {
     }
 
     @GetMapping("/patient_info")
-    public String getPatientInfo(@NotNull Model model, HttpServletRequest httpServletRequest) throws FirebaseMessagingException {
+    public String getPatientInfo(@NotNull Model model, HttpServletRequest httpServletRequest) throws FirebaseMessagingException, IOException {
         HttpSession session = httpServletRequest.getSession();
         if (session == null || session.getAttribute("patient_info") == null) {
             // If the user is not logged in, redirect them to the login page
@@ -120,6 +135,13 @@ public class PatientController {
         model.addAttribute("stock_info", scheduleService.getStockInfo(patient.getId()));
         model.addAttribute("stock_present", scheduleService.checkStock(patient.getId()));
         model.addAttribute("test_data", patientService.getAllPatientTests(patient.getId()));
+        Photo patientPhoto = photoService.getPhotoInfoByPatientId(patient.getId());
+
+        if (patientPhoto != null) {
+            String image = photoService.getImage(patientPhoto.getId());
+            model.addAttribute("image", image);
+        }
+
 
         reminderService.setPatientId(patient.getId());
         if (!patientService.getDrugByPatientId(patient.getId()).isEmpty()) {
@@ -185,6 +207,17 @@ public class PatientController {
         patientService.changePassword(patientLoginDto.getEmail(), password);
         redirectAttributes.addFlashAttribute("change_success", true);
         return "redirect:/patient/login";
+    }
+
+    @PostMapping("/upload")
+    public String handleFileUpload(@ModelAttribute AddPhotoDto addPhotoDto, @NotNull RedirectAttributes redirectAttributes) throws IOException {
+        Photo photo = photoService.addNewPhoto(addPhotoDto);
+        String image = photoService.getImage(photo.getId());
+        if (image.equals(null)) {
+            return "redirect:/patient/patient_info";
+        }
+        redirectAttributes.addFlashAttribute("image", image);
+        return "redirect:/patient/patient_info";
     }
 
 

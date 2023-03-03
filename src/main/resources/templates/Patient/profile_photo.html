@@ -8,7 +8,7 @@
 </head>
 <body>
 
-<form th:action="@{/patient/upload}" th:object="${photo_data}" method="post">
+<form enctype="multipart/form-data" th:action="@{/patient/upload}" th:object="${photo_data}" method="post">
     <input type="file" id="file" name="file" accept="image/*" th:field="*{profilePhoto}"><br>
     <input type="integer" name="patientId" id="patientId" th:value="${photo_data.patientId}" th:field="*{patientId}" hidden>
     <button class="px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700 focus:outline-none focus:shadow-outline"

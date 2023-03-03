@@ -1,5 +1,10 @@
 package com.example.MedicalWebInput.Data.PatientDto;
 
+import com.example.MedicalWebInput.Models.Photo;
+import lombok.Data;
+
+import java.util.Optional;
+@Data
 public class PatientDto {
     private Long id;
     private String name = "";
@@ -7,6 +12,7 @@ public class PatientDto {
     private int drugCount;
     private String condition = "";
     private String password = "";
+    private Optional<Photo> photo;
     private boolean photoAvailable = false;
 
 
@@ -32,60 +38,14 @@ public class PatientDto {
         this.photoAvailable = photoAvailable;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
+    public PatientDto(Long id, String name, String email, int drugCount, String condition, String password, Optional<Photo> photo, boolean photoAvailable) {
         this.id = id;
-    }
-
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
+        this.name = name;
         this.email = email;
-    }
-
-    public int getDrugCount() {
-        return drugCount;
-    }
-
-    public void setDrugCount(int drugCount) {
         this.drugCount = drugCount;
-    }
-
-    public String getCondition() {
-        return condition;
-    }
-
-    public void setCondition(String condition) {
         this.condition = condition;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
         this.password = password;
-    }
-
-    public boolean getPhotoAvailable() {
-        return photoAvailable;
-    }
-
-    public void setPhotoAvailable(boolean photoAvailable) {
+        this.photo = photo;
         this.photoAvailable = photoAvailable;
     }
 }

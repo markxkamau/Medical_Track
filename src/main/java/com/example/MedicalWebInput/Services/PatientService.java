@@ -137,7 +137,8 @@ public class PatientService {
                 patient.getDrugs().size(),
                 patient.getCondition(),
                 patient.getPassword(),
-                patient.getPhotoAvailable()
+                Optional.ofNullable(patient.getPhoto()),
+                patient.isPhotoAvailable()
         );
     }
 

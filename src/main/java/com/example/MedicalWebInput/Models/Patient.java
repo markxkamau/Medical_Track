@@ -1,10 +1,13 @@
 package com.example.MedicalWebInput.Models;
 
+import lombok.Data;
+
 import javax.persistence.*;
 import java.util.*;
 
 @Entity
 @Table
+@Data
 public class Patient {
     @Id
     @SequenceGenerator(
@@ -25,6 +28,9 @@ public class Patient {
 
     @OneToMany
     private List<Drug> drugs = new ArrayList<>();
+
+    @OneToOne
+    private Photo photo;
 
     public Patient() {
     }
@@ -53,59 +59,6 @@ public class Patient {
         this.password = password;
     }
 
-    public Long getId() {
-        return id;
-    }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getCondition() {
-        return condition;
-    }
-
-    public void setCondition(String condition) {
-        this.condition = condition;
-    }
-
-    public List<Drug> getDrugs() {
-        return drugs;
-    }
-
-    public void setDrugs(List<Drug> drugs) {
-        this.drugs = drugs;
-    }
-
-    public boolean getPhotoAvailable() {
-        return photoAvailable;
-    }
-
-    public void setPhotoAvailable(boolean photoAvailable) {
-        this.photoAvailable = photoAvailable;
-    }
 }
