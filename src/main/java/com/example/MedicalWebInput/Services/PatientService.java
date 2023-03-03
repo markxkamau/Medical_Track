@@ -136,7 +136,8 @@ public class PatientService {
                 patient.getEmail(),
                 patient.getDrugs().size(),
                 patient.getCondition(),
-                patient.getPassword()
+                patient.getPassword(),
+                patient.getPhotoAvailable()
         );
     }
 

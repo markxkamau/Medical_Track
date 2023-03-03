@@ -7,6 +7,8 @@ public class PatientDto {
     private int drugCount;
     private String condition = "";
     private String password = "";
+    private boolean photoAvailable = false;
+
 
     public PatientDto() {
     }
@@ -18,6 +20,16 @@ public class PatientDto {
         this.drugCount = drugCount;
         this.condition = condition;
         this.password = password;
+    }
+
+    public PatientDto(Long id, String name, String email, int drugCount, String condition, String password, boolean photoAvailable) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.drugCount = drugCount;
+        this.condition = condition;
+        this.password = password;
+        this.photoAvailable = photoAvailable;
     }
 
     public String getName() {
@@ -69,4 +81,11 @@ public class PatientDto {
         this.password = password;
     }
 
+    public boolean getPhotoAvailable() {
+        return photoAvailable;
+    }
+
+    public void setPhotoAvailable(boolean photoAvailable) {
+        this.photoAvailable = photoAvailable;
+    }
 }
