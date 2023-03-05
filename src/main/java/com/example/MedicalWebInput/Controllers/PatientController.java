@@ -210,13 +210,12 @@ public class PatientController {
     }
 
     @PostMapping("/upload")
-    public String handleFileUpload(@ModelAttribute AddPhotoDto addPhotoDto, @NotNull RedirectAttributes redirectAttributes) throws IOException {
+    public String handleFileUpload(@ModelAttribute AddPhotoDto addPhotoDto) throws IOException {
         Photo photo = photoService.addNewPhoto(addPhotoDto);
         String image = photoService.getImage(photo.getId());
         if (image.equals(null)) {
-            return "redirect:/patient/patient_info";
+            return "redirect:/patient/profile_photo/"+photo.getId();
         }
-        redirectAttributes.addFlashAttribute("image", image);
         return "redirect:/patient/patient_info";
     }
 

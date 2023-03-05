@@ -115,7 +115,7 @@ public class ScheduleController {
     }
 
     @PostMapping("/new_stock")
-    public String addDrugStock(@NotNull Model model, @ModelAttribute DrugTimetableDto drugTimetableDto, @NotNull RedirectAttributes redirectAttributes) {
+    public String addDrugStock(@ModelAttribute DrugTimetableDto drugTimetableDto, @NotNull RedirectAttributes redirectAttributes) {
 //        Ensure drug count is greater than 0
         if (drugTimetableDto.getDrugCount() < 1) {
             redirectAttributes.addFlashAttribute("stock_count_error", "Drug count is too low");
