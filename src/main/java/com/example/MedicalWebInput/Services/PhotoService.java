@@ -64,4 +64,10 @@ public class PhotoService {
         return null;
     }
 
+    public void checkForCurrentPhoto(Long patientId) {
+        Photo photo = photoRepository.findByPatientId(patientId);
+        if (photo != null){
+            photoRepository.delete(photo);
+        }
+    }
 }
