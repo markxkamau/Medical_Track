@@ -43,7 +43,7 @@
                             </svg>
                         </span>
                         <button type="button">
-                            <a th:href="@{'/patient/profile_photo/'+${patient_data.id}}">Profile Photo</a>
+                            <a th:href="@{/patient/profile_photo}">Profile Photo</a>
                         </button>
                     </li>
                     <li class="px-3  py-3 text-sm font-medium flex items-center space-x-2 hover:bg-red-600">
@@ -166,7 +166,7 @@
                                 class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                 <a th:if="${drug.scheduleButton}"
                                    class="px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700 focus:outline-none focus:shadow-outline"
-                                   th:href="@{'/schedule/new_schedule/'+${patient_data.id}+'/'+${drug.id}}">
+                                   th:href="@{'/schedule/new_schedule/'+${drug.id}}">
                                     Schedule
                                 </a>
                                 <a th:if="${!drug.scheduleButton} and ${drug.stockButton}"
@@ -196,7 +196,7 @@
                     </table>
                 </div>
                 <a class="w-full px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700 focus:outline-none focus:shadow-outline"
-                   th:href="@{'/drugs/add_drug/'+${patient_data.id}}">
+                   th:href="@{/drugs/add_drug}">
                     Add Drug
                 </a>
             </div>

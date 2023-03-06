@@ -1,5 +1,6 @@
 package com.example.MedicalWebInput.Controllers;
 
+import com.example.MedicalWebInput.Data.PatientDto.BasicPatientDto;
 import com.example.MedicalWebInput.Data.ScheduleDto.DrugTimetableDto;
 import com.example.MedicalWebInput.Data.ScheduleDto.ScheduleDto;
 import com.example.MedicalWebInput.Models.DrugStock;
@@ -11,6 +12,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
@@ -32,23 +35,35 @@ public class ScheduleController {
     }
 
     //    View to add new Schedule
-    @GetMapping("/new_schedule/{patientId}/{drugId}")
-    public String addNewSchedule(@PathVariable Long patientId, @PathVariable Long drugId, @NotNull Model model) {
-        if (patientId == null || drugId == null) {
+    @GetMapping("/new_schedule/{drugId}")
+    public String addNewSchedule(@PathVariable Long drugId, @NotNull Model model, HttpServletRequest httpServletRequest) {
+        if (drugId == null) {
             // return an error message or redirect the user to a page
             return "redirect:/patient/patient_info";
 
         }
+        HttpSession session = httpServletRequest.getSession();
+        if (session == null || session.getAttribute("patient_info") == null) {
+            // If the user is not logged in, redirect them to the login page
+            return "redirect:/patient/login";
+        }
+        BasicPatientDto patient = (BasicPatientDto) session.getAttribute("patient_info");
         ScheduleDto scheduleDto = new ScheduleDto();
         scheduleDto.setDrugId(drugId);
-        scheduleDto.setPatientId(patientId);
+        scheduleDto.setPatientId(patient.getId());
         model.addAttribute("schedule_info", scheduleDto);
-        model.addAttribute("patientDrug_info", scheduleService.getPatientAndDrugInfo(patientId, drugId));
+        model.addAttribute("patientDrug_info", scheduleService.getPatientAndDrugInfo(patient.getId(), drugId));
         return "Schedule/schedule_input";
     }
 
     @GetMapping("/new_stock/{drugId}")
-    public String addNewDrugStock(@PathVariable Long drugId, @NotNull Model model) {
+    public String addNewDrugStock(@PathVariable Long drugId, @NotNull Model model, HttpServletRequest httpServletRequest) {
+        HttpSession session = httpServletRequest.getSession();
+        if (session == null || session.getAttribute("patient_info") == null) {
+            // If the user is not logged in, redirect them to the login page
+            return "redirect:/patient/login";
+        }
+//        BasicPatientDto patient = (BasicPatientDto) session.getAttribute("patient_info");
         Long scheduleId = scheduleService.getScheduleByDrugId(drugId);
         DrugTimetableDto drugTimetableDto = new DrugTimetableDto();
         drugTimetableDto.setScheduleId(scheduleId);
@@ -59,7 +74,13 @@ public class ScheduleController {
     }
 
     @GetMapping("/edit_stock/{stockId}")
-    public String editStock(@PathVariable Long stockId, @NotNull Model model, RedirectAttributes redirectAttributes) {
+    public String editStock(@PathVariable Long stockId, @NotNull Model model, @NotNull RedirectAttributes redirectAttributes, HttpServletRequest httpServletRequest) {
+        HttpSession session = httpServletRequest.getSession();
+        if (session == null || session.getAttribute("patient_info") == null) {
+            // If the user is not logged in, redirect them to the login page
+            return "redirect:/patient/login";
+        }
+//        BasicPatientDto patient = (BasicPatientDto) session.getAttribute("patient_info");
         // Confirm the stock id exists
         DrugStock drugStock = scheduleService.getDrugStockById(stockId);
         if (drugStock != null) {
@@ -76,7 +97,13 @@ public class ScheduleController {
     }
 
     @GetMapping("/delete_stock/{stockId}")
-    public String deleteStock(@PathVariable Long stockId, @NotNull Model model, RedirectAttributes redirectAttributes) {
+    public String deleteStock(@PathVariable Long stockId, @NotNull Model model, RedirectAttributes redirectAttributes, HttpServletRequest httpServletRequest) {
+        HttpSession session = httpServletRequest.getSession();
+        if (session == null || session.getAttribute("patient_info") == null) {
+            // If the user is not logged in, redirect them to the login page
+            return "redirect:/patient/login";
+        }
+//        BasicPatientDto patient = (BasicPatientDto) session.getAttribute("patient_info");
         DrugStock drugStock = scheduleService.getDrugStockById(stockId);
         scheduleService.deleteDrugStock(drugStock);
         return "redirect:/patient/patient_info";

@@ -1,9 +1,6 @@
 package com.example.MedicalWebInput.Controllers;
 
-import com.example.MedicalWebInput.Data.PatientDto.AddPhotoDto;
-import com.example.MedicalWebInput.Data.PatientDto.CreatePatientDto;
-import com.example.MedicalWebInput.Data.PatientDto.PatientDto;
-import com.example.MedicalWebInput.Data.PatientDto.PatientLoginDto;
+import com.example.MedicalWebInput.Data.PatientDto.*;
 import com.example.MedicalWebInput.Models.Patient;
 import com.example.MedicalWebInput.Models.Photo;
 import com.example.MedicalWebInput.Repository.DrugRepository;
@@ -54,10 +51,16 @@ public class PatientController {
         return "Patient/patient_listing";
     }
 
-    @GetMapping("/profile_photo/{patientId}")
-    public String addProfilePhoto(@NotNull Model model, @PathVariable Long patientId) {
+    @GetMapping("/profile_photo")
+    public String addProfilePhoto(@NotNull Model model, @NotNull HttpServletRequest httpServletRequest) {
+        HttpSession session = httpServletRequest.getSession();
+        if (session == null || session.getAttribute("patient_info") == null) {
+            // If the user is not logged in, redirect them to the login page
+            return "redirect:/patient/login";
+        }
+        BasicPatientDto patient = (BasicPatientDto) session.getAttribute("patient_info");
         AddPhotoDto addPhotoDto = new AddPhotoDto();
-        addPhotoDto.setPatientId(patientId);
+        addPhotoDto.setPatientId(patient.getId());
         model.addAttribute("photo_data", addPhotoDto);
         return "Patient/profile_photo";
     }
@@ -69,7 +72,12 @@ public class PatientController {
     }
 
     @GetMapping("/edit_drug/{drugId}")
-    public String editDrugInfo(@PathVariable Long drugId, @NotNull Model model) {
+    public String editDrugInfo(@PathVariable Long drugId, @NotNull Model model, HttpServletRequest httpServletRequest) {
+        HttpSession session = httpServletRequest.getSession();
+        if (session == null || session.getAttribute("patient_info") == null) {
+            // If the user is not logged in, redirect them to the login page
+            return "redirect:/patient/login";
+        }
         if (patientService.getDrugAndScheduleInfo(drugId) != null) {
             model.addAttribute("schedule_info", patientService.getDrugAndScheduleInfo(drugId));
             return "Drug/drug_edit";
@@ -79,7 +87,12 @@ public class PatientController {
     }
 
     @GetMapping("/delete_drug/{drugId}")
-    public String deleteDrugById(@PathVariable Long drugId) {
+    public String deleteDrugById(@PathVariable Long drugId, HttpServletRequest httpServletRequest) {
+        HttpSession session = httpServletRequest.getSession();
+        if (session == null || session.getAttribute("patient_info") == null) {
+            // If the user is not logged in, redirect them to the login page
+            return "redirect:/patient/login";
+        }
         Long patientId = patientService.getDrugInfo(drugId).getPatientId();
         patientService.deleteDrugById(drugId);
         return "redirect:/patient/patient_info";
@@ -108,6 +121,7 @@ public class PatientController {
 
     @GetMapping("/forgot_password")
     public String forgotPassword(@NotNull Model model) {
+
         model.addAttribute("patient_email", new PatientLoginDto());
         return "Patient/patient_reset";
     }
@@ -119,7 +133,7 @@ public class PatientController {
             // If the user is not logged in, redirect them to the login page
             return "redirect:/patient/login";
         }
-        PatientDto patient = (PatientDto) session.getAttribute("patient_info");
+        BasicPatientDto patient = (BasicPatientDto) session.getAttribute("patient_info");
         model.addAttribute("patient_data", patientService.getPatientById(patient.getId()));
         model.addAttribute("drug_info", patientService.getDrugByPatientId(patient.getId()));
         model.addAttribute("drug_present", patientService.checkDrug(patient.getId()));
@@ -136,10 +150,10 @@ public class PatientController {
         }
 
 
-        reminderService.setPatientId(patient.getId());
-        if (!patientService.getDrugByPatientId(patient.getId()).isEmpty()) {
-            reminderService.sendDoseReminders();
-        }
+//        reminderService.setPatientId(patient.getId());
+//        if (!patientService.getDrugByPatientId(patient.getId()).isEmpty()) {
+//            reminderService.sendDoseReminders();
+//        }
 
         return "HomePage";
     }

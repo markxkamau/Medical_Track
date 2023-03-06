@@ -1,6 +1,7 @@
 package com.example.MedicalWebInput.Services;
 
 import com.example.MedicalWebInput.Data.DrugDto.DrugDto;
+import com.example.MedicalWebInput.Data.PatientDto.BasicPatientDto;
 import com.example.MedicalWebInput.Data.PatientDto.CreatePatientDto;
 import com.example.MedicalWebInput.Data.PatientDto.PatientDto;
 import com.example.MedicalWebInput.Data.PatientDto.PatientLoginDto;
@@ -9,6 +10,8 @@ import com.example.MedicalWebInput.Repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -123,10 +126,21 @@ public class PatientService {
         patientRepository.save(patient);
     }
 
-    public PatientDto getPatientById(Long id) {
+    public BasicPatientDto getPatientById(Long id) {
         Patient patient = patientRepository.findById(id).get();
-        PatientDto patientDto = convertToPatientDto(patient);
+        BasicPatientDto patientDto = convertToBasicPatientDto(patient);
         return patientDto;
+    }
+
+    private BasicPatientDto convertToBasicPatientDto(Patient patient) {
+        return new BasicPatientDto(
+                patient.getId(),
+                patient.getName(),
+                patient.getEmail(),
+                patient.getDrugs().size(),
+                patient.getCondition(),
+                patient.isPhotoAvailable()
+        );
     }
 
     private PatientDto convertToPatientDto(Patient patient) {
