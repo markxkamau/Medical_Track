@@ -18,7 +18,7 @@ public class Photo {
     private Long id;
     private String name = "Profile Photo";
     private String mimeType;
-//    @Lob
+    //    @Lob
     private byte[] profilePhoto;
     @OneToOne
     private Patient patient;
@@ -35,6 +35,13 @@ public class Photo {
     public Photo(Long id, String name, String mimeType, byte[] profilePhoto, Patient patient) {
         this.id = id;
         this.name = name;
+        this.mimeType = mimeType;
+        this.profilePhoto = profilePhoto;
+        this.patient = patient;
+    }
+
+    public Photo(Long id, String mimeType, byte[] profilePhoto, Patient patient) {
+        this.id = id;
         this.mimeType = mimeType;
         this.profilePhoto = profilePhoto;
         this.patient = patient;

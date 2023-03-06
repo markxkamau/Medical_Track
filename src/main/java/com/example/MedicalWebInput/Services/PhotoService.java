@@ -7,13 +7,9 @@ import com.example.MedicalWebInput.Repository.PatientRepository;
 import com.example.MedicalWebInput.Repository.PhotoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.imageio.ImageIO;
-import javax.validation.constraints.NotNull;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -35,6 +31,7 @@ public class PhotoService {
         Patient patient = patientRepository.findById(addPhotoDto.getPatientId()).get();
         Photo photo = new Photo(
                 addPhotoDto.getId(),
+                generateMimeType(addPhotoDto.getProfilePhoto()),
                 convertMultipartFileToByteArray(addPhotoDto.getProfilePhoto()),
                 patient
         );
@@ -44,17 +41,23 @@ public class PhotoService {
         return savedPhoto;
     }
 
+    private String generateMimeType(MultipartFile profilePhoto) {
+        return profilePhoto.getContentType();
+    }
+
     public Photo getPhotoInfoByPatientId(Long id) {
         return photoRepository.findByPatientId(id);
     }
+
     public byte[] convertMultipartFileToByteArray(MultipartFile file) throws IOException {
         byte[] bytes = file.getBytes();
         return bytes;
     }
+
     public String getImage(Long id) throws IOException {
         byte[] imageData = getProfileImage(id);
         BufferedImage bufferedImage = ImageIO.read(new ByteArrayInputStream(imageData));
-        if(bufferedImage != null) {
+        if (bufferedImage != null) {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             ImageIO.write(bufferedImage, "jpg", baos);
             byte[] imageBytes = baos.toByteArray();
@@ -65,9 +68,11 @@ public class PhotoService {
     }
 
     public void checkForCurrentPhoto(Long patientId) {
+        Patient patient = patientRepository.findById(patientId).get();
         Photo photo = photoRepository.findByPatientId(patientId);
-        if (photo != null){
+        if (photo != null) {
             photoRepository.delete(photo);
+            patient.setPhotoAvailable(false);
         }
     }
 }

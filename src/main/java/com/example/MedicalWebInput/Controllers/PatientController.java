@@ -15,17 +15,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.imageio.ImageIO;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.constraints.NotNull;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.Base64;
 
 @Controller
 @RequestMapping("/patient")
@@ -35,8 +30,6 @@ public class PatientController {
     private PatientService patientService;
     @Autowired
     private ScheduleService scheduleService;
-    @Autowired
-    private DrugRepository drugRepository;
     @Autowired
     private ReminderService reminderService;
     @Autowired
@@ -210,13 +203,13 @@ public class PatientController {
     }
 
     @PostMapping("/upload")
-    public String handleFileUpload(@ModelAttribute AddPhotoDto addPhotoDto,@NotNull RedirectAttributes redirectAttributes) throws IOException {
+    public String handleFileUpload(@ModelAttribute AddPhotoDto addPhotoDto, @NotNull RedirectAttributes redirectAttributes) throws IOException {
         photoService.checkForCurrentPhoto(addPhotoDto.getPatientId());
         Photo photo = photoService.addNewPhoto(addPhotoDto);
         String image = photoService.getImage(photo.getId());
         if (image.equals(null)) {
-            redirectAttributes.addFlashAttribute("upload_error","Check your uploaded photo");
-            return "redirect:/patient/profile_photo/"+photo.getId();
+            redirectAttributes.addFlashAttribute("upload_error", "Check your uploaded photo");
+            return "redirect:/patient/profile_photo/" + photo.getId();
         }
         return "redirect:/patient/patient_info";
     }
