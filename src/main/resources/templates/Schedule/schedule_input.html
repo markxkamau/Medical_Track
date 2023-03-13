@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Schedule</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css"
+          referrerpolicy="no-referrer"/>
+</head>
+<body>
+<div class="w-full text-gray-700 bg-white dark-mode:text-gray-200 dark-mode:bg-gray-800">
+    <div x-data="{ open: false }"
+         class="flex flex-col max-w-screen-xl px-4 mx-auto md:items-center md:justify-between md:flex-row md:px-6 lg:px-8">
+        <div class="w-full p-4 flex flex-row items-center justify-between">
+            <p th:text="${patientDrug_info.patientName}"
+               class="text-lg font-semibold tracking-widest text-gray-900 uppercase rounded-lg dark-mode:text-white focus:outline-none focus:shadow-outline">
+                Flowtrail UI</p>
+            <p th:text="${patientDrug_info.drugName}" style="float:right;"
+               class="text-lg font-semibold tracking-widest text-gray-900 uppercase rounded-lg dark-mode:text-white focus:outline-none focus:shadow-outline">
+                Flowtrail UI</p>
+        </div>
+    </div>
+</div>
+<div class="flex items-center justify-center p-12">
+    <div class="mx-auto w-full max-w-[550px]">
+        <form method="post" th:action="@{/schedule/new_schedule}" th:object="${schedule_info}">
+            <div class="mb-5">
+                <label class="mb-3 block text-base font-medium text-[#07074D]">
+                    Number Of Intakes
+                </label>
+                <input type="integer" name="intakes" id="intakes" th:field="*{intakes}"
+                       placeholder="How many times in a day"
+                       class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"/>
+            </div>
+
+            <div id="input-container"></div>
+            <p th:text="${time_error}" class="text-xs italic text-red-500"></p>
+            <p class="text-xs italic text-red-500" th:text="${schedule_error}"></p>
+
+            <div class="mb-5">
+                <input type="integer" name="patientId" id="patientId" th:field="*{patientId}"
+                       th:value="${schedule_info.patientId}" hidden
+                       class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"/>
+            </div>
+            <div class="mb-5">
+                <input type="integer" name="drugId" id="drugId" th:field="*{drugId}" th:value="${schedule_info.drugId}"
+                       hidden
+                       class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"/>
+            </div>
+            <div style="display:flex; justify-content:space-between; width:50%;">
+                <button type="submit"
+                        class="bg-indigo-600 px-4 py-2 rounded-md text-white font-semibold tracking-wide cursor-pointer">
+                    Submit
+                </button>
+                <a th:href="@{/patient/patient_info}"
+                   class="bg-black px-4 py-2 rounded-md text-white font-semibold tracking-wide cursor-pointer">
+                    Back
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+    var inputContainer = document.getElementById("input-container");
+    var inputField = document.getElementById("intakes");
+    inputField.addEventListener("input", function(){
+        var numOfInputs = inputField.value;
+        inputContainer.innerHTML = "";
+        for(var i = 1; i <= numOfInputs; i++) {
+            var label = document.createElement("label");
+            label.innerHTML = "Moment " + i;
+            label.classList.add("mb-3", "block", "text-base", "font-medium", "text-[#07074D]");
+            inputContainer.appendChild(label);
+            var input = document.createElement("input");
+            input.required = true;
+            input.type = "time";
+            input.setAttribute("id", "time");
+            input.setAttribute("name", "time");
+            input.setAttribute("th:field", "*{time[" + i + "]}");
+            input.placeholder = "e.g: Morning, Afternoon, Evening";
+            input.classList.add("w-full", "rounded-md", "border", "border-[#e0e0e0]", "bg-white", "py-3", "px-6", "text-base", "font-medium", "text-[#6B7280]", "outline-none", "focus:border-[#6A64F1]", "focus:shadow-md");
+            inputContainer.appendChild(input);
+        }
+    });
+
+
+
+
+
+
+</script>
+
+</body>
+
+
+</html>

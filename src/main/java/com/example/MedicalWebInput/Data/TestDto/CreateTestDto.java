@@ -1,50 +1,45 @@
-package com.example.MedicalWebInput.Models;
+package com.example.MedicalWebInput.Data.TestDto;
 
-import javax.persistence.*;
 import java.util.Date;
 
-@Entity
-@Table
-public class Test {
-    @Id
-    @SequenceGenerator(
-            sequenceName = "test_sequence",
-            allocationSize = 1,
-            name = "test_sequence"
-    )
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "test_sequence"
-    )
+public class CreateTestDto {
     private Long id;
     private int bloodPressure = 0;
     private int weight = 0;
     private int oxygen = 0;
     private int bloodSugar = 0;
-    private Date testDate = new Date();
-    @OneToOne
-    private Patient patient = new Patient();
+    private Long patientId = 0L;
+    private Date testDate;
 
-    public Test() {
+    public CreateTestDto() {
     }
 
-    public Test(long id, int bloodPressure, int weight, int oxygen, int bloodSugar, Patient patient) {
-        this.id = id;
+    public CreateTestDto(int bloodPressure, int weight, int oxygen, int bloodSugar, Long patientId, Date testDate) {
         this.bloodPressure = bloodPressure;
         this.weight = weight;
         this.oxygen = oxygen;
         this.bloodSugar = bloodSugar;
-        this.patient = patient;
-    }
-
-    public Test(Long id, int bloodPressure, int weight, int oxygen, int bloodSugar, Date testDate, Patient patient) {
-        this.id = id;
-        this.bloodPressure = bloodPressure;
-        this.weight = weight;
-        this.oxygen = oxygen;
-        this.bloodSugar = bloodSugar;
+        this.patientId = patientId;
         this.testDate = testDate;
-        this.patient = patient;
+    }
+
+
+    public CreateTestDto(int bloodPressure, int weight, int oxygen, int bloodSugar, Long patientId) {
+        this.bloodPressure = bloodPressure;
+        this.weight = weight;
+        this.oxygen = oxygen;
+        this.bloodSugar = bloodSugar;
+        this.patientId = patientId;
+    }
+
+    public CreateTestDto(Long id, int bloodPressure, int weight, int oxygen, int bloodSugar, Long patientId, Date testDate) {
+        this.id = id;
+        this.bloodPressure = bloodPressure;
+        this.weight = weight;
+        this.oxygen = oxygen;
+        this.bloodSugar = bloodSugar;
+        this.patientId = patientId;
+        this.testDate = testDate;
     }
 
     public Long getId() {
@@ -87,19 +82,19 @@ public class Test {
         this.bloodSugar = bloodSugar;
     }
 
-    public Patient getPatient() {
-        return patient;
-    }
-
-    public void setPatient(Patient patient) {
-        this.patient = patient;
-    }
-
     public Date getTestDate() {
         return testDate;
     }
 
     public void setTestDate(Date testDate) {
         this.testDate = testDate;
+    }
+
+    public Long getPatientId() {
+        return patientId;
+    }
+
+    public void setPatientId(Long patientId) {
+        this.patientId = patientId;
     }
 }

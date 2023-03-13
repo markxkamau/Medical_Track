@@ -1,9 +1,15 @@
 package com.example.MedicalWebInput.Models;
 
+import lombok.Data;
+
 import javax.persistence.*;
+import java.time.LocalTime;
 import java.util.Date;
+import java.util.List;
+
 @Entity
 @Table
+@Data
 public class Schedule {
     @Id
     @SequenceGenerator(
@@ -16,9 +22,9 @@ public class Schedule {
             generator = "schedule_sequence"
     )
     private Long id;
-    private int dayCount = 0;
-    private Date time = new Date();
-    private boolean[] confirm = {};
+    private Long intakes = 1L;
+    private String[] time;
+    private Date startDate = new Date();
     @OneToOne
     private Patient patient = new Patient();
     @OneToOne
@@ -27,45 +33,45 @@ public class Schedule {
     public Schedule() {
     }
 
-    public Schedule(long id, int dayCount, Date time, boolean[] confirm, Patient patient, Drug drug) {
+    public Schedule(Long id, Long intakes, String[] time, Patient patient, Drug drug) {
         this.id = id;
-        this.dayCount = dayCount;
+        this.intakes = intakes;
         this.time = time;
-        this.confirm = confirm;
         this.patient = patient;
         this.drug = drug;
     }
 
-    public long getId() {
-        return id;
+    public Schedule(Long id, Long intakes, String[] time, Date startDate, Patient patient, Drug drug) {
+        this.id = id;
+        this.intakes = intakes;
+        this.time = time;
+        this.startDate = startDate;
+        this.patient = patient;
+        this.drug = drug;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public int getDayCount() {
-        return dayCount;
+    public Long getId() {
+        return id;
     }
 
-    public void setDayCount(int dayCount) {
-        this.dayCount = dayCount;
+    public Long getIntakes() {
+        return intakes;
     }
 
-    public Date getTime() {
+    public void setIntakes(Long intakes) {
+        this.intakes = intakes;
+    }
+
+    public String[] getTime() {
         return time;
     }
 
-    public void setTime(Date time) {
+    public void setTime(String[] time) {
         this.time = time;
-    }
-
-    public boolean[] getConfirm() {
-        return confirm;
-    }
-
-    public void setConfirm(boolean[] confirm) {
-        this.confirm = confirm;
     }
 
     public Patient getPatient() {
@@ -82,5 +88,13 @@ public class Schedule {
 
     public void setDrug(Drug drug) {
         this.drug = drug;
+    }
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
     }
 }
