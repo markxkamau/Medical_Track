@@ -149,11 +149,10 @@ public class PatientController {
             model.addAttribute("image", image);
         }
 
-
-//        reminderService.setPatientId(patient.getId());
-//        if (!patientService.getDrugByPatientId(patient.getId()).isEmpty()) {
-//            reminderService.sendDoseReminders();
-//        }
+        reminderService.setPatientId(patient.getId());
+        if (!patientService.getDrugByPatientId(patient.getId()).isEmpty()) {
+            reminderService.sendDoseReminders();
+        }
 
         return "HomePage";
     }
