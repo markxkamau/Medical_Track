@@ -1,6 +1,5 @@
 package com.example.MedicalWebInput.Models;
 
-import lombok.Data;
 
 import javax.persistence.*;
 import java.time.LocalTime;
@@ -9,7 +8,6 @@ import java.util.List;
 
 @Entity
 @Table
-@Data
 public class Schedule {
     @Id
     @SequenceGenerator(

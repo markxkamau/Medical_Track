@@ -1,10 +1,9 @@
 package com.example.MedicalWebInput.Data.PatientDto;
 
 import com.example.MedicalWebInput.Models.Photo;
-import lombok.Data;
 
 import java.util.Optional;
-@Data
+
 public class PatientDto {
     private Long id;
     private String name = "";
