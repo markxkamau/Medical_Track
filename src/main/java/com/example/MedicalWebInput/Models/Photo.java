@@ -1,11 +1,9 @@
 package com.example.MedicalWebInput.Models;
 
-import lombok.Data;
 
 import javax.persistence.*;
 
 @Entity
-@Data
 public class Photo {
     @Id
     @GeneratedValue(
@@ -45,5 +43,45 @@ public class Photo {
         this.mimeType = mimeType;
         this.profilePhoto = profilePhoto;
         this.patient = patient;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Patient getPatient() {
+        return patient;
+    }
+
+    public void setPatient(Patient patient) {
+        this.patient = patient;
+    }
+
+    public byte[] getProfilePhoto() {
+        return profilePhoto;
+    }
+
+    public void setProfilePhoto(byte[] profilePhoto) {
+        this.profilePhoto = profilePhoto;
+    }
+
+    public String getMimeType() {
+        return mimeType;
+    }
+
+    public void setMimeType(String mimeType) {
+        this.mimeType = mimeType;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }
