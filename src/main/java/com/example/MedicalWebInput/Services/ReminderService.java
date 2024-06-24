@@ -5,6 +5,8 @@ import com.example.MedicalWebInput.Models.Schedule;
 import com.example.MedicalWebInput.Repository.DrugRepository;
 import com.example.MedicalWebInput.Repository.PatientRepository;
 import com.example.MedicalWebInput.Repository.ScheduleRepository;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -27,6 +29,8 @@ public class ReminderService {
     private Long patientId;
     @Autowired
     private PatientRepository patientRepository;
+    @Autowired
+    private FirebaseApp firebaseApp;
 
     public List<LocalTime> getScheduledTime(Long patientId) {
         List<Schedule> schedules = scheduleRepository.findByPatientId(patientId);
@@ -60,7 +64,8 @@ public class ReminderService {
                     //Should any of the time be reached
                     emailService.sendSimpleMessage(patientRepository.findById(patientId).get().getEmail(), "Drug Time", identifyDrugsTaken(now).toString());
 //                    System.out.println(identifyDrugsTaken(now));
-                    notificationService.sendNotification("token1","Notification","Time to take drugs");
+                    notificationService.sendNotification("fyA9ql1Hb6J6mWATdrBRMI:APA91bHmpIuFulDCdqRI_nKp0iBiKhRE_TKPgCFxzT2VLBMgYIept6_eD6kk0rVIBdj9LIlJuY-wYFgorcgJzxwsJ_puYlonsqztQRULiuWJSdP-aJh8wST1iccE-EQ-YY7L9V0aOwOm"
+                            ,"Notification","Time to take drugs");
                 }
 
             }
