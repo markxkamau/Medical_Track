@@ -26,6 +26,7 @@ public class ReminderService {
     private EmailService emailService;
     @Autowired
     private NotificationService notificationService;
+//    Declared once a person logs in using setPatientId() function
     private Long patientId;
     @Autowired
     private PatientRepository patientRepository;
@@ -55,7 +56,7 @@ public class ReminderService {
         if (patientId != null) {
             List<LocalTime> scheduledTime = getScheduledTime(patientId);
             LocalTime currentTime = LocalTime.now();
-            System.out.println("Scheduled time: \t" + scheduledTime + "Current Time: \t" + currentTime);
+//            System.out.println("Scheduled time: \t" + scheduledTime + "Current Time: \t" + currentTime);
             for (LocalTime s : scheduledTime) {
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
                 String now = currentTime.format(formatter);
@@ -64,7 +65,7 @@ public class ReminderService {
                     //Should any of the time be reached
                     emailService.sendSimpleMessage(patientRepository.findById(patientId).get().getEmail(), "Drug Time", identifyDrugsTaken(now).toString());
 //                    System.out.println(identifyDrugsTaken(now));
-                    notificationService.sendNotification("fyA9ql1Hb6J6mWATdrBRMI:APA91bHmpIuFulDCdqRI_nKp0iBiKhRE_TKPgCFxzT2VLBMgYIept6_eD6kk0rVIBdj9LIlJuY-wYFgorcgJzxwsJ_puYlonsqztQRULiuWJSdP-aJh8wST1iccE-EQ-YY7L9V0aOwOm"
+                    notificationService.sendNotification("fLVRLptVQRChte_VzXdu70:APA91bEGu4P55nArT7YfiwR-XGBo350xuL3NzAJt7sRvEjAhkCkLiT7yzc3d9o0cIKgKvOlCl6ZrtHM8aVgozrzap_m8CPjEF0YklAsh7LS5_lxwwWIcsGR4Y3_DdEsoIeWk4JvIUsBz"
                             ,"Notification","Time to take drugs");
                 }
 
