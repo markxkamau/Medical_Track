@@ -65,8 +65,12 @@ public class ReminderService {
                     //Should any of the time be reached
                     emailService.sendSimpleMessage(patientRepository.findById(patientId).get().getEmail(), "Drug Time", identifyDrugsTaken(now).toString());
 //                    System.out.println(identifyDrugsTaken(now));
-                    notificationService.sendNotification("fLVRLptVQRChte_VzXdu70:APA91bEGu4P55nArT7YfiwR-XGBo350xuL3NzAJt7sRvEjAhkCkLiT7yzc3d9o0cIKgKvOlCl6ZrtHM8aVgozrzap_m8CPjEF0YklAsh7LS5_lxwwWIcsGR4Y3_DdEsoIeWk4JvIUsBz"
-                            ,"Notification","Time to take drugs");
+
+                    notificationService.sendNotification(
+                            notificationService.getToken(patientRepository.findById(patientId).get()),
+                            "Notification",
+                            "Time to take drugs"
+                    );
                 }
 
             }
