@@ -1,6 +1,7 @@
 package com.example.MedicalWebInput.Services;
 
 import com.example.MedicalWebInput.Data.DrugDto.DrugDto;
+import com.example.MedicalWebInput.Data.PatientDto.BasicPatientDto;
 import com.example.MedicalWebInput.Data.PatientDto.CreatePatientDto;
 import com.example.MedicalWebInput.Data.PatientDto.PatientDto;
 import com.example.MedicalWebInput.Data.PatientDto.PatientLoginDto;
@@ -9,6 +10,8 @@ import com.example.MedicalWebInput.Repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -104,7 +107,7 @@ public class PatientService {
         return patientRepository.findByEmail(email).get();
     }
 
-    public String setNewPassword(String email) {
+    public String setNewPassword() {
         String alphabet = "a b c d e f g h i j k l m n o p q r s t u v w x y z 1 2 3 4 5 6 7 8 9 0 - = [ ] ; ' \\ ; / , < >";
         String alpha[] = alphabet.split(" ");
         String password[] = new String[10];
@@ -113,18 +116,31 @@ public class PatientService {
         for (int x = 0; x < password.length; x++) {
             password[x] = alpha[random.nextInt(alpha.length)];
         }
+        return String.join("", password);
+    }
+
+    public void changePassword(String email, String password) {
         Patient patient = patientRepository.findByEmail(email).get();
         patient.setPassword(String.join("", password));
 
         patientRepository.save(patient);
-
-        return String.join("", password);
     }
 
-    public PatientDto getPatientById(Long id) {
+    public BasicPatientDto getPatientById(Long id) {
         Patient patient = patientRepository.findById(id).get();
-        PatientDto patientDto = convertToPatientDto(patient);
+        BasicPatientDto patientDto = convertToBasicPatientDto(patient);
         return patientDto;
+    }
+
+    private BasicPatientDto convertToBasicPatientDto(Patient patient) {
+        return new BasicPatientDto(
+                patient.getId(),
+                patient.getName(),
+                patient.getEmail(),
+                patient.getDrugs().size(),
+                patient.getCondition(),
+                patient.isPhotoAvailable()
+        );
     }
 
     private PatientDto convertToPatientDto(Patient patient) {
@@ -134,7 +150,9 @@ public class PatientService {
                 patient.getEmail(),
                 patient.getDrugs().size(),
                 patient.getCondition(),
-                patient.getPassword()
+                patient.getPassword(),
+                Optional.ofNullable(patient.getPhoto()),
+                patient.isPhotoAvailable()
         );
     }
 
@@ -189,7 +207,7 @@ public class PatientService {
 
     public boolean checkDrug(Long id) {
         List<Drug> drug = drugRepository.findByPatientId(id);
-        if (drug.isEmpty()){
+        if (drug.isEmpty()) {
             return false;
         }
         return true;

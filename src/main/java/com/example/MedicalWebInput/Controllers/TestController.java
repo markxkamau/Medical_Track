@@ -1,5 +1,6 @@
 package com.example.MedicalWebInput.Controllers;
 
+import com.example.MedicalWebInput.Data.PatientDto.BasicPatientDto;
 import com.example.MedicalWebInput.Data.TestDto.CreateTestDto;
 import com.example.MedicalWebInput.Services.ScheduleService;
 import com.example.MedicalWebInput.Services.TestService;
@@ -9,6 +10,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.constraints.NotNull;
 
 @Controller
@@ -28,9 +31,15 @@ public class TestController {
     }
 
     @GetMapping("new_test/{id}")
-    public String addNewTest(@NotNull Model model, @PathVariable Long id) {
+    public String addNewTest(@NotNull Model model, @NotNull HttpServletRequest httpServletRequest) {
+        HttpSession session = httpServletRequest.getSession();
+        if (session == null || session.getAttribute("patient_info") == null) {
+            // If the user is not logged in, redirect them to the login page
+            return "redirect:/patient/login";
+        }
+        BasicPatientDto patient = (BasicPatientDto)session.getAttribute("patient_info");
         CreateTestDto testDto = new CreateTestDto();
-        testDto.setPatientId(id);
+        testDto.setPatientId(patient.getId());
         model.addAttribute("test_info", testDto);
         return "Test/test_input";
     }

@@ -44,8 +44,14 @@ Creating the Project
 
 2. Test the API endpoints using Postman or a similar tool by sending requests to ``http://localhost:8080/patient/new_patient``.
 
-3. If you encounter any errors, make sure that the database connection settings in the "application.properties" file match your PostgreSQL setup.
+3. If you encounter any errors, make sure that the database connection settings in the "application.properties" file match your PostgreSQL setup. You will need to change the following settings in the file:
 
-4. To modify the code, make changes to the files in the project directory, then run the updated code using the same steps as before.
+   - ``spring.datasource.url`` - replace the value with the URL of your PostgreSQL database.
+   - ``spring.datasource.username`` - replace the value with your PostgreSQL username.
+   - ``spring.datasource.password`` - replace the value with your PostgreSQL password.
+
+4. Additionally, you should make sure to secure any confidential information, such as database login credentials, by storing them in environment variables or a configuration file that is not tracked by version control.
+
+5. To modify the code, make changes to the files in the project directory, then run the updated code using the same steps as before.
 
 I hope this helps! Let me know if you have any further questions.

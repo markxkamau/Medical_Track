@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Profile Photo</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css"
+          referrerpolicy="no-referrer"/>
+</head>
+<body>
+
+<form enctype="multipart/form-data" th:action="@{/patient/upload}" th:object="${photo_data}" method="post">
+    <input type="file" id="file" name="file" accept="image/*" th:field="*{profilePhoto}"><br>
+    <input type="integer" name="patientId" id="patientId" th:value="${photo_data.patientId}" th:field="*{patientId}"
+           hidden>
+    <p th:text="${upload_error}" class="text-red-200 text-sm"></p>
+    <button class="px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700 focus:outline-none focus:shadow-outline"
+            type="submit">Upload
+    </button>
+    <a th:href="@{/patient/patient_info}"
+       class="bg-black px-4 py-2 rounded-md text-white font-semibold tracking-wide cursor-pointer">
+        Back
+    </a>
+</form>
+
+</body>
+</html>

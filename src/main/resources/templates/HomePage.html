@@ -15,15 +15,6 @@
 </head>
 <body>
 <div class="h-full bg-gray-200 p-8">
-    <!--  <div class="bg-white rounded-lg shadow-xl pb-8">-->
-    <!--    <div class="w-full h-[250px]">-->
-    <!--      <img src="https://vojislavd.com/ta-template-demo/assets/img/profile-background.jpg" class="w-full h-full rounded-tl-lg rounded-tr-lg">-->
-    <!--    </div>-->
-    <!--    <div class="flex flex-col items-center -mt-20">-->
-    <!--    </div>-->
-    <!--    <div class="flex-1 flex flex-col items-center lg:items-end justify-end px-8 mt-2">-->
-    <!--    </div>-->
-    <!--  </div>-->
 
     <div class="my-4 flex flex-col 2xl:flex-row space-y-4 2xl:space-y-0 2xl:space-x-4">
         <!-- Navigation bar -->
@@ -35,12 +26,44 @@
             </div>
 
             <!-- end logo -->
+            <div class="bg-gray-200 rounded-full p-3 border">
+                <i class="fa-solid fa-user"></i>
+            </div>
+            <div class="flex-initial drop-down  w-48 overflow-hidden bg-white rounded-md shadow absolute top-12 right-3">
+                <!--                The dropdown list-->
+                <ul>
+                    <li class="px-3 py-3 text-sm font-medium flex items-center space-x-2 hover:bg-slate-400">
+                        <span>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                                 stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                      d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>                <path
+                                    stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                            </svg>
+                        </span>
+                        <button type="button">
+                            <a th:href="@{/patient/profile_photo}">Profile Photo</a>
+                        </button>
+                    </li>
+                    <li class="px-3  py-3 text-sm font-medium flex items-center space-x-2 hover:bg-red-600">
+                        <span>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                                 stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                      d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+                            </svg>
+                        </span>
+                        <button type="button">
+                            <a th:href="@{/patient/logout}">Logout</a>
+                        </button>
+                    </li>
 
-            <div class="flex-initial">
-                <button type="button"
-                        class="px-4 py-2 font-bold text-white bg-red-500 rounded hover:bg-red-700 focus:outline-none focus:shadow-outline">
-                    <a th:href="@{/patient/logout}">Logout</a>
-                </button>
+                </ul>
+                <!--                <button type="button"-->
+                <!--                        class="px-4 py-2 font-bold text-white bg-red-500 rounded hover:bg-red-700 focus:outline-none focus:shadow-outline">-->
+                <!--                    <a th:href="@{/patient/logout}">Logout</a>-->
+                <!--                </button>-->
             </div>
         </nav>
         <div class="w-full flex flex-col 2xl:w-1/3">
@@ -49,27 +72,35 @@
                 <div style="justify-content:space-between; display:flex;">
                     <h4 class="text-xl text-gray-900 font-bold">Personal Info</h4>
                 </div>
-                <ul class="mt-2 text-gray-700" th:object="${patient_data}">
-                    <li class="flex border-y py-2">
-                        <span class="font-bold w-24">Full name:</span>
-                        <p class="text-gray-700" th:text="*{name}">Amanda S. Ross</p>
-                    </li>
-                    <li class="flex border-b py-2">
-                        <span class="font-bold w-24">Email:</span>
-                        <p class="text-gray-700" th:text="*{email}">24 Jul, 1991</p>
-                    </li>
-                    <li class="flex border-b py-2">
-                        <span class="font-bold w-24">Condition:</span>
-                        <p class="text-gray-700" th:text="*{condition}">10 Jan 2022 (25 days ago)</p>
-                    </li>
-                </ul>
+                <div class="flex " style="justify-content:space-between;">
+                    <div class="w-full">
+                        <ul class="mt-2 text-gray-700 " th:object="${patient_data}">
+                            <li class="flex border-y py-2">
+                                <span class="font-bold w-24">Full name:</span>
+                                <p class="text-gray-700" th:text="*{name}">Amanda S. Ross</p>
+                            </li>
+                            <li class="flex border-b py-2">
+                                <span class="font-bold w-24">Email:</span>
+                                <p class="text-gray-700" th:text="*{email}">24 Jul, 1991</p>
+                            </li>
+                            <li class="flex border-b py-2">
+                                <span class="font-bold w-24">Condition:</span>
+                                <p class="text-gray-700" th:text="*{condition}">10 Jan 2022 (25 days ago)</p>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class=" border border-gray-400 rounded flex justify-center items-center w-40 h-40"
+                         style="justify-content:space-between; " th:if="${patient_data.photoAvailable != false}">
+                        <img th:attr="src='data:image/jpeg;base64,' + ${image}"/>
+
+                    </div>
+                </div>
+
             </div>
             <!--            Medication information on the currently prescribed drugs-->
             <div class="flex-1 bg-white rounded-lg shadow-xl mt-4 p-8">
                 <h4 class="text-xl text-gray-900 font-bold">Medication Prescribed</h4>
                 <div class="overflow-x-auto w-full my-10">
-                    <!--                    th:if="${drug_present}"-->
-
                     <table class="w-full leading-normal" th:object="${drug_info}">
                         <thead>
                         <tr>
@@ -135,7 +166,7 @@
                                 class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                 <a th:if="${drug.scheduleButton}"
                                    class="px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700 focus:outline-none focus:shadow-outline"
-                                   th:href="@{'/schedule/new_schedule/'+${patient_data.id}+'/'+${drug.id}}">
+                                   th:href="@{'/schedule/new_schedule/'+${drug.id}}">
                                     Schedule
                                 </a>
                                 <a th:if="${!drug.scheduleButton} and ${drug.stockButton}"
@@ -165,7 +196,7 @@
                     </table>
                 </div>
                 <a class="w-full px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700 focus:outline-none focus:shadow-outline"
-                   th:href="@{'/drugs/add_drug/'+${patient_data.id}}">
+                   th:href="@{/drugs/add_drug}">
                     Add Drug
                 </a>
             </div>
