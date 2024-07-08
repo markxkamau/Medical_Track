@@ -1,6 +1,7 @@
 package com.example.MedicalWebInput.Controllers;
 
 import com.example.MedicalWebInput.Data.TokenDto.CollectTokenDto;
+import com.example.MedicalWebInput.Data.TokenDto.NotificationDto;
 import com.example.MedicalWebInput.Services.NotificationService;
 import com.google.firebase.messaging.FirebaseMessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,15 +25,18 @@ public class NotificationController {
     }
 
     @PostMapping("/sendNotification")
-    public ResponseEntity<String> sendNotification(@RequestParam String token,
-                                                   @RequestParam String title,
-                                                   @RequestParam String body) {
+    public ResponseEntity<String> sendNotification(@RequestBody NotificationDto notificationDto) {
         try {
-            notificationService.sendNotification(token, title, body);
+            notificationService.sendNotification(
+                    notificationDto.getToken(),
+                    notificationDto.getTitle(),
+                    notificationDto.getBody()
+            );
             return ResponseEntity.ok("Notification sent");
         } catch (FirebaseMessagingException e) {
             return ResponseEntity.status(500).body("Error sending notification");
         }
     }
+
 }
 
