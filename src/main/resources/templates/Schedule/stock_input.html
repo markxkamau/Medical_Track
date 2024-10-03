@@ -32,7 +32,7 @@
 <div class="flex items-center justify-center p-12">
     <div class="mx-auto w-full max-w-[550px]">
         <p th:text="${update_start_date}"></p>
-        <form method="post" th:action="@{/schedule/new_stock}" th:object="${stock_info}">
+        <form method="post" th:action="@{/medical/new_stock}" th:object="${stock_info}">
             <input type="text" name="id" id="id" th:field="*{id}"
                    th:value="${stock_info.id}" hidden/>
 
@@ -48,23 +48,23 @@
             </div>
             <div class="mb-5" th:if="${patientDrug_info.drug.stockButton}">
                 <label class="mb-3 block text-base font-medium text-[#07074D]">
-                    Start Date
+                    Intended Start Date
                 </label>
                 <input type="date" name="startDate" id="startDate" th:field="*{startDate}"
                        th:value="${stock_info.startDate}"
                        placeholder="When will you start taking the drugs?"
                        class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
                 />
+                <p th:text="${stock_data_error}"></p>
             </div>
             <div class="mb-5">
                 <label class="mb-3 block text-base font-medium text-[#07074D]">
-                    Refill Date
+                    Last Refill Date
                 </label>
                 <input type="date" name="refillDate" id="refillDate" th:field="*{refillDate}"
                        th:value="${stock_info.refillDate}" required
                        placeholder="When do you plan for your next refill?"
                        class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"/>
-                <p th:text="${stock_data_error}"></p>
             </div>
             <div class="mb-5" th:if="${patientDrug_info.drug.stockButton}">
                 <input type="integer" name="scheduleId" id="scheduleId" th:field="*{scheduleId}"
@@ -76,7 +76,7 @@
                         class="bg-indigo-600 px-4 py-2 rounded-md text-white font-semibold tracking-wide cursor-pointer">
                     Submit
                 </button>
-                <a th:href="@{/patient/patient_info}"
+                <a th:href="@{/medical/patient_info}"
                    class="bg-black px-4 py-2 rounded-md text-white font-semibold tracking-wide cursor-pointer">
                     Back
                 </a>

@@ -1,6 +1,7 @@
 package com.example.MedicalWebInput.Services;
 
-import com.example.MedicalWebInput.Data.DrugDto.DrugDto;
+import com.example.MedicalWebInput.Data.DrugDtoDao.DrugDao;
+import com.example.MedicalWebInput.Data.DrugDtoDao.DrugDto;
 import com.example.MedicalWebInput.Models.Drug;
 import com.example.MedicalWebInput.Models.Patient;
 import com.example.MedicalWebInput.Models.Schedule;
@@ -68,6 +69,18 @@ public class DrugService {
                 d.getDrugPackaging(),
                 d.getDrugPurpose(),
                 d.getPatient().getId(),
+                d.getScheduleButton(),
+                d.getStockButton()
+        );
+    }
+    public DrugDao convertToDrugDao(Drug d) {
+        return new DrugDao(
+                d.getId(),
+                d.getDrugName(),
+                d.getDrugScientificName(),
+                d.getDrugSize(),
+                d.getDrugPackaging(),
+                d.getDrugPurpose(),
                 d.getScheduleButton(),
                 d.getStockButton()
         );

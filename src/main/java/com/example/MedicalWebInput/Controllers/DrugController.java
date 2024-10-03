@@ -1,8 +1,9 @@
 package com.example.MedicalWebInput.Controllers;
 
-import com.example.MedicalWebInput.Data.DrugDto.DrugDto;
+import com.example.MedicalWebInput.Data.DrugDtoDao.DrugDto;
 import com.example.MedicalWebInput.Data.PatientDto.BasicPatientDto;
 import com.example.MedicalWebInput.Models.Drug;
+import com.example.MedicalWebInput.Models.Patient;
 import com.example.MedicalWebInput.Models.Schedule;
 import com.example.MedicalWebInput.Services.DrugService;
 import com.example.MedicalWebInput.Services.PatientService;
@@ -16,10 +17,9 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.constraints.NotNull;
-import java.util.List;
 
 @Controller
-@RequestMapping("/drugs")
+@RequestMapping("/medical")
 public class DrugController {
     @Autowired
     private DrugService drugService;
@@ -34,10 +34,10 @@ public class DrugController {
 //    GetMappings
 //    =========================================================================
     //    Get All Drugs
-    @GetMapping
-    public List<Drug> getAllDrugs() {
-        return drugService.getAllDrugs();
-    }
+//    @GetMapping
+//    public List<Drug> getAllDrugs() {
+//        return drugService.getAllDrugs();
+//    }
 
     //    View of Get All Drugs
     @GetMapping("/display")
@@ -51,7 +51,7 @@ public class DrugController {
         HttpSession session = httpServletRequest.getSession();
         if (session == null || session.getAttribute("patient_info") == null) {
             // If the user is not logged in, redirect them to the login page
-            return "redirect:/patient/login";
+            return "redirect:/medical/login";
         }
         BasicPatientDto patient = (BasicPatientDto) session.getAttribute("patient_info");
         DrugDto drugDto = new DrugDto();
@@ -72,27 +72,27 @@ public class DrugController {
 //    =========================================================================
 
     //    Create new drug by POST action
-    @PostMapping
-    public void addDrugData(@RequestBody DrugDto drug) {
-        drugService.addNewDrugData(drug);
-    }
+//    @PostMapping
+//    public void addDrugData(@RequestBody DrugDto drug) {
+//        drugService.addNewDrugData(drug);
+//    }
 
     //    *Drug Confirmation function
     @PostMapping("/add_drug")
     public String addNewDrugData(@ModelAttribute DrugDto drug) {
         if (!drugService.checkDrugData(drug)) {
             drugService.updateDrugData(drug);
-            return "redirect:/patient/patient_info";
+            return "redirect:/medical/patient_info";
         }
         drugService.addNewDrugData(drug);
-        return "redirect:/patient/patient_info";
+        return "redirect:/medical/patient_info";
     }
 
     @PostMapping("/update")
     public String updateDrugData(@ModelAttribute Schedule schedule) {
         drugService.updateDrugData(schedule);
         scheduleService.updateScheduleData(schedule);
-        return "redirect:/patient/patient_info";
+        return "redirect:/medical/patient_info";
     }
 //    ------------------------------------------------------------------------
 

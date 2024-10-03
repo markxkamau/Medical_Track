@@ -1,9 +1,7 @@
 package com.example.MedicalWebInput.Services;
 
-import com.example.MedicalWebInput.Data.ScheduleDto.DrugTimetableDto;
-import com.example.MedicalWebInput.Data.ScheduleDto.PatientDrugInfoDto;
-import com.example.MedicalWebInput.Data.ScheduleDto.ScheduleDto;
-import com.example.MedicalWebInput.Data.ScheduleDto.StockDto;
+import com.example.MedicalWebInput.Data.DrugDtoDao.DrugDao;
+import com.example.MedicalWebInput.Data.ScheduleDto.*;
 import com.example.MedicalWebInput.Models.Drug;
 import com.example.MedicalWebInput.Models.DrugStock;
 import com.example.MedicalWebInput.Models.Patient;
@@ -50,6 +48,7 @@ public class ScheduleService {
         }
         return scheduleDtos;
     }
+
 
     private String[] convertTimeToString(List<LocalTime> time) {
         List<String> empty = new ArrayList<>();
@@ -102,8 +101,21 @@ public class ScheduleService {
         return patientRepository.findById(patientId).get();
     }
 
-    public List<Schedule> getScheduleByPatientId(Long patientId) {
-        return scheduleRepository.findByPatientId(patientId);
+    public List<ScheduleDao> getScheduleByPatientId(Long patientId) {
+        List<Schedule> schedules;
+        List<ScheduleDao> scheduleDaos = new ArrayList<>();
+        schedules = scheduleRepository.findByPatientId(patientId);
+        for (Schedule schedule : schedules) {
+            ScheduleDao scheduleDao = new ScheduleDao(
+                    schedule.getIntakes(),
+                    schedule.getTime(),
+                    schedule.getStartDate(),
+                    schedule.getPatient(),
+                    schedule.getDrug()
+            );
+            scheduleDaos.add(scheduleDao);
+        }
+        return scheduleDaos;
     }
 
     public List<Drug> getDrugByPatientId(Long patientId) {
@@ -264,7 +276,7 @@ public class ScheduleService {
     public DrugTimetableDto convertStockToDto(DrugStock drugStock) {
         Drug drug = drugRepository.findById(drugStock.getDrug().getId()).get();
         Long patientId = drug.getPatient().getId();
-        Schedule schedule =  scheduleRepository.findByPatientIdAndDrugId(patientId, drug.getId());
+        Schedule schedule = scheduleRepository.findByPatientIdAndDrugId(patientId, drug.getId());
         return new DrugTimetableDto(
                 drugStock.getId(),
                 drugStock.getDrugCount(),
@@ -274,7 +286,7 @@ public class ScheduleService {
         );
     }
 
-    public StockDto convertStocksToDto(DrugStock drugStock){
+    public StockDto convertStocksToDto(DrugStock drugStock) {
         return new StockDto(
                 drugStock.getId(),
                 drugStock.getDrugCount(),
@@ -285,7 +297,7 @@ public class ScheduleService {
     public boolean checkIfStockExists(DrugTimetableDto drugTimetableDto) {
         Schedule schedule = scheduleRepository.findById(drugTimetableDto.getScheduleId()).get();
         Long drugId = schedule.getDrug().getId();
-        if (drugStockRepository.findByDrugId(drugId) == null){
+        if (drugStockRepository.findByDrugId(drugId) == null) {
             return false;
         }
         return true;

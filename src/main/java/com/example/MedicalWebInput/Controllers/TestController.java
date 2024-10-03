@@ -1,7 +1,9 @@
 package com.example.MedicalWebInput.Controllers;
 
 import com.example.MedicalWebInput.Data.PatientDto.BasicPatientDto;
+import com.example.MedicalWebInput.Data.PatientDto.PatientDao;
 import com.example.MedicalWebInput.Data.TestDto.CreateTestDto;
+import com.example.MedicalWebInput.Models.Patient;
 import com.example.MedicalWebInput.Services.ScheduleService;
 import com.example.MedicalWebInput.Services.TestService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +17,7 @@ import javax.servlet.http.HttpSession;
 import javax.validation.constraints.NotNull;
 
 @Controller
-@RequestMapping("test")
+@RequestMapping("/medical")
 public class TestController {
     @Autowired
     private TestService testService;
@@ -25,17 +27,17 @@ public class TestController {
     //    *************************************************************************
 //    GetMappings
 //    =========================================================================
-    @GetMapping("all")
+    @GetMapping("/all_tests")
     public ResponseEntity getAllTests() {
         return ResponseEntity.ok(testService.getAllTests());
     }
 
-    @GetMapping("new_test/{id}")
+    @GetMapping("/new_test/{id}")
     public String addNewTest(@NotNull Model model, @NotNull HttpServletRequest httpServletRequest) {
         HttpSession session = httpServletRequest.getSession();
         if (session == null || session.getAttribute("patient_info") == null) {
             // If the user is not logged in, redirect them to the login page
-            return "redirect:/patient/login";
+            return "redirect:/medical/login";
         }
         BasicPatientDto patient = (BasicPatientDto)session.getAttribute("patient_info");
         CreateTestDto testDto = new CreateTestDto();
@@ -63,6 +65,6 @@ public class TestController {
             return "Test/test_input";
         }
         testService.addNewTest(createTest);
-        return "redirect:/patient/patient_info";
+        return "redirect:/medical/patient_info";
     }
 }
