@@ -9,12 +9,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/medical")
 public class NotificationController {
     @Autowired
     private NotificationService notificationService;
 
-    @PostMapping("/registerToken")
+    @PostMapping("/api/registerToken")
     public ResponseEntity<String> registerToken(@RequestBody CollectTokenDto collectTokenDto){
         try {
             notificationService.saveToken(collectTokenDto.getUsername(), collectTokenDto.getToken());
@@ -24,7 +24,7 @@ public class NotificationController {
         }
     }
 
-    @PostMapping("/sendNotification")
+    @PostMapping("/api/sendNotification")
     public ResponseEntity<String> sendNotification(@RequestBody NotificationDto notificationDto) {
         try {
             notificationService.sendNotification(

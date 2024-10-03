@@ -17,7 +17,7 @@
 </nav>
 <div class="flex items-center justify-center p-12">
     <div class="mx-auto w-full max-w-[550px]">
-        <form action="#" th:action="@{/drugs/update}" th:object="${schedule_info}" method="POST">
+        <form action="#" th:action="@{/medical/update}" th:object="${schedule_info}" method="POST">
             <input type="text" name="name" id="id" placeholder="Drug Id" th:value="${schedule_info.drug.id}"
                    th:field="*{drug.id}" hidden
                    class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
@@ -102,7 +102,7 @@
                     <button class="bg-indigo-600 px-4 py-2 rounded-md text-white font-semibold tracking-wide cursor-pointer">
                         Submit
                     </button>
-                    <a th:href="@{/patient/patient_info}"
+                    <a th:href="@{/medical/patient_info}"
                        class="bg-black px-4 py-2 rounded-md text-white font-semibold tracking-wide cursor-pointer">
                         Back
                     </a>

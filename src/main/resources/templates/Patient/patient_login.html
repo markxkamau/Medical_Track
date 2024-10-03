@@ -12,7 +12,7 @@
     <div class="p-10 xs:p-0 mx-auto md:w-full md:max-w-md">
         <h1 class="font-bold text-center text-2xl mb-5">Patient Login Page</h1>
         <div class="bg-white shadow w-full rounded-lg divide-y divide-gray-200">
-            <form class="px-5 py-7" method="post" th:action="@{/patient/login}" th:object="${login_detail}">
+            <form class="px-5 py-7" method="post" th:action="@{/medical/login}" th:object="${login_detail}">
                 <label class="font-semibold text-sm text-gray-600 pb-1 block">E-mail</label>
                 <input type="text" class="border rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full" th:field="*{email}"
                        placeholder="Example:myemail@engine.com"
@@ -42,13 +42,13 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                       d="M8 11V7a4 4 0 118 0m-4 8v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2z"/>
                             </svg>
-                            <a th:href="@{/patient/forgot_password}" class="inline-block ml-1">Forgot Password</a>
+                            <a th:href="@{/medical/forgot_password}" class="inline-block ml-1">Forgot Password</a>
                         </button>
                     </div>
 
                 </div>
                 <div class="transition text-center duration-200 mx-5 px-5 py-4 cursor-pointer font-normal text-sm rounded-lg text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-200 focus:ring-2 focus:ring-gray-400 focus:ring-opacity-50 ring-inset">
-                    <a th:href="@{/patient/new_patient}" class="inline-block ml-1 text-blue-400">Click to
+                    <a th:href="@{/medical/new_patient}" class="inline-block ml-1 text-blue-400">Click to
                         Register</a>
                 </div>
             </div>

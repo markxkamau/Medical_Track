@@ -3,7 +3,6 @@ package com.example.MedicalWebInput.Controllers;
 import com.example.MedicalWebInput.Data.PatientDto.*;
 import com.example.MedicalWebInput.Models.Patient;
 import com.example.MedicalWebInput.Models.Photo;
-import com.example.MedicalWebInput.Repository.DrugRepository;
 import com.example.MedicalWebInput.Services.*;
 import com.google.firebase.messaging.FirebaseMessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +19,7 @@ import javax.validation.constraints.NotNull;
 import java.io.IOException;
 
 @Controller
-@RequestMapping("/patient")
+@RequestMapping("/medical")
 public class PatientController {
 
     @Autowired
@@ -38,14 +37,8 @@ public class PatientController {
 //    GetMappings
 //    =========================================================================
 
-    @GetMapping
-    @ResponseBody
-    public String getHomepage() {
-        return "Patient/home_page";
-    }
-
     //    Must have admin rights
-    @GetMapping("/all")
+    @GetMapping("/all_patients")
     public String getAllPatients(@NotNull Model model) {
         model.addAttribute("patient_data", patientService.convertToPatientDto(patientService.getAllPatients()));
         return "Patient/patient_listing";
@@ -56,7 +49,7 @@ public class PatientController {
         HttpSession session = httpServletRequest.getSession();
         if (session == null || session.getAttribute("patient_info") == null) {
             // If the user is not logged in, redirect them to the login page
-            return "redirect:/patient/login";
+            return "redirect:/medical/login";
         }
         BasicPatientDto patient = (BasicPatientDto) session.getAttribute("patient_info");
         AddPhotoDto addPhotoDto = new AddPhotoDto();
@@ -76,7 +69,7 @@ public class PatientController {
         HttpSession session = httpServletRequest.getSession();
         if (session == null || session.getAttribute("patient_info") == null) {
             // If the user is not logged in, redirect them to the login page
-            return "redirect:/patient/login";
+            return "redirect:/medical/login";
         }
         if (patientService.getDrugAndScheduleInfo(drugId) != null) {
             model.addAttribute("schedule_info", patientService.getDrugAndScheduleInfo(drugId));
@@ -91,11 +84,11 @@ public class PatientController {
         HttpSession session = httpServletRequest.getSession();
         if (session == null || session.getAttribute("patient_info") == null) {
             // If the user is not logged in, redirect them to the login page
-            return "redirect:/patient/login";
+            return "redirect:/medical/login";
         }
         Long patientId = patientService.getDrugInfo(drugId).getPatientId();
         patientService.deleteDrugById(drugId);
-        return "redirect:/patient/patient_info";
+        return "redirect:/medical/patient_info";
     }
 
     @GetMapping("/login")
@@ -115,7 +108,7 @@ public class PatientController {
         sessionCookie.setMaxAge(0);
         sessionCookie.setHttpOnly(true);
         response.addCookie(sessionCookie);
-        return "redirect:/patient/login";
+        return "redirect:/medical/login";
     }
 
 
@@ -131,9 +124,10 @@ public class PatientController {
         HttpSession session = httpServletRequest.getSession();
         if (session == null || session.getAttribute("patient_info") == null) {
             // If the user is not logged in, redirect them to the login page
-            return "redirect:/patient/login";
+            return "redirect:/medical/login";
         }
         BasicPatientDto patient = (BasicPatientDto) session.getAttribute("patient_info");
+        //Dto Not Correctly Setup, Adjust and <avoid> transfer of "object id"
         model.addAttribute("patient_data", patientService.getPatientById(patient.getId()));
         model.addAttribute("drug_info", patientService.getDrugByPatientId(patient.getId()));
         model.addAttribute("drug_present", patientService.checkDrug(patient.getId()));
@@ -149,6 +143,7 @@ public class PatientController {
             model.addAttribute("image", image);
         }
 
+        // Patient Id only applicable to logged in users, multiple logins not possible, find a way to fix it
         reminderService.setPatientId(patient.getId());
         if (!patientService.getDrugByPatientId(patient.getId()).isEmpty()) {
             reminderService.sendDoseReminders();
@@ -191,14 +186,14 @@ public class PatientController {
     public String verifyLogin(@ModelAttribute PatientLoginDto patientLoginDto, @NotNull RedirectAttributes redirectAttributes, HttpServletRequest request) {
         if (!patientService.verifyLogin(patientLoginDto)) {
             redirectAttributes.addFlashAttribute("login_error", "Password or email not correct, check and try again");
-            return "redirect:/patient/login";
+            return "redirect:/medical/login";
         }
         Patient patient = patientService.getPatientByEmail(patientLoginDto.getEmail());
         HttpSession session = request.getSession();
         session.setAttribute("patient_info", patientService.getPatientById(patient.getId()));
         session.setMaxInactiveInterval(900);
 
-        return "redirect:/patient/patient_info";
+        return "redirect:/medical/patient_info";
 
     }
 
@@ -206,13 +201,13 @@ public class PatientController {
     public String resetPassword(@ModelAttribute PatientLoginDto patientLoginDto, @NotNull RedirectAttributes redirectAttributes) {
         if (!patientService.checkForPatient(patientLoginDto.getEmail())) {
             redirectAttributes.addFlashAttribute("reset_error", "Email doesn't exist");
-            return "redirect:/patient/forgot_password";
+            return "redirect:/medical/forgot_password";
         }
         String password = patientService.setNewPassword();
         emailService.sendSimpleMessage(patientLoginDto.getEmail(), "Password Reset", "New Password: " + password);
         patientService.changePassword(patientLoginDto.getEmail(), password);
         redirectAttributes.addFlashAttribute("change_success", true);
-        return "redirect:/patient/login";
+        return "redirect:/medical/login";
     }
 
     @PostMapping("/upload")
@@ -224,7 +219,7 @@ public class PatientController {
             redirectAttributes.addFlashAttribute("upload_error", "Check your uploaded photo");
             return "redirect:/patient/profile_photo/" + photo.getId();
         }
-        return "redirect:/patient/patient_info";
+        return "redirect:/medical/patient_info";
     }
 
 

@@ -47,4 +47,12 @@ public class PatientDto {
         this.photo = photo;
         this.photoAvailable = photoAvailable;
     }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 }

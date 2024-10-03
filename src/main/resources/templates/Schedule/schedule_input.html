@@ -22,7 +22,7 @@
 </div>
 <div class="flex items-center justify-center p-12">
     <div class="mx-auto w-full max-w-[550px]">
-        <form method="post" th:action="@{/schedule/new_schedule}" th:object="${schedule_info}">
+        <form method="post" th:action="@{/medical/new_schedule}" th:object="${schedule_info}">
             <div class="mb-5">
                 <label class="mb-3 block text-base font-medium text-[#07074D]">
                     Number Of Intakes
@@ -51,7 +51,7 @@
                         class="bg-indigo-600 px-4 py-2 rounded-md text-white font-semibold tracking-wide cursor-pointer">
                     Submit
                 </button>
-                <a th:href="@{/patient/patient_info}"
+                <a th:href="@{/medical/patient_info}"
                    class="bg-black px-4 py-2 rounded-md text-white font-semibold tracking-wide cursor-pointer">
                     Back
                 </a>

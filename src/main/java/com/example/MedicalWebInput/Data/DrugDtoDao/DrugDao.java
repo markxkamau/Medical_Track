@@ -1,59 +1,41 @@
-package com.example.MedicalWebInput.Data.DrugDto;
+package com.example.MedicalWebInput.Data.DrugDtoDao;
 
-
-public class DrugDto {
+public class DrugDao {
     private Long id;
     private String drugName = "";
     private String drugScientificName = "";
     private float drugSize;
     private String drugPackaging = "";
     private String drugPurpose = "";
-    private Long patientId;
     private boolean scheduleButton = true;
     private boolean stockButton = true;
 
-
-    public DrugDto() {
-    }
-
-    public DrugDto(Long id, String drugName, String drugScientificName, float drugSize, String drugPackaging, String drugPurpose) {
-        this.id = id;
+    public DrugDao(String drugName, String drugScientificName, float drugSize, String drugPackaging, String drugPurpose, boolean scheduleButton, boolean stockButton) {
         this.drugName = drugName;
         this.drugScientificName = drugScientificName;
         this.drugSize = drugSize;
         this.drugPackaging = drugPackaging;
         this.drugPurpose = drugPurpose;
-    }
-
-    public DrugDto(Long id, String drugName, String drugScientificName, float drugSize, String drugPackaging, String drugPurpose, Long patientId) {
-        this.id = id;
-        this.drugName = drugName;
-        this.drugScientificName = drugScientificName;
-        this.drugSize = drugSize;
-        this.drugPackaging = drugPackaging;
-        this.drugPurpose = drugPurpose;
-        this.patientId = patientId;
-    }
-
-    public DrugDto(Long id, String drugName, String drugScientificName, float drugSize, String drugPackaging, String drugPurpose, Long patientId, boolean scheduleButton) {
-        this.id = id;
-        this.drugName = drugName;
-        this.drugScientificName = drugScientificName;
-        this.drugSize = drugSize;
-        this.drugPackaging = drugPackaging;
-        this.drugPurpose = drugPurpose;
-        this.patientId = patientId;
         this.scheduleButton = scheduleButton;
+        this.stockButton = stockButton;
     }
 
-    public DrugDto(Long id, String drugName, String drugScientificName, float drugSize, String drugPackaging, String drugPurpose, Long patientId, boolean scheduleButton, boolean stockButton) {
+    public DrugDao(String drugName, String drugScientificName, float drugSize, String drugPackaging, boolean scheduleButton, boolean stockButton) {
+        this.drugName = drugName;
+        this.drugScientificName = drugScientificName;
+        this.drugSize = drugSize;
+        this.drugPackaging = drugPackaging;
+        this.scheduleButton = scheduleButton;
+        this.stockButton = stockButton;
+    }
+
+    public DrugDao(Long id, String drugName, String drugScientificName, float drugSize, String drugPackaging, String drugPurpose, boolean scheduleButton, boolean stockButton) {
         this.id = id;
         this.drugName = drugName;
         this.drugScientificName = drugScientificName;
         this.drugSize = drugSize;
         this.drugPackaging = drugPackaging;
         this.drugPurpose = drugPurpose;
-        this.patientId = patientId;
         this.scheduleButton = scheduleButton;
         this.stockButton = stockButton;
     }
@@ -98,22 +80,6 @@ public class DrugDto {
         this.drugPackaging = drugPackaging;
     }
 
-    public String getDrugPurpose() {
-        return drugPurpose;
-    }
-
-    public void setDrugPurpose(String drugPurpose) {
-        this.drugPurpose = drugPurpose;
-    }
-
-    public Long getPatientId() {
-        return patientId;
-    }
-
-    public void setPatientId(Long patientId) {
-        this.patientId = patientId;
-    }
-
     public boolean isScheduleButton() {
         return scheduleButton;
     }
@@ -122,11 +88,19 @@ public class DrugDto {
         this.scheduleButton = scheduleButton;
     }
 
-    public boolean getStockButton() {
+    public boolean isStockButton() {
         return stockButton;
     }
 
     public void setStockButton(boolean stockButton) {
         this.stockButton = stockButton;
+    }
+
+    public String getDrugPurpose() {
+        return drugPurpose;
+    }
+
+    public void setDrugPurpose(String drugPurpose) {
+        this.drugPurpose = drugPurpose;
     }
 }
