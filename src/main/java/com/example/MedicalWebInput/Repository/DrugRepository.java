@@ -10,4 +10,8 @@ public interface DrugRepository extends JpaRepository<Drug,Long> {
     List<Drug> findByPatientId(Long patientId);
 
     void deleteById(Long drugId);
+
+    List<Drug> findByPatientEmail(String patientEmail);
+
+   Drug findByDrugScientificName(String drugScientificName);
 }

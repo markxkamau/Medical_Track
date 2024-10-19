@@ -10,6 +10,7 @@ import com.example.MedicalWebInput.Repository.PatientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -19,12 +20,19 @@ public class DrugService {
     @Autowired
     private PatientRepository patientRepository;
 
-    public List<Drug> getListForPatient(Long patientId) {
-        return drugRepository.findByPatientId(patientId);
+    public List<Drug> getListForPatient(String patientEmail) {
+        return drugRepository.findByPatientEmail(patientEmail);
     }
 
     public List<Drug> getAllDrugs() {
         return drugRepository.findAll();
+    }
+    public List<DrugDao> getAllDrugDao(){
+        List<DrugDao> drugDaos = new ArrayList<>();
+        for (Drug drug : getAllDrugs()){
+            drugDaos.add(convertToDrugDao(drug));
+        }
+        return drugDaos;
     }
 
     public boolean checkDrugData(DrugDto drug) {
@@ -45,7 +53,6 @@ public class DrugService {
     public void addNewDrugData(DrugDto drugDto) {
         Patient patient = patientRepository.findById(drugDto.getPatientId()).get();
         Drug drug = new Drug(
-                drugDto.getId(),
                 drugDto.getDrugName(),
                 drugDto.getDrugScientificName(),
                 drugDto.getDrugSize(),
@@ -62,7 +69,6 @@ public class DrugService {
 
     public DrugDto convertToDrugDto(Drug d) {
         return new DrugDto(
-                d.getId(),
                 d.getDrugName(),
                 d.getDrugScientificName(),
                 d.getDrugSize(),
@@ -73,9 +79,9 @@ public class DrugService {
                 d.getStockButton()
         );
     }
+
     public DrugDao convertToDrugDao(Drug d) {
         return new DrugDao(
-                d.getId(),
                 d.getDrugName(),
                 d.getDrugScientificName(),
                 d.getDrugSize(),
@@ -87,7 +93,7 @@ public class DrugService {
     }
 
     public void updateDrugData(DrugDto drugDto) {
-        Drug drug = drugRepository.findById(drugDto.getId()).get();
+        Drug drug = drugRepository.findByDrugScientificName(drugDto.getDrugScientificName());
         drug.setDrugName(drugDto.getDrugName());
         drug.setDrugPackaging(drugDto.getDrugPackaging());
         drug.setDrugPurpose(drugDto.getDrugPurpose());
@@ -105,5 +111,50 @@ public class DrugService {
         drug.setDrugSize(schedule.getDrug().getDrugSize());
         drug.setDrugScientificName(schedule.getDrug().getDrugScientificName());
         drugRepository.save(drug);
+    }
+
+    public DrugDao getDrugById(Long id) {
+        DrugDao drugDao = new DrugDao(
+                drugRepository.findById(id).get().getDrugName(),
+                drugRepository.findById(id).get().getDrugScientificName(),
+                drugRepository.findById(id).get().getDrugSize(),
+                drugRepository.findById(id).get().getDrugPackaging(),
+                drugRepository.findById(id).get().getDrugPurpose(),
+                drugRepository.findById(id).get().getScheduleButton(),
+                drugRepository.findById(id).get().getStockButton()
+        );
+        return drugDao;
+    }
+
+    public List<DrugDao> convertToDrugListDao(List<Drug> drugsForPatient) {
+        List<DrugDao> drugDaos = new ArrayList<>();
+        for (Drug drug : drugsForPatient){
+            drugDaos.add(convertToDrugDao(drug));
+        }
+        return  drugDaos;
+    }
+
+
+    public DrugDao convertDtoToDao(DrugDto drugDto) {
+        DrugDao drugDao =  new DrugDao(
+                drugDto.getDrugName(),
+                drugDto.getDrugScientificName(),
+                drugDto.getDrugSize(),
+                drugDto.getDrugPackaging(),
+                drugDto.getDrugPurpose(),
+                drugDto.getStockButton(),
+                drugDto.getStockButton()
+        );
+        return drugDao;
+    }
+
+    public boolean checkIfDrugExists(DrugDto drugDto) {
+        List<Drug> drugList = drugRepository.findByPatientId(drugDto.getPatientId());
+        for (Drug drug : drugList){
+            if (drug.getDrugScientificName() == drugDto.getDrugScientificName()){
+                return true;
+            }
+        }
+        return false;
     }
 }

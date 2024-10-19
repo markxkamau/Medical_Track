@@ -1,29 +1,19 @@
 package com.example.MedicalWebInput.Data.ScheduleDto;
 
 public class ScheduleDto {
-    private Long id;
     private Long intakes;
     private String[] time;
-    private Long patientId;
-    private Long drugId;
+    private String patientEmail;
+    private String drugScientificName;
 
     public ScheduleDto() {
     }
 
-    public ScheduleDto(Long id, Long intakes, String[] time, Long patientId, Long drugId) {
-        this.id = id;
+    public ScheduleDto(Long intakes, String[] time, String patientEmail, String drugScientificName) {
         this.intakes = intakes;
         this.time = time;
-        this.patientId = patientId;
-        this.drugId = drugId;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
+        this.patientEmail = patientEmail;
+        this.drugScientificName = drugScientificName;
     }
 
     public Long getIntakes() {
@@ -42,19 +32,19 @@ public class ScheduleDto {
         this.time = time;
     }
 
-    public Long getPatientId() {
-        return patientId;
+    public String getPatientEmail() {
+        return patientEmail;
     }
 
-    public void setPatientId(Long patientId) {
-        this.patientId = patientId;
+    public void setPatientEmail(String patientEmail) {
+        this.patientEmail = patientEmail;
     }
 
-    public Long getDrugId() {
-        return drugId;
+    public String getDrugScientificName() {
+        return drugScientificName;
     }
 
-    public void setDrugId(Long drugId) {
-        this.drugId = drugId;
+    public void setDrugScientificName(String drugScientificName) {
+        this.drugScientificName = drugScientificName;
     }
 }

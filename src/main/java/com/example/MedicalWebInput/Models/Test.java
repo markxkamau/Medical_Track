@@ -28,6 +28,15 @@ public class Test {
     public Test() {
     }
 
+    public Test(int bloodPressure, int weight, int oxygen, int bloodSugar, Date testDate, Patient patient) {
+        this.bloodPressure = bloodPressure;
+        this.weight = weight;
+        this.oxygen = oxygen;
+        this.bloodSugar = bloodSugar;
+        this.testDate = testDate;
+        this.patient = patient;
+    }
+
     public Test(long id, int bloodPressure, int weight, int oxygen, int bloodSugar, Patient patient) {
         this.id = id;
         this.bloodPressure = bloodPressure;

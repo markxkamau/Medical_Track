@@ -2,7 +2,6 @@ package com.example.MedicalWebInput.Data.DrugDtoDao;
 
 
 public class DrugDto {
-    private Long id;
     private String drugName = "";
     private String drugScientificName = "";
     private float drugSize;
@@ -16,8 +15,7 @@ public class DrugDto {
     public DrugDto() {
     }
 
-    public DrugDto(Long id, String drugName, String drugScientificName, float drugSize, String drugPackaging, String drugPurpose) {
-        this.id = id;
+    public DrugDto(String drugName, String drugScientificName, float drugSize, String drugPackaging, String drugPurpose) {
         this.drugName = drugName;
         this.drugScientificName = drugScientificName;
         this.drugSize = drugSize;
@@ -25,8 +23,8 @@ public class DrugDto {
         this.drugPurpose = drugPurpose;
     }
 
-    public DrugDto(Long id, String drugName, String drugScientificName, float drugSize, String drugPackaging, String drugPurpose, Long patientId) {
-        this.id = id;
+    public DrugDto(String drugName, String drugScientificName, float drugSize, String drugPackaging, String drugPurpose, Long patientId) {
+
         this.drugName = drugName;
         this.drugScientificName = drugScientificName;
         this.drugSize = drugSize;
@@ -35,8 +33,8 @@ public class DrugDto {
         this.patientId = patientId;
     }
 
-    public DrugDto(Long id, String drugName, String drugScientificName, float drugSize, String drugPackaging, String drugPurpose, Long patientId, boolean scheduleButton) {
-        this.id = id;
+    public DrugDto(String drugName, String drugScientificName, float drugSize, String drugPackaging, String drugPurpose, Long patientId, boolean scheduleButton) {
+
         this.drugName = drugName;
         this.drugScientificName = drugScientificName;
         this.drugSize = drugSize;
@@ -46,8 +44,8 @@ public class DrugDto {
         this.scheduleButton = scheduleButton;
     }
 
-    public DrugDto(Long id, String drugName, String drugScientificName, float drugSize, String drugPackaging, String drugPurpose, Long patientId, boolean scheduleButton, boolean stockButton) {
-        this.id = id;
+    public DrugDto(String drugName, String drugScientificName, float drugSize, String drugPackaging, String drugPurpose, Long patientId, boolean scheduleButton, boolean stockButton) {
+
         this.drugName = drugName;
         this.drugScientificName = drugScientificName;
         this.drugSize = drugSize;
@@ -58,13 +56,6 @@ public class DrugDto {
         this.stockButton = stockButton;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getDrugName() {
         return drugName;

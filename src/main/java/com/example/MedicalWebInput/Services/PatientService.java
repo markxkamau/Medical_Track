@@ -68,9 +68,8 @@ public class PatientService {
 
     public Patient convertToPatient(CreatePatientDto patientDto) {
         String patientName = patientDto.getFirstName() + " " + patientDto.getLastName();
-        List<Drug> drugs = drugService.getListForPatient(patientDto.getId());
+        List<Drug> drugs = drugService.getListForPatient(patientDto.getEmail());
         Patient patient = new Patient(
-                patientDto.getId(),
                 patientName,
                 patientDto.getEmail(),
                 patientDto.getPassword(),
@@ -133,7 +132,7 @@ public class PatientService {
         PatientDao patientDao = convertToPatientDao(patient);
         return patientDao;
     }
-    private PatientDao convertToPatientDao(Patient patient) {
+    public PatientDao convertToPatientDao(Patient patient) {
         return new PatientDao(
                 patient.getName(),
                 patient.getEmail(),
@@ -144,7 +143,6 @@ public class PatientService {
     }
     private BasicPatientDto convertToBasicPatientDto(Patient patient) {
         return new BasicPatientDto(
-                patient.getId(),
                 patient.getName(),
                 patient.getEmail(),
                 patient.getDrugs().size(),
@@ -171,7 +169,6 @@ public class PatientService {
     public DrugDto getDrugInfo(Long drugId) {
         Drug drug = drugRepository.findById(drugId).get();
         return new DrugDto(
-                drug.getId(),
                 drug.getDrugName(),
                 drug.getDrugScientificName(),
                 drug.getDrugSize(),
@@ -208,5 +205,28 @@ public class PatientService {
             return false;
         }
         return true;
+    }
+
+    public Patient updatePatientDetails(CreatePatientDto patientDto) {
+        Patient patient = getPatientByEmail(patientDto.getEmail());
+        patient.setCondition(patientDto.getCondition());
+        patient.setPassword(patientDto.getPassword());
+        patient.setName(patientDto.getFirstName()+ " " +patientDto.getLastName());
+
+        patientRepository.save(patient);
+        return patient;
+    }
+
+    public PatientDao deletePatientById(Long id) {
+        PatientDao patientDao = getPatientInfoById(id);
+        patientRepository.deleteById(id);
+        return patientDao;
+    }
+
+    public void deleteDrugsByPatientId(Long patientId) {
+        List<DrugDao> drugDaos = getDrugByPatientId(patientId);
+        for (DrugDao drugDao: drugDaos){
+            drugRepository.deleteById(drugRepository.findByDrugScientificName(drugDao.getDrugScientificName()).getId());
+        }
     }
 }

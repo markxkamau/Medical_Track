@@ -18,31 +18,23 @@ public class Photo {
     private String mimeType;
     //    @Lob
     private byte[] profilePhoto;
-    @OneToOne
-    private Patient patient;
+    private Long patientId;
 
     public Photo() {
     }
 
-    public Photo(Long id, byte[] profilePhoto, Patient patient) {
-        this.id = id;
-        this.profilePhoto = profilePhoto;
-        this.patient = patient;
-    }
-
-    public Photo(Long id, String name, String mimeType, byte[] profilePhoto, Patient patient) {
+    public Photo(Long id, String name, String mimeType, byte[] profilePhoto, Long patientId) {
         this.id = id;
         this.name = name;
         this.mimeType = mimeType;
         this.profilePhoto = profilePhoto;
-        this.patient = patient;
+        this.patientId = patientId;
     }
 
-    public Photo(Long id, String mimeType, byte[] profilePhoto, Patient patient) {
-        this.id = id;
+    public Photo(String mimeType, byte[] profilePhoto, Long patientId) {
         this.mimeType = mimeType;
         this.profilePhoto = profilePhoto;
-        this.patient = patient;
+        this.patientId = patientId;
     }
 
     public Long getId() {
@@ -51,14 +43,6 @@ public class Photo {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Patient getPatient() {
-        return patient;
-    }
-
-    public void setPatient(Patient patient) {
-        this.patient = patient;
     }
 
     public byte[] getProfilePhoto() {

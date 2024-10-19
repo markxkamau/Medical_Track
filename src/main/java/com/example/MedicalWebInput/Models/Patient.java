@@ -42,6 +42,14 @@ public class Patient {
         this.drugs = drugs;
     }
 
+    public Patient(String name, String email, String password, String condition, List<Drug> drugs) {
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.condition = condition;
+        this.drugs = drugs;
+    }
+
     public Patient(Long id, String name, String email, String password, String condition, boolean photoAvailable, List<Drug> drugs) {
         this.id = id;
         this.name = name;
@@ -56,6 +64,7 @@ public class Patient {
         this.email = email;
         this.password = password;
     }
+
 
     public Long getId() {
         return id;

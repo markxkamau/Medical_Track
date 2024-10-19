@@ -1,28 +1,18 @@
 package com.example.MedicalWebInput.Data.PatientDto;
 
 public class BasicPatientDto {
-    private Long id;
     private  String name;
     private String email;
     private int size;
     private String condition;
     boolean photoAvailable;
 
-    public BasicPatientDto(Long id, String name, String email, int size, String condition, boolean photoAvailable) {
-        this.id = id;
+    public BasicPatientDto(String name, String email, int size, String condition, boolean photoAvailable) {
         this.name = name;
         this.email = email;
         this.size = size;
         this.condition = condition;
         this.photoAvailable = photoAvailable;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getName() {

@@ -29,6 +29,7 @@ public class Drug {
     public Drug() {
     }
 
+
     public Drug(Long id, String drugName, String drugScientificName, float drugSize, String drugPackaging, String drugPurpose) {
         this.id = id;
         this.drugName = drugName;
@@ -37,6 +38,7 @@ public class Drug {
         this.drugPackaging = drugPackaging;
         this.drugPurpose = drugPurpose;
     }
+
 
     public Drug(Long id, String drugName, String drugScientificName, float drugSize, String drugPackaging, String drugPurpose, boolean scheduleButton, Patient patient) {
         this.id = id;
@@ -54,6 +56,16 @@ public class Drug {
     }
 
     public void setPatient(Patient patient) {
+        this.patient = patient;
+    }
+
+    public Drug( String drugName, String drugScientificName, float drugSize, String drugPackaging, String drugPurpose, Patient patient) {
+
+        this.drugName = drugName;
+        this.drugScientificName = drugScientificName;
+        this.drugSize = drugSize;
+        this.drugPackaging = drugPackaging;
+        this.drugPurpose = drugPurpose;
         this.patient = patient;
     }
 

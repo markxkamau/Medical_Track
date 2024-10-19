@@ -2,52 +2,29 @@ package com.example.MedicalWebInput.Data.TestDto;
 
 import java.util.Date;
 
-public class CreateTestDto {
-    private Long id;
+public class TestDao {
+    private String email;
     private int bloodPressure = 0;
     private int weight = 0;
     private int oxygen = 0;
     private int bloodSugar = 0;
-    private Long patientId = 0L;
     private Date testDate = new Date();
 
-    public CreateTestDto() {
-    }
-
-    public CreateTestDto(int bloodPressure, int weight, int oxygen, int bloodSugar, Long patientId, Date testDate) {
+    public TestDao(String email, int bloodPressure, int weight, int oxygen, int bloodSugar, Date testDate) {
+        this.email = email;
         this.bloodPressure = bloodPressure;
         this.weight = weight;
         this.oxygen = oxygen;
         this.bloodSugar = bloodSugar;
-        this.patientId = patientId;
         this.testDate = testDate;
     }
 
-
-    public CreateTestDto(int bloodPressure, int weight, int oxygen, int bloodSugar, Long patientId) {
-        this.bloodPressure = bloodPressure;
-        this.weight = weight;
-        this.oxygen = oxygen;
-        this.bloodSugar = bloodSugar;
-        this.patientId = patientId;
+    public String getEmail() {
+        return email;
     }
 
-    public CreateTestDto(Long id, int bloodPressure, int weight, int oxygen, int bloodSugar, Long patientId, Date testDate) {
-        this.id = id;
-        this.bloodPressure = bloodPressure;
-        this.weight = weight;
-        this.oxygen = oxygen;
-        this.bloodSugar = bloodSugar;
-        this.patientId = patientId;
-        this.testDate = testDate;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public int getBloodPressure() {
@@ -88,13 +65,5 @@ public class CreateTestDto {
 
     public void setTestDate(Date testDate) {
         this.testDate = testDate;
-    }
-
-    public Long getPatientId() {
-        return patientId;
-    }
-
-    public void setPatientId(Long patientId) {
-        this.patientId = patientId;
     }
 }

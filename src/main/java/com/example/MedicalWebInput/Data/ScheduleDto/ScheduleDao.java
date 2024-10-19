@@ -10,8 +10,8 @@ public class ScheduleDao {
     private Long intakes = 1L;
     private String[] time;
     private Date startDate;
-    private Patient patient;
-    private Drug drug;
+    private Long patientId;
+    private Long drugId;
 
     public ScheduleDao() {
     }
@@ -21,12 +21,13 @@ public class ScheduleDao {
         this.time = time;
     }
 
-    public ScheduleDao(Long intakes, String[] time, Date startDate, Patient patient, Drug drug) {
+
+    public ScheduleDao(Long intakes, String[] time, Date startDate, Long patientId, Long drugId) {
         this.intakes = intakes;
         this.time = time;
         this.startDate = startDate;
-        this.patient = patient;
-        this.drug = drug;
+        this.patientId = patientId;
+        this.drugId = drugId;
     }
 
     public Long getIntakes() {
@@ -53,19 +54,19 @@ public class ScheduleDao {
         this.startDate = startDate;
     }
 
-    public Patient getPatient() {
-        return patient;
+    public Long getPatientId() {
+        return patientId;
     }
 
-    public void setPatient(Patient patient) {
-        this.patient = patient;
+    public void setPatientId(Long patientId) {
+        this.patientId = patientId;
     }
 
-    public Drug getDrug() {
-        return drug;
+    public Long getDrugId() {
+        return drugId;
     }
 
-    public void setDrug(Drug drug) {
-        this.drug = drug;
+    public void setDrugId(Long drugId) {
+        this.drugId = drugId;
     }
 }

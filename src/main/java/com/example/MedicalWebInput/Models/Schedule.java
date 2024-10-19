@@ -31,6 +31,20 @@ public class Schedule {
     public Schedule() {
     }
 
+    public Schedule(Long intakes, String[] time, Date startDate, Patient patient, Drug drug) {
+        this.intakes = intakes;
+        this.time = time;
+        this.startDate = startDate;
+        this.patient = patient;
+        this.drug = drug;
+    }
+    public Schedule(Long intakes, String[] time, Patient patient, Drug drug) {
+        this.intakes = intakes;
+        this.time = time;
+        this.patient = patient;
+        this.drug = drug;
+    }
+
     public Schedule(Long id, Long intakes, String[] time, Patient patient, Drug drug) {
         this.id = id;
         this.intakes = intakes;

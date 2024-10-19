@@ -30,10 +30,9 @@ public class PhotoService {
     public Photo addNewPhoto(AddPhotoDto addPhotoDto) throws IOException {
         Patient patient = patientRepository.findById(addPhotoDto.getPatientId()).get();
         Photo photo = new Photo(
-                addPhotoDto.getId(),
                 generateMimeType(addPhotoDto.getProfilePhoto()),
                 convertMultipartFileToByteArray(addPhotoDto.getProfilePhoto()),
-                patient
+                patient.getId()
         );
         Photo savedPhoto = photoRepository.save(photo);
         patient.setPhotoAvailable(true);

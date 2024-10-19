@@ -1,7 +1,6 @@
 package com.example.MedicalWebInput.Data.DrugDtoDao;
 
 public class DrugDao {
-    private Long id;
     private String drugName = "";
     private String drugScientificName = "";
     private float drugSize;
@@ -28,26 +27,6 @@ public class DrugDao {
         this.scheduleButton = scheduleButton;
         this.stockButton = stockButton;
     }
-
-    public DrugDao(Long id, String drugName, String drugScientificName, float drugSize, String drugPackaging, String drugPurpose, boolean scheduleButton, boolean stockButton) {
-        this.id = id;
-        this.drugName = drugName;
-        this.drugScientificName = drugScientificName;
-        this.drugSize = drugSize;
-        this.drugPackaging = drugPackaging;
-        this.drugPurpose = drugPurpose;
-        this.scheduleButton = scheduleButton;
-        this.stockButton = stockButton;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public String getDrugName() {
         return drugName;
     }
