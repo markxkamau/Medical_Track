@@ -30,6 +30,8 @@ public class ScheduleDao {
         this.drugId = drugId;
     }
 
+
+
     public Long getIntakes() {
         return intakes;
     }

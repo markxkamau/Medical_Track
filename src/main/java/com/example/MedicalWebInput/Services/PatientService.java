@@ -39,8 +39,8 @@ public class PatientService {
         return false;
     }
 
-    public void addNewPatient(Patient patient) {
-        patientRepository.save(patient);
+    public Patient addNewPatient(Patient patient) {
+        return patientRepository.save(patient);
     }
 
     public List<PatientDto> convertToPatientDto(List<Patient> allPatients) {
@@ -132,6 +132,7 @@ public class PatientService {
         PatientDao patientDao = convertToPatientDao(patient);
         return patientDao;
     }
+
     public PatientDao convertToPatientDao(Patient patient) {
         return new PatientDao(
                 patient.getName(),
@@ -141,6 +142,7 @@ public class PatientService {
                 patient.isPhotoAvailable()
         );
     }
+
     private BasicPatientDto convertToBasicPatientDto(Patient patient) {
         return new BasicPatientDto(
                 patient.getName(),
@@ -160,10 +162,6 @@ public class PatientService {
             drugDaos.add(drugDao);
         }
         return drugDaos;
-    }
-
-    public List<Test> getAllPatientTests(Long patientId) {
-        return testRepository.findTestByPatientId(patientId);
     }
 
     public DrugDto getDrugInfo(Long drugId) {
@@ -199,19 +197,12 @@ public class PatientService {
         return scheduleRepository.findByPatientIdAndDrugId(patientId, drugId);
     }
 
-    public boolean checkDrug(Long id) {
-        List<Drug> drug = drugRepository.findByPatientId(id);
-        if (drug.isEmpty()) {
-            return false;
-        }
-        return true;
-    }
 
     public Patient updatePatientDetails(CreatePatientDto patientDto) {
         Patient patient = getPatientByEmail(patientDto.getEmail());
         patient.setCondition(patientDto.getCondition());
         patient.setPassword(patientDto.getPassword());
-        patient.setName(patientDto.getFirstName()+ " " +patientDto.getLastName());
+        patient.setName(patientDto.getFirstName() + " " + patientDto.getLastName());
 
         patientRepository.save(patient);
         return patient;

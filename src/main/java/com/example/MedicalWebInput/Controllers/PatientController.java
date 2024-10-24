@@ -51,25 +51,27 @@ public class PatientController {
             return ResponseEntity.ok(patientService.getPatientByEmail(patientDto.getEmail()));
         }
         Patient patient = patientService.convertToPatient(patientDto);
-        patientService.addNewPatient(patient);
 
-        return ResponseEntity.ok(patient);
+
+        return ResponseEntity.ok(patientService.addNewPatient(patient));
     }
 
 
-//    *************************************************************************
+    //    *************************************************************************
 //    PutMappings
 //    =========================================================================
     @PutMapping("/new_patient")
     public ResponseEntity<PatientDao> updatePatientInfo(@RequestBody CreatePatientDto patientDto) {
-        if (!patientService.checkForPatient(patientDto.getEmail())) {
-//            Patient email doesn't exists
-            uploadPatientInfo(patientDto);
-        }
         if (!patientService.checkPassword(patientDto.getPassword(), patientDto.getConfirmPassword())) {
 //            Passwords not similar
             return ResponseEntity.ok(patientService.convertToPatientDao(patientService.getPatientByEmail(patientDto.getEmail())));
         }
+
+        if (!patientService.checkForPatient(patientDto.getEmail())) {
+//            Patient email doesn't exists
+            uploadPatientInfo(patientDto);
+        }
+
         if (patientDto.getDrugCount() < 1) {
 //            Drug count less than one
             return ResponseEntity.ok(patientService.convertToPatientDao(patientService.getPatientByEmail(patientDto.getEmail())));
@@ -80,16 +82,16 @@ public class PatientController {
         return ResponseEntity.ok(patientService.convertToPatientDao(patientService.updatePatientDetails(patientDto)));
     }
 
-//    *************************************************************************
-//    PutMappings
+    //    *************************************************************************
+//    DeleteMappings
 //    =========================================================================
     @DeleteMapping("/patient/{id}")
-    public ResponseEntity<PatientDao> deletePatientInfo(@PathVariable Long id){
+    public ResponseEntity<PatientDao> deletePatientInfo(@PathVariable Long id) {
         if (!patientService.checkForPatient(patientService.getPatientInfoById(id).getEmail())) {
 //            Patient email doesn't exists
             return ResponseEntity.ok(null);
         }
-        return  ResponseEntity.ok(patientService.deletePatientById(id));
+        return ResponseEntity.ok(patientService.deletePatientById(id));
 
     }
 

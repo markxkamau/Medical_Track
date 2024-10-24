@@ -23,7 +23,7 @@ public class Photo {
     public Photo() {
     }
 
-    public Photo(Long id, String name, String mimeType, byte[] profilePhoto, Long patientId) {
+    public Photo(Long id, String name, String mimeType, byte[] profilePhoto, Long patient_PatientId) {
         this.id = id;
         this.name = name;
         this.mimeType = mimeType;
@@ -31,7 +31,7 @@ public class Photo {
         this.patientId = patientId;
     }
 
-    public Photo(String mimeType, byte[] profilePhoto, Long patientId) {
+    public Photo(String mimeType, byte[] profilePhoto, Long patient_PatientId) {
         this.mimeType = mimeType;
         this.profilePhoto = profilePhoto;
         this.patientId = patientId;

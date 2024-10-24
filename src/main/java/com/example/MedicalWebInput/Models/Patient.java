@@ -1,11 +1,15 @@
 package com.example.MedicalWebInput.Models;
 
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.*;
 
 @Entity
 @Table
+@Getter
+@Setter
 public class Patient {
     @Id
     @SequenceGenerator(
@@ -24,7 +28,7 @@ public class Patient {
     private String condition = "";
     private boolean photoAvailable = false;
 
-    @OneToMany
+    @Transient
     private List<Drug> drugs = new ArrayList<>();
 
     @OneToOne
@@ -63,70 +67,5 @@ public class Patient {
     public Patient(String email, String password) {
         this.email = email;
         this.password = password;
-    }
-
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getCondition() {
-        return condition;
-    }
-
-    public void setCondition(String condition) {
-        this.condition = condition;
-    }
-
-    public boolean isPhotoAvailable() {
-        return photoAvailable;
-    }
-
-    public void setPhotoAvailable(boolean photoAvailable) {
-        this.photoAvailable = photoAvailable;
-    }
-
-    public List<Drug> getDrugs() {
-        return drugs;
-    }
-
-    public void setDrugs(List<Drug> drugs) {
-        this.drugs = drugs;
-    }
-
-    public Photo getPhoto() {
-        return photo;
-    }
-
-    public void setPhoto(Photo photo) {
-        this.photo = photo;
     }
 }

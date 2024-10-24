@@ -19,7 +19,7 @@ import javax.servlet.http.HttpSession;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
-@Controller
+@RestController
 @RequestMapping("/medical")
 public class TestController {
     @Autowired

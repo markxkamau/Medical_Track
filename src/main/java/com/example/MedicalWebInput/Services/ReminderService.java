@@ -6,7 +6,6 @@ import com.example.MedicalWebInput.Repository.DrugRepository;
 import com.example.MedicalWebInput.Repository.PatientRepository;
 import com.example.MedicalWebInput.Repository.ScheduleRepository;
 import com.google.firebase.FirebaseApp;
-import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;

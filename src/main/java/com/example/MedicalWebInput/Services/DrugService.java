@@ -7,6 +7,8 @@ import com.example.MedicalWebInput.Models.Patient;
 import com.example.MedicalWebInput.Models.Schedule;
 import com.example.MedicalWebInput.Repository.DrugRepository;
 import com.example.MedicalWebInput.Repository.PatientRepository;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.PropertyMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -51,15 +53,16 @@ public class DrugService {
     }
 
     public void addNewDrugData(DrugDto drugDto) {
-        Patient patient = patientRepository.findById(drugDto.getPatientId()).get();
-        Drug drug = new Drug(
-                drugDto.getDrugName(),
-                drugDto.getDrugScientificName(),
-                drugDto.getDrugSize(),
-                drugDto.getDrugPackaging(),
-                drugDto.getDrugPurpose(),
-                patient
-        );
+        Patient patient = patientRepository.findById(drugDto.getPatientId()).orElseThrow(()-> new RuntimeException("Patient Not Found"));
+        ModelMapper modelMapper = new ModelMapper();
+        modelMapper.addMappings(new PropertyMap<DrugDto, Drug>() {
+            @Override
+            protected void configure() {
+                map().setId(source.getDrugId());
+            }
+        });
+        Drug drug = modelMapper.map(drugDto, Drug.class);
+        drug.setPatient(patient);
         drugRepository.save(drug);
     }
 
@@ -67,28 +70,16 @@ public class DrugService {
         return drugRepository.findByPatientId(patientId);
     }
 
-    public DrugDto convertToDrugDto(Drug d) {
-        return new DrugDto(
-                d.getDrugName(),
-                d.getDrugScientificName(),
-                d.getDrugSize(),
-                d.getDrugPackaging(),
-                d.getDrugPurpose(),
-                d.getPatient().getId(),
-                d.getScheduleButton(),
-                d.getStockButton()
-        );
-    }
-
     public DrugDao convertToDrugDao(Drug d) {
+        ModelMapper modelMapper = new ModelMapper();
         return new DrugDao(
                 d.getDrugName(),
                 d.getDrugScientificName(),
                 d.getDrugSize(),
                 d.getDrugPackaging(),
                 d.getDrugPurpose(),
-                d.getScheduleButton(),
-                d.getStockButton()
+                d.isScheduleButton(),
+                d.isStockButton()
         );
     }
 
@@ -120,8 +111,8 @@ public class DrugService {
                 drugRepository.findById(id).get().getDrugSize(),
                 drugRepository.findById(id).get().getDrugPackaging(),
                 drugRepository.findById(id).get().getDrugPurpose(),
-                drugRepository.findById(id).get().getScheduleButton(),
-                drugRepository.findById(id).get().getStockButton()
+                drugRepository.findById(id).get().isScheduleButton(),
+                drugRepository.findById(id).get().isStockButton()
         );
         return drugDao;
     }
@@ -142,8 +133,8 @@ public class DrugService {
                 drugDto.getDrugSize(),
                 drugDto.getDrugPackaging(),
                 drugDto.getDrugPurpose(),
-                drugDto.getStockButton(),
-                drugDto.getStockButton()
+                drugDto.isScheduleButton(),
+                drugDto.isStockButton()
         );
         return drugDao;
     }

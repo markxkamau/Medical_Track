@@ -7,7 +7,6 @@ import com.example.MedicalWebInput.Models.Test;
 import com.example.MedicalWebInput.Repository.PatientRepository;
 import com.example.MedicalWebInput.Repository.TestRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
