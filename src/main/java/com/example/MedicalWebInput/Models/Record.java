@@ -4,7 +4,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.Date;
 
 @Entity
 @Table
@@ -28,14 +27,5 @@ public class Record {
     @OneToOne
     private Schedule schedule;
 
-    public Record() {
-    }
-
-    public Record(Long id, int day, boolean[] timetable, Schedule schedule) {
-        this.id = id;
-        this.day = day;
-        this.timetable = timetable;
-        this.schedule = schedule;
-    }
 
 }

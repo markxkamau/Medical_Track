@@ -2,7 +2,6 @@ package com.example.MedicalWebInput.Controllers;
 
 import com.example.MedicalWebInput.Data.ScheduleDto.ScheduleDao;
 import com.example.MedicalWebInput.Data.ScheduleDto.ScheduleDto;
-import com.example.MedicalWebInput.Services.PatientService;
 import com.example.MedicalWebInput.Services.ScheduleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -41,10 +40,10 @@ public class ScheduleController {
         if (scheduleDto.getPatientEmail() == null || scheduleDto.getDrugScientificName() == null || scheduleDto.getIntakes() == null || scheduleDto.getTime() == null) {
             return null;
         }
-        if (!scheduleService.checkScheduleData(scheduleDto)) {
+        if (scheduleService.checkScheduleData(scheduleDto)) {
             return null;
         }
-        if (!scheduleService.checkTime(scheduleDto.getTime())) {
+        if (scheduleService.checkTime(scheduleDto.getTime())) {
             return null;
         }
         scheduleService.addNewScheduleData(scheduleDto);
@@ -63,11 +62,11 @@ public class ScheduleController {
         if (scheduleDto.getPatientEmail() == null || scheduleDto.getDrugScientificName() == null || scheduleDto.getIntakes() == null || scheduleDto.getTime() == null) {
             return null;
         }
-        if (!scheduleService.checkScheduleData(scheduleDto)) {
+        if (scheduleService.checkScheduleData(scheduleDto)) {
             scheduleService.updateWithScheduleDtoData(scheduleDto);
             return ResponseEntity.ok(scheduleService.convertDtoToDao(scheduleDto));
         }
-        if (!scheduleService.checkTime(scheduleDto.getTime())) {
+        if (scheduleService.checkTime(scheduleDto.getTime())) {
             return null;
         }
         return ResponseEntity.ok(scheduleService.convertDtoToDao(scheduleDto));

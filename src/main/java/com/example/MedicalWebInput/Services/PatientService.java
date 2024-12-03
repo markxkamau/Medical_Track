@@ -17,8 +17,6 @@ public class PatientService {
     @Autowired
     private DrugService drugService;
     @Autowired
-    private TestRepository testRepository;
-    @Autowired
     private DrugRepository drugRepository;
     @Autowired
     private DrugStockRepository drugStockRepository;
@@ -30,10 +28,7 @@ public class PatientService {
     }
 
     public boolean checkForPatient(String email) {
-        if (!patientRepository.findByEmail(email).isEmpty()) {
-            return true;
-        }
-        return false;
+        return patientRepository.findByEmail(email).isPresent();
     }
 
     public Patient addNewPatient(Patient patient) {
@@ -57,23 +52,19 @@ public class PatientService {
     }
 
     public boolean checkPassword(String password, String confirmPassword) {
-        if (password.equals(confirmPassword)) {
-            return true;
-        }
-        return false;
+        return password.equals(confirmPassword);
     }
 
     public Patient convertToPatient(CreatePatientDto patientDto) {
         String patientName = patientDto.getFirstName() + " " + patientDto.getLastName();
         List<Drug> drugs = drugService.getListForPatient(patientDto.getEmail());
-        Patient patient = new Patient(
+        return new Patient(
                 patientName,
                 patientDto.getEmail(),
                 patientDto.getPassword(),
                 patientDto.getCondition(),
                 drugs
         );
-        return patient;
     }
 
     public boolean verifyLogin(PatientLoginDto patientLoginDto) {
@@ -81,15 +72,12 @@ public class PatientService {
         if (passwordConfirm.isEmpty()) {
             return false;
         }
-        if (!passwordConfirm.equals(patientLoginDto.getPassword())) {
-            return false;
-        }
-        return true;
+        return passwordConfirm.equals(patientLoginDto.getPassword());
     }
 
     private String getPassword(String email) {
         Optional<Patient> patient = patientRepository.findByEmail(email);
-        if (!patient.isEmpty()) {
+        if (patient.isPresent()) {
             return patient.get().getPassword();
         }
         return "";
@@ -101,8 +89,8 @@ public class PatientService {
 
     public String setNewPassword() {
         String alphabet = "a b c d e f g h i j k l m n o p q r s t u v w x y z 1 2 3 4 5 6 7 8 9 0 - = [ ] ; ' \\ ; / , < >";
-        String alpha[] = alphabet.split(" ");
-        String password[] = new String[10];
+        String[] alpha = alphabet.split(" ");
+        String[] password = new String[10];
         Random random = new Random();
 
         for (int x = 0; x < password.length; x++) {
@@ -120,14 +108,12 @@ public class PatientService {
 
     public BasicPatientDto getPatientById(Long id) {
         Patient patient = patientRepository.findById(id).get();
-        BasicPatientDto basicPatientDto = convertToBasicPatientDto(patient);
-        return basicPatientDto;
+        return convertToBasicPatientDto(patient);
     }
 
     public PatientDao getPatientInfoById(Long id) {
         Patient patient = patientRepository.findById(id).get();
-        PatientDao patientDao = convertToPatientDao(patient);
-        return patientDao;
+        return convertToPatientDao(patient);
     }
 
     public PatientDao convertToPatientDao(Patient patient) {

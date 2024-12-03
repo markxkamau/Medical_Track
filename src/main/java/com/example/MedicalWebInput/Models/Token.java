@@ -28,15 +28,4 @@ public class Token {
     public Token() {
     }
 
-    public Token(Long id, String registrationToken, Patient patient) {
-        this.id = id;
-        this.registrationToken = registrationToken;
-        this.patient = patient;
-    }
-
-    public Token(String registrationToken, Patient patient) {
-        this.registrationToken = registrationToken;
-        this.patient = patient;
-    }
-
 }

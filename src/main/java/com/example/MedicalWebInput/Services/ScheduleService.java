@@ -3,7 +3,6 @@ package com.example.MedicalWebInput.Services;
 import com.example.MedicalWebInput.Data.ScheduleDto.*;
 import com.example.MedicalWebInput.Models.Drug;
 import com.example.MedicalWebInput.Models.DrugStock;
-import com.example.MedicalWebInput.Models.Patient;
 import com.example.MedicalWebInput.Models.Schedule;
 import com.example.MedicalWebInput.Repository.DrugRepository;
 import com.example.MedicalWebInput.Repository.DrugStockRepository;
@@ -47,27 +46,6 @@ public class ScheduleService {
         return scheduleDtos;
     }
 
-    public ScheduleDto getScheduleDtoByDrugId(Long drugId) {
-        Schedule e = scheduleRepository.findById(getScheduleIdByDrugId(drugId)).get();
-        return new ScheduleDto(
-                e.getIntakes(),
-                e.getTime(),
-                e.getPatient().getEmail(),
-                e.getDrug().getDrugScientificName()
-        );
-    }
-
-
-    private String[] convertTimeToString(List<LocalTime> time) {
-        List<String> empty = new ArrayList<>();
-        for (LocalTime item : time) {
-            empty.add(item.toString());
-        }
-        String[] strings = empty.toArray(new String[empty.size()]);
-        return strings;
-    }
-
-
     public void addNewScheduleData(ScheduleDto scheduleDto) {
         Schedule schedule = new Schedule(
                 scheduleDto.getIntakes(),
@@ -89,17 +67,17 @@ public class ScheduleService {
 
     public boolean checkScheduleData(ScheduleDto scheduleDto) {
         List<Schedule> schedules = scheduleRepository.findAll();
-        if (schedules.size() == 0) {
-            return true;
+        if (schedules.isEmpty()) {
+            return false;
         } else {
             for (Schedule x : schedules) {
                 if (scheduleDto.getPatientEmail().equals(x.getPatient().getEmail()) &&
                         scheduleDto.getDrugScientificName().equals(x.getDrug().getDrugScientificName())) {
-                    return false;
+                    return true;
                 }
             }
         }
-        return true;
+        return false;
     }
 
     public List<ScheduleDao> getScheduleByPatientId(Long patientId) {
@@ -120,11 +98,10 @@ public class ScheduleService {
     }
 
     public PatientDrugInfoDto getPatientAndDrugInfo(Long patientId, Long drugId) {
-        PatientDrugInfoDto patientDrugInfoDto = new PatientDrugInfoDto(
+        return new PatientDrugInfoDto(
                 patientRepository.findById(patientId).get().getName(),
                 drugRepository.findById(drugId).get().getDrugName()
         );
-        return patientDrugInfoDto;
     }
 
     public boolean checkTime(String[] time) {
@@ -132,15 +109,11 @@ public class ScheduleService {
             List<LocalTime> localTIme = convertStringToTime(time);
             long distinctCount = localTIme.stream().distinct().count();
 
-            if (distinctCount >= localTIme.size()) {
-                return true;
-            } else {
-                return false;
-            }
+            return distinctCount < localTIme.size();
 
         }
 
-        return true;
+        return false;
     }
 
     public void setVisibilityNone(String drugId) {
@@ -158,10 +131,7 @@ public class ScheduleService {
         Date date = convertStringToDate(startDate);
         Date currentDate = new Date();
         long diff = date.getTime() - currentDate.getTime();
-        if (diff < 0) {
-            return false;
-        }
-        return true;
+        return diff >= 0;
     }
 
     private Date convertStringToDate(String startDate) {
@@ -185,10 +155,7 @@ public class ScheduleService {
 
     public boolean checkIfNull(Long patientId) {
         List<Schedule> schedules = scheduleRepository.findByPatientId(patientId);
-        if (schedules.size() < 1) {
-            return false;
-        }
-        return true;
+        return !schedules.isEmpty();
     }
 
     public void setStockVisibility(Long id) {
@@ -238,10 +205,7 @@ public class ScheduleService {
                 count++;
             }
         }
-        if (count == 0) {
-            return false;
-        }
-        return true;
+        return count != 0;
     }
 
     public List<DrugStock> getStockInfo(Long id) {
@@ -310,14 +274,13 @@ public class ScheduleService {
 
     public ScheduleDao convertDtoToDao(ScheduleDto scheduleDto) {
         Schedule schedule = scheduleRepository.findByPatientIdAndDrugId(patientRepository.findByEmail(scheduleDto.getPatientEmail()).get().getId(), drugRepository.findByDrugScientificName(scheduleDto.getDrugScientificName()).getId());
-        ScheduleDao scheduleDao = new ScheduleDao(
+        return new ScheduleDao(
                 schedule.getIntakes(),
                 schedule.getTime(),
                 schedule.getStartDate(),
                 schedule.getPatient().getId(),
                 schedule.getDrug().getId()
         );
-        return scheduleDao;
     }
 
     public void updateWithScheduleDtoData(ScheduleDto scheduleDto) {

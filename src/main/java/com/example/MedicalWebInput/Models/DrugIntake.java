@@ -31,22 +31,4 @@ public class DrugIntake {
 
     public DrugIntake() {
     }
-
-    public DrugIntake(LocalDateTime intakeTime, boolean taken) {
-        this.intakeTime = intakeTime;
-        this.taken = taken;
-    }
-
-    public DrugIntake(Drug drug, LocalDateTime intakeTime, boolean taken) {
-        this.drug = drug;
-        this.intakeTime = intakeTime;
-        this.taken = taken;
-    }
-
-    public DrugIntake(Drug drug, LocalDateTime intakeTime, boolean taken, Long id) {
-        this.drug = drug;
-        this.intakeTime = intakeTime;
-        this.taken = taken;
-        this.id = id;
-    }
 }
