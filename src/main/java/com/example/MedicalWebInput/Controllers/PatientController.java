@@ -42,7 +42,7 @@ public class PatientController {
 //            Patient email already exists
             return ResponseEntity.ok(patientService.getPatientByEmail(patientDto.getEmail()));
         }
-        if (!patientService.checkPassword(patientDto.getPassword(), patientDto.getConfirmPassword())) {
+        if (patientService.checkPassword(patientDto.getPassword(), patientDto.getConfirmPassword())) {
 //            Passwords not similar
             return ResponseEntity.ok(patientService.getPatientByEmail(patientDto.getEmail()));
         }
@@ -62,7 +62,7 @@ public class PatientController {
 //    =========================================================================
     @PutMapping("/new_patient")
     public ResponseEntity<PatientDao> updatePatientInfo(@RequestBody CreatePatientDto patientDto) {
-        if (!patientService.checkPassword(patientDto.getPassword(), patientDto.getConfirmPassword())) {
+        if (patientService.checkPassword(patientDto.getPassword(), patientDto.getConfirmPassword())) {
 //            Passwords not similar
             return ResponseEntity.ok(patientService.convertToPatientDao(patientService.getPatientByEmail(patientDto.getEmail())));
         }

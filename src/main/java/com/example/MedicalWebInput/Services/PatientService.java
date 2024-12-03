@@ -52,7 +52,7 @@ public class PatientService {
     }
 
     public boolean checkPassword(String password, String confirmPassword) {
-        return password.equals(confirmPassword);
+        return !password.equals(confirmPassword);
     }
 
     public Patient convertToPatient(CreatePatientDto patientDto) {

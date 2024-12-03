@@ -247,10 +247,7 @@ public class ScheduleService {
     public boolean checkIfStockExists(DrugTimetableDto drugTimetableDto) {
         Schedule schedule = scheduleRepository.findById(drugTimetableDto.getScheduleId()).get();
         Long drugId = schedule.getDrug().getId();
-        if (drugStockRepository.findByDrugId(drugId) == null) {
-            return false;
-        }
-        return true;
+        return drugStockRepository.findByDrugId(drugId) != null;
     }
 
     public void updateStockData(DrugTimetableDto drugTimetableDto) {

@@ -32,11 +32,4 @@ public class DrugStock {
     public DrugStock() {
     }
 
-    public DrugStock(Long id, int drugCount, Date refillDate, Drug drug) {
-        this.id = id;
-        this.drugCount = drugCount;
-        this.refillDate = refillDate;
-        this.drug = drug;
-    }
-
 }
