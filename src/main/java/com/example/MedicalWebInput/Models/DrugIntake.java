@@ -1,10 +1,15 @@
 package com.example.MedicalWebInput.Models;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
 @Table
+@Getter
+@Setter
 public class DrugIntake {
     @Id
     @SequenceGenerator(
@@ -21,6 +26,8 @@ public class DrugIntake {
     private Drug drug;
     private LocalDateTime intakeTime;
     private boolean taken;
+    @OneToOne
+    private Patient patient;
 
     public DrugIntake() {
     }
@@ -41,37 +48,5 @@ public class DrugIntake {
         this.intakeTime = intakeTime;
         this.taken = taken;
         this.id = id;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Drug getDrug() {
-        return drug;
-    }
-
-    public void setDrug(Drug drug) {
-        this.drug = drug;
-    }
-
-    public LocalDateTime getIntakeTime() {
-        return intakeTime;
-    }
-
-    public void setIntakeTime(LocalDateTime intakeTime) {
-        this.intakeTime = intakeTime;
-    }
-
-    public boolean isTaken() {
-        return taken;
-    }
-
-    public void setTaken(boolean taken) {
-        this.taken = taken;
     }
 }

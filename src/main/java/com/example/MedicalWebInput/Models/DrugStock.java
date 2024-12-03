@@ -1,10 +1,15 @@
 package com.example.MedicalWebInput.Models;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 import java.util.Date;
 
 @Entity
 @Table
+@Getter
+@Setter
 public class DrugStock {
     @Id
     @SequenceGenerator(
@@ -21,6 +26,8 @@ public class DrugStock {
     private Date refillDate = new Date();
     @OneToOne
     private Drug drug;
+    @OneToOne
+    private Patient patient;
 
     public DrugStock() {
     }
@@ -32,35 +39,4 @@ public class DrugStock {
         this.drug = drug;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public int getDrugCount() {
-        return drugCount;
-    }
-
-    public void setDrugCount(int drugCount) {
-        this.drugCount = drugCount;
-    }
-
-    public Date getRefillDate() {
-        return refillDate;
-    }
-
-    public void setRefillDate(Date refillDate) {
-        this.refillDate = refillDate;
-    }
-
-    public Drug getDrug() {
-        return drug;
-    }
-
-    public void setDrug(Drug drug) {
-        this.drug = drug;
-    }
 }

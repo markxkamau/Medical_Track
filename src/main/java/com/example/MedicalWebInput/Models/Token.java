@@ -1,9 +1,14 @@
 package com.example.MedicalWebInput.Models;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 
 @Entity
 @Table
+@Getter
+@Setter
 public class Token {
     @Id
     @SequenceGenerator(
@@ -34,27 +39,4 @@ public class Token {
         this.patient = patient;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getRegistrationToken() {
-        return registrationToken;
-    }
-
-    public void setRegistrationToken(String registrationToken) {
-        this.registrationToken = registrationToken;
-    }
-
-    public Patient getPatient() {
-        return patient;
-    }
-
-    public void setPatient(Patient patient) {
-        this.patient = patient;
-    }
 }

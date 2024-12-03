@@ -8,10 +8,7 @@ import com.example.MedicalWebInput.Repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Random;
+import java.util.*;
 
 @Service
 public class PatientService {
@@ -155,7 +152,7 @@ public class PatientService {
 
     public List<DrugDao> getDrugByPatientId(Long patientId) {
         List<Drug> drugs;
-        List<DrugDao> drugDaos = new ArrayList<>();
+        List<DrugDao> drugDaos = new LinkedList<>();
         drugs = drugService.getDrugsForPatient(patientId);
         for (Drug d : drugs) {
             DrugDao drugDao = drugService.convertToDrugDao(d);

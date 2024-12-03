@@ -1,9 +1,15 @@
 package com.example.MedicalWebInput.Models;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 import java.util.Date;
 
 @Entity
+@Table
+@Getter
+@Setter
 public class Record {
     @Id
     @SequenceGenerator(
@@ -29,38 +35,6 @@ public class Record {
         this.id = id;
         this.day = day;
         this.timetable = timetable;
-        this.schedule = schedule;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public int getDay() {
-        return day;
-    }
-
-    public void setDay(int day) {
-        this.day = day;
-    }
-
-    public boolean[] getTimetable() {
-        return timetable;
-    }
-
-    public void setTimetable(boolean[] timetable) {
-        this.timetable = timetable;
-    }
-
-    public Schedule getSchedule() {
-        return schedule;
-    }
-
-    public void setSchedule(Schedule schedule) {
         this.schedule = schedule;
     }
 

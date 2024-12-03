@@ -1,10 +1,15 @@
 package com.example.MedicalWebInput.Models;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 import java.util.Date;
 
 @Entity
 @Table
+@Getter
+@Setter
 public class Test {
     @Id
     @SequenceGenerator(
@@ -56,59 +61,4 @@ public class Test {
         this.patient = patient;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public int getBloodPressure() {
-        return bloodPressure;
-    }
-
-    public void setBloodPressure(int bloodPressure) {
-        this.bloodPressure = bloodPressure;
-    }
-
-    public int getWeight() {
-        return weight;
-    }
-
-    public void setWeight(int weight) {
-        this.weight = weight;
-    }
-
-    public int getOxygen() {
-        return oxygen;
-    }
-
-    public void setOxygen(int oxygen) {
-        this.oxygen = oxygen;
-    }
-
-    public int getBloodSugar() {
-        return bloodSugar;
-    }
-
-    public void setBloodSugar(int bloodSugar) {
-        this.bloodSugar = bloodSugar;
-    }
-
-    public Patient getPatient() {
-        return patient;
-    }
-
-    public void setPatient(Patient patient) {
-        this.patient = patient;
-    }
-
-    public Date getTestDate() {
-        return testDate;
-    }
-
-    public void setTestDate(Date testDate) {
-        this.testDate = testDate;
-    }
 }

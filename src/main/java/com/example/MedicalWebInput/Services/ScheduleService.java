@@ -175,16 +175,6 @@ public class ScheduleService {
         return date;
     }
 
-    public void addNewDrugStock(DrugTimetableDto drugTimetableDto) {
-        Drug drug = scheduleRepository.findById(drugTimetableDto.getScheduleId()).get().getDrug();
-        DrugStock drugStock = new DrugStock(
-                drugTimetableDto.getId(),
-                drugTimetableDto.getDrugCount(),
-                convertStringToDate(drugTimetableDto.getRefillDate()),
-                drug
-        );
-        drugStockRepository.save(drugStock);
-    }
 
     public void updateStartDate(DrugTimetableDto drugTimetableDto) {
         Schedule schedule = scheduleRepository.findById(drugTimetableDto.getScheduleId()).get();

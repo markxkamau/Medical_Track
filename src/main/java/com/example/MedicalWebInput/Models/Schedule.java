@@ -1,6 +1,9 @@
 package com.example.MedicalWebInput.Models;
 
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 import java.time.LocalTime;
 import java.util.Date;
@@ -8,6 +11,8 @@ import java.util.List;
 
 @Entity
 @Table
+@Getter
+@Setter
 public class Schedule {
     @Id
     @SequenceGenerator(
@@ -60,53 +65,5 @@ public class Schedule {
         this.startDate = startDate;
         this.patient = patient;
         this.drug = drug;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public Long getIntakes() {
-        return intakes;
-    }
-
-    public void setIntakes(Long intakes) {
-        this.intakes = intakes;
-    }
-
-    public String[] getTime() {
-        return time;
-    }
-
-    public void setTime(String[] time) {
-        this.time = time;
-    }
-
-    public Patient getPatient() {
-        return patient;
-    }
-
-    public void setPatient(Patient patient) {
-        this.patient = patient;
-    }
-
-    public Drug getDrug() {
-        return drug;
-    }
-
-    public void setDrug(Drug drug) {
-        this.drug = drug;
-    }
-
-    public Date getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(Date startDate) {
-        this.startDate = startDate;
     }
 }
