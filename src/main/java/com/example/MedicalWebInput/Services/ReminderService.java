@@ -20,8 +20,6 @@ public class ReminderService {
     @Autowired
     private ScheduleRepository scheduleRepository;
     @Autowired
-    private DrugRepository drugRepository;
-    @Autowired
     private EmailService emailService;
     @Autowired
     private NotificationService notificationService;

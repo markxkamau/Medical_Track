@@ -7,6 +7,7 @@ import com.example.MedicalWebInput.Models.Patient;
 import com.example.MedicalWebInput.Models.Schedule;
 import com.example.MedicalWebInput.Repository.DrugRepository;
 import com.example.MedicalWebInput.Repository.PatientRepository;
+import com.example.MedicalWebInput.Repository.ScheduleRepository;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,9 +22,15 @@ public class DrugService {
     private DrugRepository drugRepository;
     @Autowired
     private PatientRepository patientRepository;
+    @Autowired
+    private ScheduleRepository scheduleRepository;
 
     public List<Drug> getListForPatient(String patientEmail) {
-        return drugRepository.findByPatientEmail(patientEmail);
+        List<Drug> drugs = new ArrayList<>();
+        for(Schedule e : scheduleRepository.findByPatientId(patientRepository.findByEmail(patientEmail).get().getId())){
+            drugs.add(e.getDrug());
+        }
+        return drugs;
     }
 
     public List<Drug> getAllDrugs() {
@@ -62,12 +69,15 @@ public class DrugService {
             }
         });
         Drug drug = modelMapper.map(drugDto, Drug.class);
-        drug.setPatient(patient);
         drugRepository.save(drug);
     }
 
     public List<Drug> getDrugsForPatient(Long patientId) {
-        return drugRepository.findByPatientId(patientId);
+        List<Drug> drugs = new ArrayList<>();
+        for(Schedule e : scheduleRepository.findByPatientId(patientRepository.findById(patientId).get().getId())){
+            drugs.add(e.getDrug());
+        }
+        return drugs;
     }
 
     public DrugDao convertToDrugDao(Drug d) {
@@ -90,7 +100,6 @@ public class DrugService {
         drug.setDrugPurpose(drugDto.getDrugPurpose());
         drug.setDrugSize(drugDto.getDrugSize());
         drug.setDrugScientificName(drugDto.getDrugScientificName());
-        drug.setPatient(patientRepository.findById(drugDto.getPatientId()).get());
         drugRepository.save(drug);
     }
 
@@ -139,13 +148,4 @@ public class DrugService {
         return drugDao;
     }
 
-    public boolean checkIfDrugExists(DrugDto drugDto) {
-        List<Drug> drugList = drugRepository.findByPatientId(drugDto.getPatientId());
-        for (Drug drug : drugList){
-            if (drug.getDrugScientificName() == drugDto.getDrugScientificName()){
-                return true;
-            }
-        }
-        return false;
-    }
 }

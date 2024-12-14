@@ -1,7 +1,9 @@
 package com.example.MedicalWebInput.Models;
 
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -11,6 +13,8 @@ import java.util.Date;
 @Table
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Schedule {
     @Id
     @SequenceGenerator(
@@ -23,41 +27,20 @@ public class Schedule {
             generator = "schedule_sequence"
     )
     private Long id;
+
     private Long intakes = 1L;
     private String[] time;
     private Date startDate = new Date();
-    @OneToOne
-    private Patient patient = new Patient();
-    @OneToOne
-    private Drug drug = new Drug();
 
-    public Schedule() {
-    }
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "patient_id")
+    private Patient patient;
 
-    public Schedule(Long intakes, String[] time, Date startDate, Patient patient, Drug drug) {
-        this.intakes = intakes;
-        this.time = time;
-        this.startDate = startDate;
-        this.patient = patient;
-        this.drug = drug;
-    }
-    public Schedule(Long intakes, String[] time, Patient patient, Drug drug) {
-        this.intakes = intakes;
-        this.time = time;
-        this.patient = patient;
-        this.drug = drug;
-    }
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "drug_id")
+    private Drug drug;
 
-    public Schedule(Long id, Long intakes, String[] time, Patient patient, Drug drug) {
-        this.id = id;
-        this.intakes = intakes;
-        this.time = time;
-        this.patient = patient;
-        this.drug = drug;
-    }
-
-    public Schedule(Long id, Long intakes, String[] time, Date startDate, Patient patient, Drug drug) {
-        this.id = id;
+    public Schedule(Long intakes, String[] time,  Patient patient, Drug drug) {
         this.intakes = intakes;
         this.time = time;
         this.startDate = startDate;

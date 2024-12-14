@@ -42,7 +42,6 @@ public class PatientService {
                     item.getId(),
                     item.getName(),
                     item.getEmail(),
-                    item.getDrugs().size(),
                     item.getCondition(),
                     item.getPassword()
             ));
@@ -57,13 +56,12 @@ public class PatientService {
 
     public Patient convertToPatient(CreatePatientDto patientDto) {
         String patientName = patientDto.getFirstName() + " " + patientDto.getLastName();
-        List<Drug> drugs = drugService.getListForPatient(patientDto.getEmail());
+       // List<Drug> drugs = drugService.getListForPatient(patientDto.getEmail());
         return new Patient(
                 patientName,
                 patientDto.getEmail(),
                 patientDto.getPassword(),
-                patientDto.getCondition(),
-                drugs
+                patientDto.getCondition()
         );
     }
 
@@ -120,7 +118,6 @@ public class PatientService {
         return new PatientDao(
                 patient.getName(),
                 patient.getEmail(),
-                patient.getDrugs().size(),
                 patient.getCondition(),
                 patient.isPhotoAvailable()
         );
@@ -130,7 +127,6 @@ public class PatientService {
         return new BasicPatientDto(
                 patient.getName(),
                 patient.getEmail(),
-                patient.getDrugs().size(),
                 patient.getCondition(),
                 patient.isPhotoAvailable()
         );
@@ -154,8 +150,7 @@ public class PatientService {
                 drug.getDrugScientificName(),
                 drug.getDrugSize(),
                 drug.getDrugPackaging(),
-                drug.getDrugPurpose(),
-                drug.getPatient().getId()
+                drug.getDrugPurpose()
         );
     }
 
@@ -165,11 +160,12 @@ public class PatientService {
             drugStockRepository.deleteById(drugStock.getId());
 
         }
-        Long patientId = drugRepository.findById(drugId).get().getPatient().getId();
-        Schedule schedule = scheduleRepository.findByPatientIdAndDrugId(patientId, drugId);
-        if (schedule != null) {
-            scheduleRepository.deleteById(schedule.getId());
-        }
+
+        //TODO: Clear Schedule of drug deleted by Patient Id
+//        Schedule schedule = scheduleRepository.findByPatientIdAndDrugId(patientId, drugId);
+//        if (schedule != null) {
+//            scheduleRepository.deleteById(schedule.getId());
+//        }
 
         drugRepository.deleteById(drugId);
     }

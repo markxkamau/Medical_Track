@@ -3,14 +3,12 @@ package com.example.MedicalWebInput.Data.PatientDto;
 public class BasicPatientDto {
     private  String name;
     private String email;
-    private int size;
     private String condition;
     boolean photoAvailable;
 
-    public BasicPatientDto(String name, String email, int size, String condition, boolean photoAvailable) {
+    public BasicPatientDto(String name, String email, String condition, boolean photoAvailable) {
         this.name = name;
         this.email = email;
-        this.size = size;
         this.condition = condition;
         this.photoAvailable = photoAvailable;
     }
@@ -29,14 +27,6 @@ public class BasicPatientDto {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public int getSize() {
-        return size;
-    }
-
-    public void setSize(int size) {
-        this.size = size;
     }
 
     public String getCondition() {

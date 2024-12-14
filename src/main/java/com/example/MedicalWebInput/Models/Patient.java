@@ -1,15 +1,20 @@
 package com.example.MedicalWebInput.Models;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Patient {
     @Id
     @SequenceGenerator(
@@ -28,44 +33,18 @@ public class Patient {
     private String condition = "";
     private boolean photoAvailable = false;
 
-    @Transient
-    private List<Drug> drugs = new ArrayList<>();
-
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "photo_id")
     private Photo photo;
 
-    public Patient() {
-    }
+    // Instead of List<Drug>, use a relationship that's more database-friendly
+    @OneToMany(mappedBy = "patient", fetch = FetchType.LAZY)
+    private List<Schedule> schedules = new ArrayList<>();
 
-    public Patient(Long id, String name, String email, String password, String condition, List<Drug> drugs) {
-        this.id = id;
+    public Patient(String name, String email, String password, String condition) {
         this.name = name;
         this.email = email;
         this.password = password;
         this.condition = condition;
-        this.drugs = drugs;
-    }
-
-    public Patient(String name, String email, String password, String condition, List<Drug> drugs) {
-        this.name = name;
-        this.email = email;
-        this.password = password;
-        this.condition = condition;
-        this.drugs = drugs;
-    }
-
-    public Patient(Long id, String name, String email, String password, String condition, boolean photoAvailable, List<Drug> drugs) {
-        this.id = id;
-        this.name = name;
-        this.email = email;
-        this.password = password;
-        this.condition = condition;
-        this.photoAvailable = photoAvailable;
-        this.drugs = drugs;
-    }
-
-    public Patient(String email, String password) {
-        this.email = email;
-        this.password = password;
     }
 }

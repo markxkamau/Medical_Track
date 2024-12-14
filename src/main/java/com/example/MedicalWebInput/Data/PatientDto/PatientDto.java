@@ -8,7 +8,7 @@ public class PatientDto {
     private Long id;
     private String name = "";
     private String email = "";
-    private int drugCount;
+//    private int drugCount;
     private String condition = "";
     private String password = "";
     private Optional<Photo> photo;
@@ -18,30 +18,27 @@ public class PatientDto {
     public PatientDto() {
     }
 
-    public PatientDto(Long id,String name, String email, int drugCount, String condition, String password) {
+    public PatientDto(Long id,String name, String email, String condition, String password) {
         this.id = id;
         this.name = name;
         this.email = email;
-        this.drugCount = drugCount;
         this.condition = condition;
         this.password = password;
     }
 
-    public PatientDto(Long id, String name, String email, int drugCount, String condition, String password, boolean photoAvailable) {
+    public PatientDto(Long id, String name, String email, String condition, String password, boolean photoAvailable) {
         this.id = id;
         this.name = name;
         this.email = email;
-        this.drugCount = drugCount;
         this.condition = condition;
         this.password = password;
         this.photoAvailable = photoAvailable;
     }
 
-    public PatientDto(Long id, String name, String email, int drugCount, String condition, String password, Optional<Photo> photo, boolean photoAvailable) {
+    public PatientDto(Long id, String name, String email, String condition, String password, Optional<Photo> photo, boolean photoAvailable) {
         this.id = id;
         this.name = name;
         this.email = email;
-        this.drugCount = drugCount;
         this.condition = condition;
         this.password = password;
         this.photo = photo;
@@ -70,14 +67,6 @@ public class PatientDto {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public int getDrugCount() {
-        return drugCount;
-    }
-
-    public void setDrugCount(int drugCount) {
-        this.drugCount = drugCount;
     }
 
     public String getCondition() {

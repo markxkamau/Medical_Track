@@ -17,14 +17,13 @@ public class DrugDto {
     private boolean stockButton = true;
 
 
-    public DrugDto(String drugName, String drugScientificName, float drugSize, String drugPackaging, String drugPurpose, Long patientId) {
+    public DrugDto(String drugName, String drugScientificName, float drugSize, String drugPackaging, String drugPurpose) {
 
         this.drugName = drugName;
         this.drugScientificName = drugScientificName;
         this.drugSize = drugSize;
         this.drugPackaging = drugPackaging;
         this.drugPurpose = drugPurpose;
-        this.patientId = patientId;
     }
 
 }

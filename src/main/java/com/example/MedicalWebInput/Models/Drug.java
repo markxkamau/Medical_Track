@@ -6,6 +6,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
+
 
 @Entity
 @Table
@@ -25,6 +28,7 @@ public class Drug {
             generator = "drug_sequence"
     )
     private Long id;
+
     private String drugName = "";
     private String drugScientificName = "";
     private float drugSize;
@@ -32,11 +36,9 @@ public class Drug {
     private String drugPurpose = "";
     private boolean scheduleButton = true;
     private boolean stockButton = true;
-    @ManyToOne
-    private Patient patient;
 
-
-    public Drug(String drugName, String drugScientificName, float drugSize, String drugPackaging, String drugPurpose, Patient patient) {
-
-    }
+    @OneToMany(mappedBy = "drug", fetch = FetchType.LAZY)
+    private List<Schedule> schedules = new ArrayList<>();
 }
+
+
