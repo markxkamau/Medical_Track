@@ -6,11 +6,10 @@ public class BasicPatientDto {
     private String condition;
     boolean photoAvailable;
 
-    public BasicPatientDto(String name, String email, String condition, boolean photoAvailable) {
+    public BasicPatientDto(String name, String email, String condition) {
         this.name = name;
         this.email = email;
         this.condition = condition;
-        this.photoAvailable = photoAvailable;
     }
 
     public String getName() {

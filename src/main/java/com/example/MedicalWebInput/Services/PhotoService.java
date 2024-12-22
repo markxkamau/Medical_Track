@@ -32,10 +32,10 @@ public class PhotoService {
         Photo photo = new Photo(
                 generateMimeType(addPhotoDto.getProfilePhoto()),
                 convertMultipartFileToByteArray(addPhotoDto.getProfilePhoto()),
-                patient.getId()
+                addPhotoDto.getPatientId()
         );
         Photo savedPhoto = photoRepository.save(photo);
-        patient.setPhotoAvailable(true);
+        patient.setPhoto(savedPhoto);
         patientRepository.save(patient);
         return savedPhoto;
     }
@@ -64,14 +64,5 @@ public class PhotoService {
             return encodedImage;
         }
         return null;
-    }
-
-    public void checkForCurrentPhoto(Long patientId) {
-        Patient patient = patientRepository.findById(patientId).get();
-        Photo photo = photoRepository.findByPatientId(patientId);
-        if (photo != null) {
-            photoRepository.delete(photo);
-            patient.setPhotoAvailable(false);
-        }
     }
 }

@@ -1,25 +1,25 @@
 package com.example.MedicalWebInput.Data.PatientDto;
 
+import java.time.LocalDateTime;
+
 public class CreatePatientDto {
     private String firstName = "";
     private String lastName = "";
     private String email = "";
-    private int drugCount;
     private String condition = "";
     private String password = "";
-    private String confirmPassword = "";
+    private LocalDateTime dateTime;
 
     public CreatePatientDto() {
     }
 
-    public CreatePatientDto(String firstName, String lastName, String email, int drugCount, String condition, String password, String confirmPassword) {
+    public CreatePatientDto(String firstName, String lastName, String email, String condition, String password, LocalDateTime dateTime) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
-        this.drugCount = drugCount;
         this.condition = condition;
         this.password = password;
-        this.confirmPassword = confirmPassword;
+        this.dateTime = dateTime;
     }
 
     public String getFirstName() {
@@ -46,14 +46,6 @@ public class CreatePatientDto {
         this.email = email;
     }
 
-    public int getDrugCount() {
-        return drugCount;
-    }
-
-    public void setDrugCount(int drugCount) {
-        this.drugCount = drugCount;
-    }
-
     public String getCondition() {
         return condition;
     }
@@ -70,11 +62,10 @@ public class CreatePatientDto {
         this.password = password;
     }
 
-    public String getConfirmPassword() {
-        return confirmPassword;
+    public LocalDateTime getDateTime() {
+        return dateTime;
     }
-
-    public void setConfirmPassword(String confirmPassword) {
-        this.confirmPassword = confirmPassword;
+    public void setDateTime(LocalDateTime dateTime) {
+        this.dateTime = dateTime;
     }
 }

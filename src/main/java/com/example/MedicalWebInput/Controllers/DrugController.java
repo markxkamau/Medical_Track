@@ -63,6 +63,7 @@ public class DrugController {
 //    =========================================================================
     @DeleteMapping("/drug/delete_drug")
     public ResponseEntity<DrugDao> deleteDrugById(@RequestParam("drugId") Long drugId) {
+        //// TODO: NEW DESIGN WORKING WITH THE DRUG ID _ CHECK THE SCHEDULE MEANS TO DELETE DRUG
         patientService.deleteDrugById(drugId);
         return ResponseEntity.ok(drugService.getDrugById(drugId));
     }

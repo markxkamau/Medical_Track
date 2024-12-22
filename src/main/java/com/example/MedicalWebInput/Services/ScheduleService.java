@@ -312,15 +312,10 @@ public class ScheduleService {
     }
 
     public ScheduleDao deletePatientDrugSchedule(Long patientId, Long drugId) {
-        Schedule schedule = scheduleRepository.findByPatientIdAndDrugId(patientId, drugId);
-        ScheduleDao scheduleDao = new ScheduleDao(
-                schedule.getIntakes(),
-                schedule.getTime(),
-                schedule.getStartDate(),
-                patientId,
-                drugId
-        );
-        scheduleRepository.deleteById(schedule.getId());
-        return scheduleDao;
+        return null;
+    }
+
+    public ScheduleDao getSetScheduleForPatient(Long scheduleId, Long patientId) {
+        return new ScheduleDao();
     }
 }

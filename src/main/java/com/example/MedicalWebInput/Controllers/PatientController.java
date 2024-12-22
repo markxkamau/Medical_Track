@@ -1,9 +1,9 @@
 package com.example.MedicalWebInput.Controllers;
 
 import com.example.MedicalWebInput.Data.PatientDto.*;
-import com.example.MedicalWebInput.Models.Patient;
 import com.example.MedicalWebInput.Services.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,9 +16,9 @@ public class PatientController {
     @Autowired
     private PatientService patientService;
 
-//    *************************************************************************
-//    GetMappings
-//    =========================================================================
+    //    *************************************************************************
+    //    GetMappings
+    //    =========================================================================
 
     //    Must have admin rights
     @GetMapping("/all_patients")
@@ -32,64 +32,89 @@ public class PatientController {
     }
 
 
-//    *************************************************************************
-//    PostMappings
-//    =========================================================================
-
+    //    *************************************************************************
+    //    PostMappings
+    //    =========================================================================
+    //{
+    //        "firstName": "string",
+    //        "lastName": "string",
+    //        "email": "string",
+    //        "condition": "string",
+    //        "password": "string",
+    //        "dateTime": "2024-12-16T23:58:43.638Z"
+    //}
     @PostMapping("/new_patient")
-    public ResponseEntity<Patient> uploadPatientInfo(@RequestBody CreatePatientDto patientDto) {
-        if (patientService.checkForPatient(patientDto.getEmail())) {
-//            Patient email already exists
-            return ResponseEntity.ok(patientService.getPatientByEmail(patientDto.getEmail()));
-        }
-        if (patientService.checkPassword(patientDto.getPassword(), patientDto.getConfirmPassword())) {
-//            Passwords not similar
-            return ResponseEntity.ok(patientService.getPatientByEmail(patientDto.getEmail()));
-        }
-        if (patientDto.getDrugCount() < 1) {
-//            Drug count less than one
-            return ResponseEntity.ok(patientService.getPatientByEmail(patientDto.getEmail()));
-        }
-        Patient patient = patientService.convertToPatient(patientDto);
+    public ResponseEntity<?> registerOrUpdatePatient(@RequestBody CreatePatientDto patientDto) {
 
+        try {
+            // 1. Validation (can be moved to a separate method/class)
+            if (!patientService.isValidPatientData(patientDto)) {
+                return ResponseEntity.badRequest().body("Invalid patient data. Please fill in all required fields.");
+            }
 
-        return ResponseEntity.ok(patientService.addNewPatient(patient));
+            // 2. Check for existing patient
+            if (patientService.checkEmailForPatient(patientDto.getEmail())) {
+                // 3. Handle existing patient (using 409 Conflict status code)
+                return ResponseEntity.status(HttpStatus.CONFLICT).body("A patient with this email already exists.");
+                // Or, if you really want to return the existing patient data (be cautious!):
+                // return ResponseEntity.status(HttpStatus.CONFLICT).body(patientService.getPatientByEmailLimited(patientDto.getEmail()));
+            }
+
+            return ResponseEntity.ok(patientService.addNewPatient(patientDto));
+
+        } catch (Exception e) {
+            // 4. General exception handling
+            return ResponseEntity.internalServerError().body("An error occurred while processing your request.");
+        }
     }
 
-
     //    *************************************************************************
-//    PutMappings
-//    =========================================================================
+    //    PutMappings
+    //    =========================================================================
+    //{
+    //        "firstName": "string",
+    //        "lastName": "string",
+    //        "email": "string",
+    //        "condition": "string",
+    //        "password": "string",
+    //        "dateTime": "2024-12-16T23:58:43.638Z"
+    //}
     @PutMapping("/new_patient")
-    public ResponseEntity<PatientDao> updatePatientInfo(@RequestBody CreatePatientDto patientDto) {
-        if (patientService.checkPassword(patientDto.getPassword(), patientDto.getConfirmPassword())) {
-//            Passwords not similar
-            return ResponseEntity.ok(patientService.convertToPatientDao(patientService.getPatientByEmail(patientDto.getEmail())));
+    public ResponseEntity<?> updatePatientInfo(@RequestBody CreatePatientDto patientDto) {
+        try {
+            // 1. Validation (can be moved to a separate method/class)
+            if (!patientService.isValidPatientData(patientDto)) {
+                return ResponseEntity.badRequest().body("Invalid patient data. Please fill in all required fields.");
+            }
+
+            // 2. Check for existing patient
+            if (patientService.checkEmailForPatient(patientDto.getEmail())) {
+                // 3. Handle existing patient (using 409 Conflict status code)
+
+                return ResponseEntity.ok(patientService.updatePatientDetails(patientDto));
+                // Or, if you really want to return the existing patient data (be cautious!):
+                // return ResponseEntity.status(HttpStatus.CONFLICT).body(patientService.getPatientByEmailLimited(patientDto.getEmail()));
+            }
+
+            return ResponseEntity.ok(patientService.addNewPatient(patientDto));
+
+        } catch (Exception e) {
+            // 4. General exception handling
+            return ResponseEntity.internalServerError().body("An error occurred while processing your request.");
         }
-
-        if (!patientService.checkForPatient(patientDto.getEmail())) {
-//            Patient email doesn't exists
-            uploadPatientInfo(patientDto);
-        }
-
-        if (patientDto.getDrugCount() < 1) {
-//            Drug count less than one
-            return ResponseEntity.ok(patientService.convertToPatientDao(patientService.getPatientByEmail(patientDto.getEmail())));
-        }
-        Patient patient = patientService.getPatientByEmail(patientDto.getEmail());
-
-
-        return ResponseEntity.ok(patientService.convertToPatientDao(patientService.updatePatientDetails(patientDto)));
     }
 
     //    *************************************************************************
-//    DeleteMappings
-//    =========================================================================
+    //    DeleteMappings
+    //    =========================================================================
+    //{
+    //        "id": 0
+    //}
     @DeleteMapping("/patient/{id}")
-    public ResponseEntity<PatientDao> deletePatientInfo(@PathVariable Long id) {
-        if (!patientService.checkForPatient(patientService.getPatientInfoById(id).getEmail())) {
-//            Patient email doesn't exists
-            return ResponseEntity.ok(null);
+    public ResponseEntity<?> deletePatientInfo(@PathVariable Long id) {
+        if (!patientService.checkForPatient(id) ){
+    //            Patient email doesn't exists
+            return ResponseEntity.badRequest().body("No such patient in the database.");
         }
         return ResponseEntity.ok(patientService.deletePatientById(id));
 

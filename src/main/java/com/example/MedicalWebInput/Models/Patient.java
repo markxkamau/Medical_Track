@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,20 +32,20 @@ public class Patient {
     private String email = "";
     private String password = "";
     private String condition = "";
-    private boolean photoAvailable = false;
+    private LocalDateTime localDateTime = LocalDateTime.now();
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "photo_id")
     private Photo photo;
 
-    // Instead of List<Drug>, use a relationship that's more database-friendly
     @OneToMany(mappedBy = "patient", fetch = FetchType.LAZY)
     private List<Schedule> schedules = new ArrayList<>();
 
-    public Patient(String name, String email, String password, String condition) {
+    public Patient(String name, String email, String password, String condition, LocalDateTime localDateTime) {
         this.name = name;
         this.email = email;
         this.password = password;
         this.condition = condition;
+        this.localDateTime = localDateTime;
     }
 }

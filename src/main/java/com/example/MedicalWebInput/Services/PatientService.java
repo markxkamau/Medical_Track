@@ -27,11 +27,22 @@ public class PatientService {
         return patientRepository.findAll();
     }
 
-    public boolean checkForPatient(String email) {
+    public boolean checkForPatient(Long id) {
+        return patientRepository.findById(id).isPresent();
+    }
+
+    public boolean checkEmailForPatient(String email) {
         return patientRepository.findByEmail(email).isPresent();
     }
 
-    public Patient addNewPatient(Patient patient) {
+    public PatientDto deletePatientById(Long id) {
+        Patient patient = patientRepository.findById(id).get();
+        patientRepository.deleteById(id);
+        return new PatientDto(patient.getId(), patient.getName(), patient.getEmail(), patient.getCondition(), patient.getPassword());
+    }
+
+    public Patient addNewPatient(CreatePatientDto patientDto) {
+        Patient patient = convertToPatient(patientDto);
         return patientRepository.save(patient);
     }
 
@@ -50,18 +61,15 @@ public class PatientService {
         return patientDtos;
     }
 
-    public boolean checkPassword(String password, String confirmPassword) {
-        return !password.equals(confirmPassword);
-    }
 
     public Patient convertToPatient(CreatePatientDto patientDto) {
         String patientName = patientDto.getFirstName() + " " + patientDto.getLastName();
-       // List<Drug> drugs = drugService.getListForPatient(patientDto.getEmail());
         return new Patient(
                 patientName,
                 patientDto.getEmail(),
                 patientDto.getPassword(),
-                patientDto.getCondition()
+                patientDto.getCondition(),
+                patientDto.getDateTime()
         );
     }
 
@@ -109,27 +117,11 @@ public class PatientService {
         return convertToBasicPatientDto(patient);
     }
 
-    public PatientDao getPatientInfoById(Long id) {
-        Patient patient = patientRepository.findById(id).get();
-        return convertToPatientDao(patient);
-    }
-
-    public PatientDao convertToPatientDao(Patient patient) {
-        return new PatientDao(
-                patient.getName(),
-                patient.getEmail(),
-                patient.getCondition(),
-                patient.isPhotoAvailable()
-        );
-    }
-
     private BasicPatientDto convertToBasicPatientDto(Patient patient) {
         return new BasicPatientDto(
                 patient.getName(),
                 patient.getEmail(),
-                patient.getCondition(),
-                patient.isPhotoAvailable()
-        );
+                patient.getCondition());
     }
 
     public List<DrugDao> getDrugByPatientId(Long patientId) {
@@ -187,16 +179,25 @@ public class PatientService {
         return patient;
     }
 
-    public PatientDao deletePatientById(Long id) {
-        PatientDao patientDao = getPatientInfoById(id);
-        patientRepository.deleteById(id);
-        return patientDao;
-    }
-
     public void deleteDrugsByPatientId(Long patientId) {
         List<DrugDao> drugDaos = getDrugByPatientId(patientId);
-        for (DrugDao drugDao: drugDaos){
+        for (DrugDao drugDao : drugDaos) {
             drugRepository.deleteById(drugRepository.findByDrugScientificName(drugDao.getDrugScientificName()).getId());
         }
+    }
+
+    public boolean isValidPatientData(CreatePatientDto patientDto) {
+        return patientDto.getEmail() != null && !patientDto.getEmail().isEmpty() &&
+                patientDto.getPassword() != null && !patientDto.getPassword().isEmpty() &&
+                patientDto.getFirstName() != null && !patientDto.getFirstName().isEmpty() &&
+                patientDto.getLastName() != null && !patientDto.getLastName().isEmpty() &&
+                patientDto.getCondition() != null && !patientDto.getCondition().isEmpty();
+    }
+
+    public Patient resetPassword(String email) {
+        Patient patient = patientRepository.findByEmail(email).get();
+        String password = setNewPassword();
+        changePassword(email, password);
+        return patient;
     }
 }

@@ -2,6 +2,7 @@ package com.example.MedicalWebInput.Controllers;
 
 import com.example.MedicalWebInput.Data.ScheduleDto.ScheduleDao;
 import com.example.MedicalWebInput.Data.ScheduleDto.ScheduleDto;
+import com.example.MedicalWebInput.Models.Schedule;
 import com.example.MedicalWebInput.Services.ScheduleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +28,12 @@ public class ScheduleController {
 
     @GetMapping("/patient/{patientId}/schedules")
     public ResponseEntity<List<ScheduleDao>> getSchedulesForPatient(@PathVariable Long patientId) {
+        return ResponseEntity.ok(scheduleService.getScheduleByPatientId(patientId));
+    }
+
+    @GetMapping("/patient/{patientId}/schedule/{scheduleId}")
+    public ResponseEntity<List<ScheduleDao>> getSetScheduleForPatient(@PathVariable Long patientId, @PathVariable Long scheduleId) {
+        ScheduleDao schedule = scheduleService.getSetScheduleForPatient(scheduleId, patientId);
         return ResponseEntity.ok(scheduleService.getScheduleByPatientId(patientId));
     }
 
