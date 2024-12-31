@@ -1,7 +1,6 @@
 package com.example.MedicalWebInput.Controllers;
 
 import com.example.MedicalWebInput.Data.TestDto.CreateTestDto;
-import com.example.MedicalWebInput.Data.TestDto.TestDao;
 import com.example.MedicalWebInput.Services.TestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,13 +17,13 @@ public class TestController {
     //    GetMappings
     //    =========================================================================
     @GetMapping("/all_tests")
-    public ResponseEntity<List<TestDao>> getAllTests() {
-        return ResponseEntity.ok(testService.convertTestToDao(testService.getAllTests()));
+    public ResponseEntity<List<?>> getAllTests() {
+        return ResponseEntity.ok(null);
     }
 
     @GetMapping("/test/{patientId}")
-    public ResponseEntity<List<TestDao>> addNewTest(@PathVariable Long patientId) {
-        return ResponseEntity.ok(testService.getTestByPatientId(patientId));
+    public ResponseEntity<List<?>> addNewTest(@PathVariable Long patientId) {
+        return ResponseEntity.ok(null);
     }
 
     //    *************************************************************************
@@ -32,7 +31,7 @@ public class TestController {
     //    =========================================================================
 
     @PostMapping("/new_test")
-    public ResponseEntity<TestDao> addNewTestInfo(@RequestBody CreateTestDto createTestDto) {
+    public ResponseEntity<?> addNewTestInfo(@RequestBody CreateTestDto createTestDto) {
         if (!testService.checkBloodPressure(createTestDto.getBloodPressure())) {
             return null;
         }
@@ -43,7 +42,7 @@ public class TestController {
             return null;
         }
         testService.addNewTest(createTestDto);
-        return ResponseEntity.ok(testService.convertDtotoDao(createTestDto));
+        return ResponseEntity.ok(null);
     }
 
     //    *************************************************************************
@@ -51,11 +50,7 @@ public class TestController {
     //    =========================================================================
 
     @PutMapping("/new_test")
-    public ResponseEntity<TestDao> updatePatientTestInfo(@RequestBody CreateTestDto createTestDto) {
-        if (testService.getTestByPatientId(createTestDto.getPatientId()) != null) {
-            testService.updateTestByPatient(createTestDto);
-            return ResponseEntity.ok(testService.convertDtotoDao(createTestDto));
-        }
+    public ResponseEntity<?> updatePatientTestInfo(@RequestBody CreateTestDto createTestDto) {
         return ResponseEntity.ok(testService.getTestById(createTestDto.getId()));
     }
 
@@ -63,13 +58,13 @@ public class TestController {
     //    DeleteMappings
     //    =========================================================================
     @DeleteMapping("/test/{id}")
-    public ResponseEntity<TestDao> deleteTestById(@PathVariable Long id){
-        return ResponseEntity.ok(testService.deleteTestById(id));
+    public ResponseEntity<?> deleteTestById(@PathVariable Long id){
+        return ResponseEntity.ok("Successfully Deleted");
     }
     @DeleteMapping("/test/{patientId}")
-    public ResponseEntity<List<TestDao>> deleteTestByPatientId(@PathVariable Long patientId){
+    public ResponseEntity<List<?>> deleteTestByPatientId(@PathVariable Long patientId){
 
-        return ResponseEntity.ok(testService.deleteTestsByPatientId(patientId));
+        return ResponseEntity.ok(null);
 
     }
 }

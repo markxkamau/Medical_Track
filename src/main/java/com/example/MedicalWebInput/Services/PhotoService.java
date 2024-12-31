@@ -1,6 +1,6 @@
 package com.example.MedicalWebInput.Services;
 
-import com.example.MedicalWebInput.Data.PatientDto.AddPhotoDto;
+import com.example.MedicalWebInput.Data.PatientDto.PhotoDTO;
 import com.example.MedicalWebInput.Models.Patient;
 import com.example.MedicalWebInput.Models.Photo;
 import com.example.MedicalWebInput.Repository.PatientRepository;
@@ -27,18 +27,18 @@ public class PhotoService {
         return photoRepository.findById(id).get().getProfilePhoto();
     }
 
-    public Photo addNewPhoto(AddPhotoDto addPhotoDto) throws IOException {
-        Patient patient = patientRepository.findById(addPhotoDto.getPatientId()).get();
-        Photo photo = new Photo(
-                generateMimeType(addPhotoDto.getProfilePhoto()),
-                convertMultipartFileToByteArray(addPhotoDto.getProfilePhoto()),
-                addPhotoDto.getPatientId()
-        );
-        Photo savedPhoto = photoRepository.save(photo);
-        patient.setPhoto(savedPhoto);
-        patientRepository.save(patient);
-        return savedPhoto;
-    }
+//    public Photo addNewPhoto(PhotoDTO photoDTO) throws IOException {
+//        Patient patient = patientRepository.findById(photoDTO.getPatientId()).get();
+//        Photo photo = new Photo(
+//                generateMimeType(photoDTO.getProfilePhoto()),
+//                convertMultipartFileToByteArray(photoDTO.getProfilePhoto()),
+//                photoDTO.getPatientId()
+//        );
+//        Photo savedPhoto = photoRepository.save(photo);
+//        patient.setPhoto(savedPhoto);
+//        patientRepository.save(patient);
+//        return savedPhoto;
+//    }
 
     private String generateMimeType(MultipartFile profilePhoto) {
         return profilePhoto.getContentType();
