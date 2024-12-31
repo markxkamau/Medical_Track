@@ -28,7 +28,8 @@ public class Patient {
             generator = "patient_sequence"
     )
     private Long id;
-    private String name = "";
+    private String firstName = "";
+    private String lastName = "";
     private String email = "";
     private String password = "";
     private String condition = "";
@@ -41,8 +42,9 @@ public class Patient {
     @OneToMany(mappedBy = "patient", fetch = FetchType.LAZY)
     private List<Schedule> schedules = new ArrayList<>();
 
-    public Patient(String name, String email, String password, String condition, LocalDateTime localDateTime) {
-        this.name = name;
+    public Patient(String firstName, String lastName, String email, String password, String condition, LocalDateTime localDateTime) {
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.email = email;
         this.password = password;
         this.condition = condition;

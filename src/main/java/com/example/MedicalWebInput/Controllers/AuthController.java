@@ -1,6 +1,6 @@
 package com.example.MedicalWebInput.Controllers;
 
-import com.example.MedicalWebInput.Data.PatientDto.PatientLoginDto;
+import com.example.MedicalWebInput.Data.PatientDto.PatientLoginDTO;
 import com.example.MedicalWebInput.Services.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +13,7 @@ public class AuthController {
     private PatientService patientService;
 
     @PostMapping("/login")
-    public ResponseEntity<?> loginPatient(@RequestBody PatientLoginDto patientLoginDto) {
+    public ResponseEntity<?> loginPatient(@RequestBody PatientLoginDTO patientLoginDto) {
         // Login logic
         if (!patientService.verifyLogin(patientLoginDto)) {
             return ResponseEntity.badRequest().body("Invalid Login data. Check your email and password");
@@ -31,13 +31,13 @@ public class AuthController {
     }
 
     @PostMapping("/forgot_password")
-    public ResponseEntity<?> resetPassword(@RequestBody PatientLoginDto patientLoginDto) {
+    public ResponseEntity<?> resetPassword(@RequestParam("email") String email) {
         // Password reset logic
         //Check if account exists
-        if(!patientService.checkEmailForPatient(patientLoginDto.getEmail())){
+        if(!patientService.checkEmailForPatient(email)){
             return ResponseEntity.badRequest().body("No patient exists");
         }
-        return ResponseEntity.ok(patientService.resetPassword(patientLoginDto.getEmail()));
+        return ResponseEntity.ok(patientService.resetPassword(email));
     }
 
 

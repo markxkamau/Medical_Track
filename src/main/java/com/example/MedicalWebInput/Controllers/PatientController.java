@@ -22,12 +22,12 @@ public class PatientController {
 
     //    Must have admin rights
     @GetMapping("/all_patients")
-    public ResponseEntity<List<PatientDto>> getAllPatients() {
+    public ResponseEntity<List<PatientDTO>> getAllPatients() {
         return ResponseEntity.ok(patientService.convertToPatientDto(patientService.getAllPatients()));
     }
 
     @GetMapping("/patient/{id}")
-    public ResponseEntity<BasicPatientDto> getPatientInfo(@PathVariable Long id) {
+    public ResponseEntity<PatientDTO> getPatientInfo(@PathVariable Long id) {
         return ResponseEntity.ok(patientService.getPatientById(id));
     }
 
@@ -44,7 +44,7 @@ public class PatientController {
     //        "dateTime": "2024-12-16T23:58:43.638Z"
     //}
     @PostMapping("/new_patient")
-    public ResponseEntity<?> registerOrUpdatePatient(@RequestBody CreatePatientDto patientDto) {
+    public ResponseEntity<?> registerOrUpdatePatient(@RequestBody CreatePatientDTO patientDto) {
 
         try {
             // 1. Validation (can be moved to a separate method/class)
@@ -64,7 +64,7 @@ public class PatientController {
 
         } catch (Exception e) {
             // 4. General exception handling
-            return ResponseEntity.internalServerError().body("An error occurred while processing your request.");
+            return ResponseEntity.internalServerError().body(e.getMessage());
         }
     }
 
@@ -80,7 +80,7 @@ public class PatientController {
     //        "dateTime": "2024-12-16T23:58:43.638Z"
     //}
     @PutMapping("/new_patient")
-    public ResponseEntity<?> updatePatientInfo(@RequestBody CreatePatientDto patientDto) {
+    public ResponseEntity<?> updatePatientInfo(@RequestBody CreatePatientDTO patientDto) {
         try {
             // 1. Validation (can be moved to a separate method/class)
             if (!patientService.isValidPatientData(patientDto)) {

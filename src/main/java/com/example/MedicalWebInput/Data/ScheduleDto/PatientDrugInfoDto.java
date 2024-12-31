@@ -1,31 +1,20 @@
 package com.example.MedicalWebInput.Data.ScheduleDto;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter@Setter
 public class PatientDrugInfoDto {
-    private String patientName;
+    private String patientFirstName;
+    private String patientLastName;
     private String drugName;
 
     public PatientDrugInfoDto() {
     }
 
-    public PatientDrugInfoDto(
-             String patientName, String drugName) {
-        this.patientName = patientName;
-        this.drugName = drugName;
-    }
-
-    public String getPatientName() {
-        return patientName;
-    }
-
-    public void setPatientName(String patientName) {
-        this.patientName = patientName;
-    }
-
-    public String getDrugName() {
-        return drugName;
-    }
-
-    public void setDrugName(String drugName) {
+    public PatientDrugInfoDto(String patientFirstName, String patientLastName, String drugName) {
+        this.patientFirstName = patientFirstName;
+        this.patientLastName = patientLastName;
         this.drugName = drugName;
     }
 }
