@@ -1,4 +1,4 @@
-package com.example.MedicalWebInput.Configaration;
+package com.example.MedicalWebInput.Configuration;
 
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
