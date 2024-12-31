@@ -23,10 +23,7 @@ public class TestService {
     }
 
     public boolean checkBloodPressure(int bloodPressure) {
-        if (bloodPressure < 0 || bloodPressure > 200) {
-            return false;
-        }
-        return true;
+        return bloodPressure >= 0 && bloodPressure <= 200;
     }
 
     public boolean checkOxygen(int oxygen) {
@@ -58,9 +55,8 @@ public class TestService {
 
 
     public Test getTestById(Long id) {
-        Test test = testRepository.findById(id).get();
 
-        return test;
+        return testRepository.findById(id).get();
     }
 
 
