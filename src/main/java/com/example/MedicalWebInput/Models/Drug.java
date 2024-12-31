@@ -28,14 +28,10 @@ public class Drug {
             generator = "drug_sequence"
     )
     private Long id;
-
+    private String medNumber = "";
     private String drugName = "";
-    private String drugScientificName = "";
     private float drugSize;
-    private String drugPackaging = "";
     private String drugPurpose = "";
-    private boolean scheduleButton = true;
-    private boolean stockButton = true;
 
     @OneToMany(mappedBy = "drug", fetch = FetchType.LAZY)
     private List<Schedule> schedules = new ArrayList<>();

@@ -8,8 +8,4 @@ import java.util.List;
 
 @Repository
 public interface DrugRepository extends JpaRepository<Drug, Long> {
-
-    void deleteById(Long drugId);
-
-    Drug findByDrugScientificName(String drugScientificName);
 }
