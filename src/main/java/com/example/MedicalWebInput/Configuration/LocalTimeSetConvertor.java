@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 @Converter(autoApply = true)
 public class LocalTimeSetConvertor implements AttributeConverter<Set<LocalTime>, String> {
 
-    //Converts a Set collection of time into one combined string e.g. SetData : [08:30, 12:45, 17:00] to String ""08:30, 12:45, 17:00""
+    //Converts a Set collection of time into one combined string e.g. SetData: [08:30, 12:45, 17:00] to String ""08:30, 12:45, 17:00""
     @Override
     public String convertToDatabaseColumn(Set<LocalTime> attribute) {
         if (attribute == null || attribute.isEmpty()) {
@@ -20,7 +20,7 @@ public class LocalTimeSetConvertor implements AttributeConverter<Set<LocalTime>,
         return attribute.stream().map(LocalTime::toString).collect(Collectors.joining(","));
     }
 
-    // Data we are receiving from the database is being split DB data received : ""08:30, 09:00"" to SetData: [08:30, 09:00]
+    // Data we are receiving from the database is being split DB data received: ""08:30, 09:00"" to SetData: [08:30, 09:00]
     @Override
     public Set<LocalTime> convertToEntityAttribute(String dbData) {
         if (dbData == null || dbData.isEmpty()) {
