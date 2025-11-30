@@ -26,7 +26,7 @@ public class DrugStock {
     private Date refillDate = new Date();
     @OneToOne
     private Drug drug;
-    @OneToOne
+    @ManyToOne
     private Patient patient;
 
     public DrugStock() {

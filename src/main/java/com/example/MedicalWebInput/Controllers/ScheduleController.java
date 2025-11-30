@@ -1,93 +1,55 @@
 package com.example.MedicalWebInput.Controllers;
 
 import com.example.MedicalWebInput.Data.ScheduleDto.CreateScheduleDTO;
+import com.example.MedicalWebInput.Data.ScheduleDto.ScheduleDTO;
 import com.example.MedicalWebInput.Services.ScheduleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/medical/api")
+@RequestMapping("/api/schedules")
 public class ScheduleController {
     @Autowired
     private ScheduleService scheduleService;
 
-
-//    *************************************************************************
-//    GetMappings
-//    =========================================================================
-
-    @GetMapping("/all_schedules")
-    public ResponseEntity<?> getAllDrugSchedules() {
+    @GetMapping
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<List<ScheduleDTO>> getAllDrugSchedules() {
         return ResponseEntity.ok(scheduleService.getAllSchedules());
     }
 
-    @GetMapping("/patient/{patientId}/schedules")
-    public ResponseEntity<List<?>> getSchedulesForPatient(@PathVariable Long patientId) {
-        return ResponseEntity.ok(null);
+    @GetMapping("/patient/{patientId}")
+    @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
+    public ResponseEntity<List<ScheduleDTO>> getSchedulesForPatient(@PathVariable Long patientId) {
+        return ResponseEntity.ok(scheduleService.getSchedulesForPatient(patientId));
     }
 
-    @GetMapping("/patient/{patientId}/schedule/{scheduleId}")
-    public ResponseEntity<List<?>> getSetScheduleForPatient(@PathVariable Long patientId, @PathVariable Long scheduleId) {
-        return ResponseEntity.ok(null);
+    @GetMapping("/{id}")
+    @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
+    public ResponseEntity<ScheduleDTO> getSetScheduleForPatient(@PathVariable Long id) {
+        return ResponseEntity.ok(scheduleService.getScheduleById(id));
     }
 
-
-//    *************************************************************************
-//    PostMappings
-//    =========================================================================
-
-    @PostMapping("/patient/new_schedule")
-    public ResponseEntity<?> uploadNewScheduleData(@RequestBody CreateScheduleDTO scheduleDto) {
-        if (scheduleDto.getPatientEmail() == null || scheduleDto.getDrugId() == null || scheduleDto.getIntakes() == null || scheduleDto.getTime() == null) {
-            return null;
-        }
-//        if (scheduleService.checkScheduleData(scheduleDto)) {
-//            return null;
-//        }
-//        if (scheduleService.checkTime(scheduleDto.getTime())) {
-//            return null;
-//        }
-//        scheduleService.addNewScheduleData(scheduleDto);
-//        scheduleService.setVisibilityNone(scheduleDto.getDrugScientificName());
-        return ResponseEntity.ok(null);
-
+    @PostMapping
+    @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
+    public ResponseEntity<ScheduleDTO> uploadNewScheduleData(@RequestBody CreateScheduleDTO scheduleDto) {
+        return ResponseEntity.ok(scheduleService.addNewSchedule(scheduleDto));
     }
 
-
-//    *************************************************************************
-//    PutMappings
-//    =========================================================================
-
-//    @PutMapping("/patient/new_schedule")
-//    public ResponseEntity<ScheduleDao> updateScheduleData(@RequestBody ScheduleDTO scheduleDto) {
-//        if (scheduleDto.getPatientEmail() == null || scheduleDto.getDrugScientificName() == null || scheduleDto.getIntakes() == null || scheduleDto.getTime() == null) {
-//            return null;
-//        }
-//        if (scheduleService.checkScheduleData(scheduleDto)) {
-//            scheduleService.updateWithScheduleDtoData(scheduleDto);
-//            return ResponseEntity.ok(scheduleService.convertDtoToDao(scheduleDto));
-//        }
-//        if (scheduleService.checkTime(scheduleDto.getTime())) {
-//            return null;
-//        }
-//        return ResponseEntity.ok(scheduleService.convertDtoToDao(scheduleDto));
-//
-//    }
-
-    //    *************************************************************************
-//    DeleteMappings
-//    =========================================================================
-    @DeleteMapping("/patient")
-    public ResponseEntity<List<?>> deleteScheduleByPatientId() {
-        return ResponseEntity.ok(null);
+    @PutMapping("/{id}")
+    @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
+    public ResponseEntity<ScheduleDTO> updateScheduleData(@PathVariable Long id, @RequestBody CreateScheduleDTO scheduleDto) {
+        return ResponseEntity.ok(scheduleService.updateScheduleDetails(id, scheduleDto));
     }
 
-    @DeleteMapping("/patient/{patientId}/drug/{drugId}")
-    public ResponseEntity<?> deleteScheduleByPatientAndDrugId(@PathVariable Long patientId, @PathVariable Long drugId){
-        return ResponseEntity.ok(null);
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
+    public ResponseEntity<?> deleteScheduleByPatientId(@PathVariable Long id) {
+        scheduleService.deleteScheduleById(id);
+        return ResponseEntity.ok().build();
     }
 }
-
