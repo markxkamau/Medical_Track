@@ -26,7 +26,7 @@ public class DrugIntake {
     private Drug drug;
     private LocalDateTime intakeTime;
     private boolean taken;
-    @OneToOne
+    @ManyToOne
     private Patient patient;
 
     public DrugIntake() {

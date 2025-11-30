@@ -24,23 +24,20 @@ public class Photo {
     private String mimeType;
     //    @Lob
     private byte[] profilePhoto;
-    private Long patientId;
 
     public Photo() {
     }
 
-    public Photo(Long id, String name, String mimeType, byte[] profilePhoto, Long patientId) {
+    public Photo(Long id, String name, String mimeType, byte[] profilePhoto) {
         this.id = id;
         this.name = name;
         this.mimeType = mimeType;
         this.profilePhoto = profilePhoto;
-        this.patientId = patientId;
     }
 
-    public Photo(String mimeType, byte[] profilePhoto, Long patientId) {
+    public Photo(String mimeType, byte[] profilePhoto) {
         this.mimeType = mimeType;
         this.profilePhoto = profilePhoto;
-        this.patientId = patientId;
     }
 
 

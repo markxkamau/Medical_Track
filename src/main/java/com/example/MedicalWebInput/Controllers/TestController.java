@@ -1,71 +1,35 @@
 package com.example.MedicalWebInput.Controllers;
 
-import com.example.MedicalWebInput.Data.TestDto.CreateTestDto;
-import com.example.MedicalWebInput.Services.TestService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import java.util.List;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/medical/api")
+@RequestMapping("/api/test")
 public class TestController {
-    @Autowired
-    private TestService testService;
-
-    //    *************************************************************************
-    //    GetMappings
-    //    =========================================================================
-    @GetMapping("/all_tests")
-    public ResponseEntity<List<?>> getAllTests() {
-        return ResponseEntity.ok(null);
+    @GetMapping("/all")
+    public String allAccess() {
+        return "Public Content.";
     }
 
-    @GetMapping("/test/{patientId}")
-    public ResponseEntity<List<?>> addNewTest(@PathVariable Long patientId) {
-        return ResponseEntity.ok(null);
+    @GetMapping("/user")
+    @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
+    public String userAccess() {
+        return "User Content.";
     }
 
-    //    *************************************************************************
-    //    PostMappings
-    //    =========================================================================
-
-    @PostMapping("/new_test")
-    public ResponseEntity<?> addNewTestInfo(@RequestBody CreateTestDto createTestDto) {
-        if (!testService.checkBloodPressure(createTestDto.getBloodPressure())) {
-            return null;
-        }
-        if (!testService.checkOxygen(createTestDto.getOxygen())) {
-            return null;
-        }
-        if (!testService.checkBloodSugar(createTestDto.getBloodSugar())) {
-            return null;
-        }
-        testService.addNewTest(createTestDto);
-        return ResponseEntity.ok(null);
+    @GetMapping("/mod")
+    @PreAuthorize("hasRole('MODERATOR')")
+    public String moderatorAccess() {
+        return "Moderator Board.";
     }
 
-    //    *************************************************************************
-    //    PutMappings
-    //    =========================================================================
-
-    @PutMapping("/new_test")
-    public ResponseEntity<?> updatePatientTestInfo(@RequestBody CreateTestDto createTestDto) {
-        return ResponseEntity.ok(testService.getTestById(createTestDto.getId()));
-    }
-
-    //    *************************************************************************
-    //    DeleteMappings
-    //    =========================================================================
-    @DeleteMapping("/test/{id}")
-    public ResponseEntity<?> deleteTestById(@PathVariable Long id){
-        return ResponseEntity.ok("Successfully Deleted");
-    }
-    @DeleteMapping("/test/{patientId}")
-    public ResponseEntity<List<?>> deleteTestByPatientId(@PathVariable Long patientId){
-
-        return ResponseEntity.ok(null);
-
+    @GetMapping("/admin")
+    @PreAuthorize("hasRole('ADMIN')")
+    public String adminAccess() {
+        return "Admin Board.";
     }
 }
-

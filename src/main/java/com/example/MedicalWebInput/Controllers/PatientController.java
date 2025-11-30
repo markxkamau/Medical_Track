@@ -1,124 +1,50 @@
 package com.example.MedicalWebInput.Controllers;
 
-import com.example.MedicalWebInput.Data.PatientDto.*;
-import com.example.MedicalWebInput.Services.*;
+import com.example.MedicalWebInput.Data.PatientDto.CreatePatientDTO;
+import com.example.MedicalWebInput.Data.PatientDto.PatientDTO;
+import com.example.MedicalWebInput.Services.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/medical/api")
+@RequestMapping("/api/patients")
 public class PatientController {
 
     @Autowired
     private PatientService patientService;
 
-    //    *************************************************************************
-    //    GetMappings
-    //    =========================================================================
-
-    //    Must have admin rights
-    @GetMapping("/all_patients")
+    @GetMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<PatientDTO>> getAllPatients() {
-        return ResponseEntity.ok(patientService.convertToPatientDto(patientService.getAllPatients()));
+        return ResponseEntity.ok(patientService.getAllPatients());
     }
 
-    @GetMapping("/patient/{id}")
+    @GetMapping("/{id}")
+    @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
     public ResponseEntity<PatientDTO> getPatientInfo(@PathVariable Long id) {
         return ResponseEntity.ok(patientService.getPatientById(id));
     }
 
-
-    //    *************************************************************************
-    //    PostMappings
-    //    =========================================================================
-    //{
-    //        "firstName": "string",
-    //        "lastName": "string",
-    //        "email": "string",
-    //        "condition": "string",
-    //        "password": "string",
-    //        "dateTime": "2024-12-16T23:58:43.638Z"
-    //}
-    @PostMapping("/new_patient")
-    public ResponseEntity<?> registerOrUpdatePatient(@RequestBody CreatePatientDTO patientDto) {
-
-        try {
-            // 1. Validation (can be moved to a separate method/class)
-            if (!patientService.isValidPatientData(patientDto)) {
-                return ResponseEntity.badRequest().body("Invalid patient data. Please fill in all required fields.");
-            }
-
-            // 2. Check for existing patient
-            if (patientService.checkEmailForPatient(patientDto.getEmail())) {
-                // 3. Handle existing patient (using 409 Conflict status code)
-                return ResponseEntity.status(HttpStatus.CONFLICT).body("A patient with this email already exists.");
-                // Or, if you really want to return the existing patient data (be cautious!):
-                // return ResponseEntity.status(HttpStatus.CONFLICT).body(patientService.getPatientByEmailLimited(patientDto.getEmail()));
-            }
-
-            return ResponseEntity.ok(patientService.addNewPatient(patientDto));
-
-        } catch (Exception e) {
-            // 4. General exception handling
-            return ResponseEntity.internalServerError().body(e.getMessage());
-        }
+    @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<PatientDTO> registerOrUpdatePatient(@RequestBody CreatePatientDTO patientDto) {
+        return ResponseEntity.ok(patientService.addNewPatient(patientDto));
     }
 
-    //    *************************************************************************
-    //    PutMappings
-    //    =========================================================================
-    //{
-    //        "firstName": "string",
-    //        "lastName": "string",
-    //        "email": "string",
-    //        "condition": "string",
-    //        "password": "string",
-    //        "dateTime": "2024-12-16T23:58:43.638Z"
-    //}
-    @PutMapping("/new_patient")
-    public ResponseEntity<?> updatePatientInfo(@RequestBody CreatePatientDTO patientDto) {
-        try {
-            // 1. Validation (can be moved to a separate method/class)
-            if (!patientService.isValidPatientData(patientDto)) {
-                return ResponseEntity.badRequest().body("Invalid patient data. Please fill in all required fields.");
-            }
-
-            // 2. Check for existing patient
-            if (patientService.checkEmailForPatient(patientDto.getEmail())) {
-                // 3. Handle existing patient (using 409 Conflict status code)
-
-                return ResponseEntity.ok(patientService.updatePatientDetails(patientDto));
-                // Or, if you really want to return the existing patient data (be cautious!):
-                // return ResponseEntity.status(HttpStatus.CONFLICT).body(patientService.getPatientByEmailLimited(patientDto.getEmail()));
-            }
-
-            return ResponseEntity.ok(patientService.addNewPatient(patientDto));
-
-        } catch (Exception e) {
-            // 4. General exception handling
-            return ResponseEntity.internalServerError().body("An error occurred while processing your request.");
-        }
+    @PutMapping("/{id}")
+    @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
+    public ResponseEntity<PatientDTO> updatePatientInfo(@PathVariable Long id, @RequestBody CreatePatientDTO patientDto) {
+        return ResponseEntity.ok(patientService.updatePatientDetails(id, patientDto));
     }
 
-    //    *************************************************************************
-    //    DeleteMappings
-    //    =========================================================================
-    //{
-    //        "id": 0
-    //}
-    @DeleteMapping("/patient/{id}")
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> deletePatientInfo(@PathVariable Long id) {
-        if (!patientService.checkForPatient(id) ){
-    //            Patient email doesn't exists
-            return ResponseEntity.badRequest().body("No such patient in the database.");
-        }
-        return ResponseEntity.ok(patientService.deletePatientById(id));
-
+        patientService.deletePatientById(id);
+        return ResponseEntity.ok().build();
     }
-
-
 }

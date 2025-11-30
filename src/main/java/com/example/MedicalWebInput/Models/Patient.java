@@ -30,10 +30,12 @@ public class Patient {
     private Long id;
     private String firstName = "";
     private String lastName = "";
-    private String email = "";
-    private String password = "";
     private String condition = "";
     private LocalDateTime localDateTime = LocalDateTime.now();
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "photo_id")
@@ -42,11 +44,9 @@ public class Patient {
     @OneToMany(mappedBy = "patient", fetch = FetchType.LAZY)
     private List<Schedule> schedules = new ArrayList<>();
 
-    public Patient(String firstName, String lastName, String email, String password, String condition, LocalDateTime localDateTime) {
+    public Patient(String firstName, String lastName, String condition, LocalDateTime localDateTime) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.email = email;
-        this.password = password;
         this.condition = condition;
         this.localDateTime = localDateTime;
     }
