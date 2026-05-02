@@ -5,16 +5,19 @@ import javax.persistence.*;
 
 @Entity
 @Table
-@Getter @Setter @NoArgsConstructor @AllArgsConstructor
-public class DrugStock {
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+public class Adherence {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Long patientId;
     private String medicationId;
     private String medicationName;
-    private int currentStock;
-    private int reorderLevel;
-    private String unit;
-    private String expiration;
+    private int adherenceRate;
+    private int dosesTaken;
+    private int dosesMissed;
+    private String lastTaken;
 }

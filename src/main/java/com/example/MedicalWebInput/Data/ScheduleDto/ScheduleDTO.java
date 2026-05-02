@@ -1,21 +1,18 @@
 package com.example.MedicalWebInput.Data.ScheduleDto;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
+import java.util.List;
 
-@Getter
-@Setter
+@Data
 public class ScheduleDTO {
-    private Long intakes;
-    private String[] time;
-    private String patientEmail;
-
-    public ScheduleDTO() {
-    }
-
-    public ScheduleDTO(Long intakes, String[] time, String patientEmail) {
-        this.intakes = intakes;
-        this.time = time;
-        this.patientEmail = patientEmail;
-    }
+    private Long id;
+    private Long patientId;
+    private String medicationId;
+    private String medicationName;
+    private String dosage;
+    private String frequency;
+    private List<String> times;
+    private String startDate;
+    private String endDate;
+    private String instructions;
 }

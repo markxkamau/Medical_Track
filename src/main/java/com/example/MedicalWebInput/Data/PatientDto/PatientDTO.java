@@ -7,6 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Getter
 @Setter
 public class PatientDTO {
+    private Long id;
     private String firstName = "";
     private String lastName = "";
     private String email = "";

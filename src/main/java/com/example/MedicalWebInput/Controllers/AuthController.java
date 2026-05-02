@@ -2,15 +2,22 @@ package com.example.MedicalWebInput.Controllers;
 
 import com.example.MedicalWebInput.Data.PatientDto.PatientLoginDTO;
 import com.example.MedicalWebInput.Services.PatientService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.MedicalWebInput.Configuration.JwtUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/medical/api/auth")
 public class AuthController {
-    @Autowired
-    private PatientService patientService;
+    private final PatientService patientService;
+    private final JwtUtils jwtUtils;
+
+    public AuthController(PatientService patientService, JwtUtils jwtUtils) {
+        this.patientService = patientService;
+        this.jwtUtils = jwtUtils;
+    }
 
     @PostMapping("/login")
     public ResponseEntity<?> loginPatient(@RequestBody PatientLoginDTO patientLoginDto) {
@@ -18,15 +25,28 @@ public class AuthController {
         if (!patientService.verifyLogin(patientLoginDto)) {
             return ResponseEntity.badRequest().body("Invalid Login data. Check your email and password");
         }
-        //// TODO: START SESSION, CREATE JWT
-        return ResponseEntity.ok(patientService.getPatientByEmail(patientLoginDto.getEmail()));
-        // "String token = jwtService.generateToken(authRequest.getUsername());"
+        
+        String token = jwtUtils.generateToken(patientLoginDto.getEmail());
+        Map<String, Object> response = new HashMap<>();
+        response.put("token", token);
+        response.put("user", patientService.getPatientByEmail(patientLoginDto.getEmail()));
+        
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<String> logoutPatient(@RequestParam("email") String email) {
-        // Logout
-        /// /TODO : Kill JWT and RECORD TIME
+    public ResponseEntity<String> logoutPatient(@RequestHeader("Authorization") String authHeader) {
+        String token = null;
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            token = authHeader.substring(7);
+        }
+        if (token == null || !jwtUtils.validateToken(token)) {
+            return ResponseEntity.badRequest().body("Invalid or missing token");
+        }
+
+        String email = jwtUtils.extractEmail(token);
+        patientService.recordLogoutTime(email);
+
         return ResponseEntity.ok("Logout Successful");
     }
 

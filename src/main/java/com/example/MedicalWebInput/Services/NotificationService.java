@@ -18,7 +18,8 @@ public class NotificationService {
     @Autowired
     private PatientRepository patientRepository;
 
-    public void sendNotification(String registrationToken, String title, String body) throws FirebaseMessagingException {
+    public void sendNotification(String registrationToken, String title, String body)
+            throws FirebaseMessagingException {
         Notification notification = Notification.builder()
                 .setTitle(title)
                 .setBody(body)
@@ -32,7 +33,6 @@ public class NotificationService {
         String response = FirebaseMessaging.getInstance().send(message);
         System.out.println("Successfully sent message: " + response);
     }
-
 
     public void saveToken(String userEmail, String userToken) {
         Patient patient = patientRepository.findByEmail(userEmail).get();
@@ -52,10 +52,9 @@ public class NotificationService {
         }
     }
 
-    public String getToken(Patient patient){
+    public String getToken(Patient patient) {
         Token token = tokenRepository.findByPatientId(patient.getId());
         return token.getRegistrationToken();
     }
-
 
 }

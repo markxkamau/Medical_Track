@@ -1,14 +1,18 @@
 package com.example.MedicalWebInput.Data.DrugDtoDao;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
+import java.util.List;
 
-@Getter
-@Setter
+@Data
 public class CreateDrugDTO {
-    private String medNumber;
+    private String medId;
+    private String name;
     private String purpose;
-    private String drugName;
-    private float drugDose;
-
+    private String dosage;
+    private String frequency;
+    private String prescribedBy;
+    private String startDate;
+    private String status;
+    private List<String> sideEffects;
+    private String conditionId;
 }

@@ -2,7 +2,6 @@ package com.example.MedicalWebInput.Controllers;
 
 import com.example.MedicalWebInput.Data.PatientDto.*;
 import com.example.MedicalWebInput.Services.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,14 +12,17 @@ import java.util.List;
 @RequestMapping("/medical/api")
 public class PatientController {
 
-    @Autowired
-    private PatientService patientService;
+    private final PatientService patientService;
 
-    //    *************************************************************************
-    //    GetMappings
-    //    =========================================================================
+    public PatientController(PatientService patientService) {
+        this.patientService = patientService;
+    }
 
-    //    Must have admin rights
+    // *************************************************************************
+    // GetMappings
+    // =========================================================================
+
+    // Must have admin rights
     @GetMapping("/all_patients")
     public ResponseEntity<List<PatientDTO>> getAllPatients() {
         return ResponseEntity.ok(patientService.convertToPatientDto(patientService.getAllPatients()));
@@ -31,18 +33,17 @@ public class PatientController {
         return ResponseEntity.ok(patientService.getPatientById(id));
     }
 
-
-    //    *************************************************************************
-    //    PostMappings
-    //    =========================================================================
-    //{
-    //        "firstName": "string",
-    //        "lastName": "string",
-    //        "email": "string",
-    //        "condition": "string",
-    //        "password": "string",
-    //        "dateTime": "2024-12-16T23:58:43.638Z"
-    //}
+    // *************************************************************************
+    // PostMappings
+    // =========================================================================
+    // {
+    // "firstName": "string",
+    // "lastName": "string",
+    // "email": "string",
+    // "condition": "string",
+    // "password": "string",
+    // "dateTime": "2024-12-16T23:58:43.638Z"
+    // }
     @PostMapping("/new_patient")
     public ResponseEntity<?> registerOrUpdatePatient(@RequestBody CreatePatientDTO patientDto) {
 
@@ -57,7 +58,8 @@ public class PatientController {
                 // 3. Handle existing patient (using 409 Conflict status code)
                 return ResponseEntity.status(HttpStatus.CONFLICT).body("A patient with this email already exists.");
                 // Or, if you really want to return the existing patient data (be cautious!):
-                // return ResponseEntity.status(HttpStatus.CONFLICT).body(patientService.getPatientByEmailLimited(patientDto.getEmail()));
+                // return
+                // ResponseEntity.status(HttpStatus.CONFLICT).body(patientService.getPatientByEmailLimited(patientDto.getEmail()));
             }
 
             return ResponseEntity.ok(patientService.addNewPatient(patientDto));
@@ -68,17 +70,17 @@ public class PatientController {
         }
     }
 
-    //    *************************************************************************
-    //    PutMappings
-    //    =========================================================================
-    //{
-    //        "firstName": "string",
-    //        "lastName": "string",
-    //        "email": "string",
-    //        "condition": "string",
-    //        "password": "string",
-    //        "dateTime": "2024-12-16T23:58:43.638Z"
-    //}
+    // *************************************************************************
+    // PutMappings
+    // =========================================================================
+    // {
+    // "firstName": "string",
+    // "lastName": "string",
+    // "email": "string",
+    // "condition": "string",
+    // "password": "string",
+    // "dateTime": "2024-12-16T23:58:43.638Z"
+    // }
     @PutMapping("/new_patient")
     public ResponseEntity<?> updatePatientInfo(@RequestBody CreatePatientDTO patientDto) {
         try {
@@ -93,7 +95,8 @@ public class PatientController {
 
                 return ResponseEntity.ok(patientService.updatePatientDetails(patientDto));
                 // Or, if you really want to return the existing patient data (be cautious!):
-                // return ResponseEntity.status(HttpStatus.CONFLICT).body(patientService.getPatientByEmailLimited(patientDto.getEmail()));
+                // return
+                // ResponseEntity.status(HttpStatus.CONFLICT).body(patientService.getPatientByEmailLimited(patientDto.getEmail()));
             }
 
             return ResponseEntity.ok(patientService.addNewPatient(patientDto));
@@ -104,21 +107,20 @@ public class PatientController {
         }
     }
 
-    //    *************************************************************************
-    //    DeleteMappings
-    //    =========================================================================
-    //{
-    //        "id": 0
-    //}
+    // *************************************************************************
+    // DeleteMappings
+    // =========================================================================
+    // {
+    // "id": 0
+    // }
     @DeleteMapping("/patient/{id}")
     public ResponseEntity<?> deletePatientInfo(@PathVariable Long id) {
-        if (!patientService.checkForPatient(id) ){
-    //            Patient email doesn't exists
+        if (!patientService.checkForPatient(id)) {
+            // Patient email doesn't exists
             return ResponseEntity.badRequest().body("No such patient in the database.");
         }
         return ResponseEntity.ok(patientService.deletePatientById(id));
 
     }
-
 
 }

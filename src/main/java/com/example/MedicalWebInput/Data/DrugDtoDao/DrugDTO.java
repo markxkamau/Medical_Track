@@ -1,24 +1,19 @@
 package com.example.MedicalWebInput.Data.DrugDtoDao;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
+import java.util.List;
 
-@Getter
-@Setter
+@Data
 public class DrugDTO {
-    private String medNumber = "";
-    private String drugName = "";
-    private float drugSize;
-    private String drugPurpose = "";
-
-    public DrugDTO() {
-    }
-
-    public DrugDTO(String medId, String drugName, float drugSize, String drugPurpose) {
-        this.medNumber = medId;
-        this.drugName = drugName;
-        this.drugSize = drugSize;
-        this.drugPurpose = drugPurpose;
-    }
-
+    private Long id;
+    private String medId;
+    private String name;
+    private String purpose;
+    private String dosage;
+    private String frequency;
+    private String prescribedBy;
+    private String startDate;
+    private String status;
+    private List<String> sideEffects;
+    private String conditionId;
 }

@@ -10,22 +10,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.time.LocalDateTime;
 
 @Service
 public class PatientService {
-    @Autowired
-    private PatientRepository patientRepository;
-    @Autowired
-    private DrugService drugService;
-    @Autowired
-    private DrugRepository drugRepository;
-    @Autowired
-    private DrugStockRepository drugStockRepository;
-    @Autowired
-    private ScheduleRepository scheduleRepository;
-    @Autowired
-    private ModelMapper modelMapper;
+    private final PatientRepository patientRepository;
+    private final ModelMapper modelMapper;
 
+    public PatientService(PatientRepository patientRepository, ModelMapper modelMapper) {
+        this.patientRepository = patientRepository;
+        this.modelMapper = modelMapper;
+    }
 
     public List<Patient> getAllPatients() {
         return patientRepository.findAll();
@@ -40,7 +35,7 @@ public class PatientService {
     }
 
     public PatientDTO deletePatientById(Long id) {
-        Patient patient = patientRepository.findById(id).get();
+        Patient patient = patientRepository.findById(id).orElseThrow(() -> new RuntimeException("Patient not found"));
         patientRepository.deleteById(id);
         return new PatientDTO(patient.getFirstName(), patient.getLastName(), patient.getEmail());
     }
@@ -54,22 +49,16 @@ public class PatientService {
 
         // Second mapping: Patient -> PatientDTO
         PatientDTO patientDTO = modelMapper.map(savedPatient, PatientDTO.class);
+        patientDTO.setId(savedPatient.getId());
 
         patientDTO.setProfilePhoto(null);
         return patientDTO;
     }
 
     public List<PatientDTO> convertToPatientDto(List<Patient> allPatients) {
-        // Methode 1:
-        return modelMapper.map(allPatients, new TypeToken<List<PatientDTO>>() {}.getType());
-
-        //Method 2:
-//        return allPatients.stream()
-//                .map(patient -> modelMapper.map(patient, PatientDTO.class))
-//                .collect(Collectors.toList());
-
+        return modelMapper.map(allPatients, new TypeToken<List<PatientDTO>>() {
+        }.getType());
     }
-
 
     public Patient convertToPatient(CreatePatientDTO patientDto) {
         return modelMapper.map(patientDto, Patient.class);
@@ -92,7 +81,10 @@ public class PatientService {
     }
 
     public PatientDTO getPatientByEmail(String email) {
-        return modelMapper.map(patientRepository.findByEmail(email).get(), PatientDTO.class);
+        Patient p = patientRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("Patient not found"));
+        PatientDTO dto = modelMapper.map(p, PatientDTO.class);
+        dto.setId(p.getId());
+        return dto;
     }
 
     public String setNewPassword() {
@@ -108,18 +100,22 @@ public class PatientService {
     }
 
     public void changePassword(String email, String password) {
-        Patient patient = patientRepository.findByEmail(email).get();
-        patient.setPassword(String.join("", password));
-
+        Patient patient = patientRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Patient not found"));
+        patient.setPassword(password);
         patientRepository.save(patient);
     }
 
     public PatientDTO getPatientById(Long id) {
-        return modelMapper.map(patientRepository.findById(id).get(), PatientDTO.class);
+        Patient p = patientRepository.findById(id).orElseThrow(() -> new RuntimeException("Patient not found"));
+        PatientDTO dto = modelMapper.map(p, PatientDTO.class);
+        dto.setId(p.getId());
+        return dto;
     }
 
     public PatientDTO updatePatientDetails(CreatePatientDTO patientDto) {
-        Patient patient = patientRepository.findByEmail(patientDto.getEmail()).get();
+        Patient patient = patientRepository.findByEmail(patientDto.getEmail())
+                .orElseThrow(() -> new RuntimeException("Patient not found"));
         patient.setPassword(patientDto.getPassword());
         patient.setFirstName(patientDto.getFirstName());
         patient.setLastName(patientDto.getLastName());
@@ -136,9 +132,17 @@ public class PatientService {
     }
 
     public Patient resetPassword(String email) {
-        Patient patient = patientRepository.findByEmail(email).get();
+        Patient patient = patientRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Patient not found"));
         String password = setNewPassword();
         changePassword(email, password);
         return patient;
+    }
+
+    public void recordLogoutTime(String email) {
+        Patient patient = patientRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Patient not found"));
+        patient.setLogoutTime(LocalDateTime.now());
+        patientRepository.save(patient);
     }
 }

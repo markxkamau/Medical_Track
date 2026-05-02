@@ -7,8 +7,6 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table
@@ -18,15 +16,8 @@ import java.util.List;
 @AllArgsConstructor
 public class Patient {
     @Id
-    @SequenceGenerator(
-            sequenceName = "patient_sequence",
-            allocationSize = 1,
-            name = "patient_sequence"
-    )
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "patient_sequence"
-    )
+    @SequenceGenerator(sequenceName = "patient_sequence", allocationSize = 1, name = "patient_sequence")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "patient_sequence")
     private Long id;
     private String firstName = "";
     private String lastName = "";
@@ -34,15 +25,14 @@ public class Patient {
     private String password = "";
     private String condition = "";
     private LocalDateTime localDateTime = LocalDateTime.now();
+    private LocalDateTime logoutTime;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "photo_id")
     private Photo photo;
 
-    @OneToMany(mappedBy = "patient", fetch = FetchType.LAZY)
-    private List<Schedule> schedules = new ArrayList<>();
-
-    public Patient(String firstName, String lastName, String email, String password, String condition, LocalDateTime localDateTime) {
+    public Patient(String firstName, String lastName, String email, String password, String condition,
+            LocalDateTime localDateTime) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;

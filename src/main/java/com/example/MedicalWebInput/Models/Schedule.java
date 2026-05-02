@@ -1,50 +1,25 @@
 package com.example.MedicalWebInput.Models;
 
-
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
+import lombok.*;
 import javax.persistence.*;
-import java.util.Date;
+import java.util.List;
+import java.util.ArrayList;
 
 @Entity
 @Table
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
+@Getter @Setter @NoArgsConstructor @AllArgsConstructor
 public class Schedule {
     @Id
-    @SequenceGenerator(
-            sequenceName = "schedule_sequence",
-            allocationSize = 1,
-            name = "schedule_sequence"
-    )
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "schedule_sequence"
-    )
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    private Long intakes = 1L;
-    private String[] time;
-    private Date startDate = new Date();
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "patient_id")
-    private Patient patient;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "drug_id")
-    private Drug drug;
-
-    public Schedule(Long intakes, String[] time,  Patient patient, Drug drug) {
-        this.intakes = intakes;
-        this.time = time;
-        this.startDate = startDate;
-        this.patient = patient;
-        this.drug = drug;
-    }
+    private Long patientId;
+    private String medicationId;
+    private String medicationName;
+    private String dosage;
+    private String frequency;
+    @ElementCollection
+    private List<String> times = new ArrayList<>();
+    private String startDate;
+    private String endDate;
+    private String instructions;
 }

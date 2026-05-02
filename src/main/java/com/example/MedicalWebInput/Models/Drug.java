@@ -1,14 +1,9 @@
 package com.example.MedicalWebInput.Models;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
+import lombok.*;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
-
 
 @Entity
 @Table
@@ -18,23 +13,17 @@ import java.util.List;
 @NoArgsConstructor
 public class Drug {
     @Id
-    @SequenceGenerator(
-            sequenceName = "drug_sequence",
-            name = "drug_sequence",
-            allocationSize = 1
-    )
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "drug_sequence"
-    )
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String medNumber = "";
-    private String drugName = "";
-    private float drugSize;
-    private String drugPurpose = "";
-
-    @OneToMany(mappedBy = "drug", fetch = FetchType.LAZY)
-    private List<Schedule> schedules = new ArrayList<>();
+    private String medId;
+    private String name;
+    private String purpose;
+    private String dosage;
+    private String frequency;
+    private String prescribedBy;
+    private String startDate;
+    private String status;
+    @ElementCollection
+    private List<String> sideEffects = new ArrayList<>();
+    private String conditionId;
 }
-
-

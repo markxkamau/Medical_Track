@@ -6,15 +6,12 @@ import javax.persistence.*;
 @Entity
 @Table
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor
-public class DrugStock {
+public class HealthRecord {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Long patientId;
-    private String medicationId;
-    private String medicationName;
-    private int currentStock;
-    private int reorderLevel;
-    private String unit;
-    private String expiration;
+    private String date;
+    private String type;
+    private String value;
 }

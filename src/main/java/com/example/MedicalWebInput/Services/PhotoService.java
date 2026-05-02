@@ -1,7 +1,5 @@
 package com.example.MedicalWebInput.Services;
 
-import com.example.MedicalWebInput.Data.PatientDto.PhotoDTO;
-import com.example.MedicalWebInput.Models.Patient;
 import com.example.MedicalWebInput.Models.Photo;
 import com.example.MedicalWebInput.Repository.PatientRepository;
 import com.example.MedicalWebInput.Repository.PhotoRepository;
